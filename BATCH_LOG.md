@@ -2,12 +2,42 @@
 
 Source list: the WorldCuisines food-kb dataset (2,414 rows). The dataset declares no licence, so only its dish names were used. Every photo was re-checked on Wikimedia Commons for its licence (CC0 / CC BY / CC BY-SA / public domain) and checked by eye to make sure it shows the dish. All text was written for this app, and every review is a labelled SAMPLE.
 
-## Status (after Batch 7, Nov 2 2026)
+## Status (after Batch 8, Nov 2 2026)
 
-- Dishes in the repo: **1,690** (112 original + 162 + 204 + 220 + 250 + 250 + 250 + 242 from Batches 1–7). The live site still has 948 (Batches 5–7 not deployed, by request).
-- Dataset rows covered so far, counting alternate names and merged duplicates: 1,670
-- Pending unique dataset dishes: **744**. The list is in `pending_queue.tsv`.
-- Estimated batches left at ~250 per batch: about 3
+- Dishes in the repo: **1,939** (112 original + 162 + 204 + 220 + 250 + 250 + 250 + 242 + 249 from Batches 1–8). The live site still has 948 (Batches 5–8 not deployed, by request).
+- Dataset rows covered so far, counting alternate names and merged duplicates: 1,927
+- Pending unique dataset dishes: **487**. The list is in `pending_queue.tsv`. Many of these have no usable Commons photo, so expect fewer than 250 per batch from here.
+- Estimated batches left at ~250 per batch: about 2
+
+## Batch 8: done (249)
+
+- **mideast** (9): komaj-sehen, walnut-stuffed-figs, stuffed-dates, levengi, stuffed-squash, stuffed-intestines, tharid, joshpara, piti
+- **bakes** (69): kringlea, krostule, kuciukai, leipziger-lerche, mandelkubb, milhojas, muskazine, new-york-roll, nuns-puffs, poppy-seed-roll, punsch-roll, xuixo, schnecken, schuxen, sfintisori, stutenkerl, torpedo-dessert, vatrushka, atlantic-beach-pie, bean-pie, blackberry-pie, bumbleberry-pie, caramel-tart, cashew-pie, chiffon-pie, derby-pie, grape-hull-pie, kuchen, millionaire-pie, pastafrola, peanut-pie, raspberry-pie, shaker-lemon-pie, strawberry-pie, tarta-capuchina, walnut-pie, anadama-bread, apple-bread, baba, vienna-bread, vanocka, tsoureki, beer-bread, boule, carrot-bread, chickpea-bread, cottage-loaf, limpa, lye-roll, mohnflesserl, salt-rising-bread, pane-ticinese, pistolet, portuguese-sweet-bread, potato-bread, pumpkin-bread, roggelchen, water-biscuit, graham-bread, korovai, cream-bun, chorley-cake, sausage-bread, nut-roll, apple-dumpling, belgian-bun, boston-bun, manchet, heisswecke
+- **chinese** (15): lek-tau-phong, naiyou-subing, sou, shuangbaotai, guokui, scallion-bread, taro-dumpling, ageh, beef-bun, peanut-butter-bun, black-sesame-roll, zhaliang, spare-ribs, coconut-bar, tuna-bun
+- **italian** (11): pa-de-pessic, borlengo, coppia-ferrarese, sgabeo, pane-di-altamura, stuffed-pizza, scaccia, pavese-agnolotti, schlutzkrapfen, casunziei, farsu-magru
+- **mexican** (1): paste-pasty
+- **americas** (21): pot-pie, fleischkuekle, moravian-chicken-pie, natchitoches-meat-pie, rappie-pie, southern-tomato-pie, sopa-paraguaya, marraqueta, stuffed-clam, platanos-rellenos, pepperoni-roll, stuffed-ham, turducken, minnesota-sushi, fricot, goat-water, lobster-stew, mocoto, oyster-stew, denver-sandwich, ham-salad
+- **european** (60): savory-spinach-pie, killie-pie, butter-pie, corned-beef-pie, curry-pie, homity-pie, meat-and-potato-pie, pirog, spekrausi, steak-pie, woolton-pie, tonis-puri, cesnica, flatkaka, laufabraud, maltese-bread, shotis-puri, pao-alentejano, qistibi, rieska, caviar, sorrel-soup, veal-orloff, pyshka, khrenovina-sauce, rasstegai, kutia, kasha, helzel, krautshauptchen, szczecin-pasztecik, stuffed-racuchy, stuffed-squid, soldra, ballotine, tripoux, stuffed-tomatoes, rullepolse, calfs-liver-and-bacon, jellied-veal, pariser-schnitzel, ragout-fin, andrajos, hasenpfeffer, hochepot, jota, karelian-hot-pot, kig-ha-farz, laskisoosi, tuna-pot, tatws-pum-munud, skirts-and-kidneys, rossypottu, ragout, puchero, pottage, pichelsteiner, cocido-montanes, cocido-lebaniego, caparrones
+- **world** (10): bacon-and-egg-pie, balep-korkun, tandoor-bread, hardtack, rissole, egg-in-the-basket, cheese-roll, prawn-roll, stuffed-cucumber, ham-and-eggs
+- **seasia** (10): chicken-pastel, kamir, roti-buaya, roti-bolen, arsik, banh-la, jalangkote, balbacua, sekba, saksang
+- **african** (23): eish-merahrah, bazin, potbrood, waterblommetjiebredie, usban, cocada-amarela, dambou, draw-soup, ekwang, fesikh, mugoyo, ogi, shark-chutney, mala-mogodu, kapana, kamounia, kokonte, seswaa, spicy-cow-feet, moambe-chicken, kedjenou, palaver-sauce, qrashel
+- **indian-mains** (1): manda-roti
+- **indian-sweets** (1): poornalu
+- **japan-korea** (18): seattle-roll, ohaw, dojo-nabe, fugu-chiri, kagoshima-ramen, hakuto-jelly, muroran-curry-ramen, akumaki, amanatto, suama, amezaiku, beika, yubeshi, hanabiramochi, katemeshi, red-bean-rice, nanakusa-no-sekku, wappameshi
+
+## Batch 8: skipped
+
+- Weak, wrong, packaged or no-licence photos, or off-limits dishes (30): pasca, christmas-wafer, damper, dumb-bread, hot-and-spicy-cheese-bread, peg-bread, pan-brioche, tapalapa, delele, echicha, chrain, stroganina, zakuski, kitcha, ahriche, mesfouf, tihlo, galantine, stuffed-apples, stuffed-quinces, banana-boat, rellenitos-de-platano, maconochie, pork-roll, seco, chitose-ame, fruit-bun, christmas-ham, harihari-nabe, guryev-porridge (no photo found). harihari-nabe was skipped because it is a whale dish; mesfouf because its photo showed a pizza.
+- Brand names and generic terms were left out: okazu, hot-dog-bun, ham-sandwich, ham-and-cheese-sandwich and similar.
+
+## Batch 8: merged instead of added
+
+- furai → ebi-furai / kaki-furai; red caviar → caviar; stuffed eggplant → karniyarik / imam-bayildi / dolma; manicotti → cannelloni; cocido → cocido-madrileno; hamin → cholent; angel wings → krostule; moambe → moambe-chicken
+
+## Batch 8: other changes
+
+- Diet labels: lard/suet/tallow dishes marked non-veg (lek-tau-phong, coppia-ferrarese, borlengo, laufabraud, paste-pasty); chiffon pie marked non-veg because of gelatin.
+- Images folder is now about 128 MB (detail ≤70 KB, thumbnails 350 px). Nothing else heavy was added.
 
 ## Batch 7: done (242)
 
