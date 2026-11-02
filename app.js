@@ -167,27 +167,163 @@
     $("#chips").innerHTML = CATS.map(c => `<button class="chip ${c.id === cat ? "on" : ""}" data-cat="${c.id}" role="tab" aria-selected="${c.id === cat}">${c.emoji} ${c.label}</button>`).join("")
       + `<button class="chip veg ${vegOnly ? "on" : ""}" data-veg="1" aria-pressed="${vegOnly}">🟢 Veg-friendly</button>`;
   }
+  /* ---------------- Smart search ----------------
+     Words are normalised (case, accents, plurals, filler like "food"/"dishes").
+     Every remaining word must match something: a diet label, a taste, a cuisine/region,
+     a category/type, or a word (prefix) in the dish's name/cuisine/keywords. */
+  const norm = s => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const FILLER = new Set("food foods dish dishes recipe recipes cuisine cuisines item items style the a an of and with in from for me show some any all list best popular famous good type types kind kinds".split(" "));
   /* Diet words match the diet label, not text ("veg" must not hit "non-veg" or "vegetables"). */
   const DIET_WORDS = {
     veg: ["veg", "both"], vegetarian: ["veg", "both"], veggie: ["veg", "both"], vegan: ["veg", "both"],
     eggetarian: ["veg", "egg", "both", "eggboth"],
-    "non-veg": ["nonveg", "both", "eggboth"], nonveg: ["nonveg", "both", "eggboth"], meat: ["nonveg", "both", "eggboth"]
+    nonveg: ["nonveg", "both", "eggboth"], meat: ["nonveg", "both", "eggboth"]
   };
-  function qWords(q) { return q.toLowerCase().replace(/\bnon[\s-]+veg(etarian)?\b/g, "non-veg").split(/\s+/).filter(Boolean); }
-  function matches(d, q) {
-    if (!q) return true;
-    return qWords(q).every(w => DIET_WORDS[w] ? DIET_WORDS[w].includes(d.diet) : hayOf(d).includes(w));
+  const TASTE_WORDS = { spicy: "spicy", hot: "spicy", sweet: "sweet", sour: "sour", tangy: "sour", salty: "salty", bitter: "bitter", mild: "mild" };
+  const rx = s => new RegExp(s, "i");
+  const isCat = (...ids) => d => ids.includes(d.cat);
+  const cu = re => d => re.test(d.cuisine);
+  const or = (...fs) => d => fs.some(f => f(d));
+  const IND = /indian|india|punjab|gujarat|kerala|tamil|bengal|odia|mughlai|hyderabad|rajasthan|maharasht|mumbai|kolkata|parsi|karnataka|andhra|telangana|goan|kashmir|udupi|mangalore|malabar|chettinad|awadhi|delhi|surat|indori|kutchi/i;
+  const SOUTH_IND = /south indian|kerala|tamil|karnataka|andhra|telangana|udupi|mangalore|malabar|chettinad|hyderabad|tulu/i;
+  /* Concepts: label shown in the count, primary = cuisine field starts with it (ranked first). */
+  const CONCEPTS = {
+    chinese: { label: "Chinese", primary: /^(chinese|cantonese|sichuan|beijing|hong kong|taiwanese|shanghai)/i,
+      f: or(cu(/chinese|cantonese|sichuan|szechuan|taiwan|hong kong|macau|hokkien|teochew|hakka|fujian|shanghai|beijing|hui muslim|uyghur|dim sum|chifa/i), d => d.cat === "chinese" && !/tibet|nepal|bhutan|mongol|himalaya|newar/i.test(d.cuisine)) },
+    indian: { label: "Indian", primary: IND, f: or(isCat("indian-street", "south-indian", "indian-mains", "indian-sweets"), cu(IND)) },
+    "south indian": { label: "South Indian", primary: SOUTH_IND, f: or(isCat("south-indian"), cu(SOUTH_IND)) },
+    "north indian": { label: "North Indian", primary: /north indian|punjab|mughlai/i, f: cu(/north indian|punjab|mughlai|delhi|rajasthan|kashmir|awadhi|lucknow|indori/i) },
+    japanese: { label: "Japanese", primary: /^japan/i, f: cu(/japan|okinawa/i) },
+    korean: { label: "Korean", primary: /^korean/i, f: cu(/korea/i) },
+    thai: { label: "Thai", primary: /^thai/i, f: cu(/thai|isan/i) },
+    vietnamese: { label: "Vietnamese", primary: /^vietnam/i, f: cu(/vietnam/i) },
+    italian: { label: "Italian", primary: /^italian/i, f: or(isCat("italian"), cu(/italian|sicil|neapolitan|roman \(|venetian|tuscan|sardinian/i)) },
+    mexican: { label: "Mexican", primary: /^mexican/i, f: or(isCat("mexican"), cu(/mexic|tex mex|tex-mex|yucat|oaxac/i)) },
+    french: { label: "French", primary: /^french/i, f: cu(/french|breton|provenc|alsatian|lyonnais|parisian/i) },
+    spanish: { label: "Spanish", primary: /^spanish/i, f: cu(/spanish|spain|catalan|basque|andalus|galician|valencian/i) },
+    american: { label: "American", primary: /^american/i, f: cu(/american|cajun|creole|tex-mex|hawaiian|new england|southern/i) },
+    british: { label: "British", primary: /^(british|english)/i, f: cu(/british|english|scottish|welsh|cornish|cornwall/i) },
+    "middle eastern": { label: "Middle Eastern", primary: /middle eastern|levantine|lebanese/i, f: or(isCat("mideast"), cu(/middle eastern|levant|lebanese|syrian|palestin|jordan|iraqi|persian|iranian|arab|gulf|yemen|israeli/i)) },
+    african: { label: "African", primary: /african/i, f: or(isCat("african"), cu(/african/i)) },
+    european: { label: "European", primary: /european/i, f: isCat("european", "italian") },
+    asian: { label: "Asian", primary: /^(chinese|japanese|korean|thai|vietnamese|indian)/i, f: isCat("chinese", "japan-korea", "seasia", "indian-street", "south-indian", "indian-mains", "indian-sweets") },
+    "southeast asian": { label: "Southeast Asian", primary: /^(thai|vietnam|indonesia|malay|filipino|singapor|burmese)/i, f: isCat("seasia") },
+    persian: { label: "Persian", primary: /^(persian|iranian)/i, f: cu(/persian|iranian/i) },
+    "street food": { label: "street food", primary: /street/i, f: d => d.cat === "indian-street" || /street/i.test(d.cuisine) || hayOf(d).includes(" street") }
+  };
+  const ALIAS = { china: "chinese", india: "indian", desi: "indian", japan: "japanese", korea: "korean", thailand: "thai", vietnam: "vietnamese",
+    italy: "italian", mexico: "mexican", france: "french", spain: "spanish", usa: "american", america: "american", uk: "british", england: "british", english: "british",
+    mideast: "middle eastern", arabic: "middle eastern", arab: "middle eastern", africa: "african", europe: "european", asia: "asian", iranian: "persian", iran: "persian" };
+  const TYPES = { sweet: ["sweet", "Sweets"], dessert: ["sweet", "Desserts"], mithai: ["sweet", "Sweets"], snack: ["snack", "Snacks"], drink: ["drink", "Drinks"], beverage: ["drink", "Drinks"], meal: ["meal", "Meals"], main: ["meal", "Mains"] };
+  /* Plural/stem: "foods"->"food", "noodles"->"noodle", "curries"->"curry", "dishes"->"dish". */
+  function stem(w) {
+    if (w.length > 4 && w.endsWith("ies")) return w.slice(0, -3) + "y";
+    if (w.length > 4 && /(ches|shes|xes|sses)$/.test(w)) return w.slice(0, -2);
+    if (w.length > 3 && w.endsWith("s") && !/(ss|us|is)$/.test(w)) return w.slice(0, -1);
+    return w;
   }
   const HAY = {};
   function hayOf(d) {
     if (HAY[d.id]) return HAY[d.id];
-    const tastes = TASTES.filter(([k]) => d.taste[k] >= 3).map(t => t[1]);
-    const diet = { veg: "", egg: "egg", both: "", eggboth: "egg", nonveg: "" }[d.diet];
     const c = CATS.find(x => x.id === d.cat);
-    const base = [d.name, d.cuisine, c ? c.label : "", d.type, diet, ...tastes].join(" ").toLowerCase();
+    const diet = { veg: "", egg: "egg", both: "", eggboth: "egg", nonveg: "" }[d.diet];
+    const base = " " + norm([d.name, d.id.replace(/-/g, " "), d.cuisine, c ? c.label : "", d.type, diet].join(" ")) + " ";
     const kw = window.DishcoverSearch && window.DishcoverSearch[d.id];
-    if (!kw) return base; // keywords not loaded yet: name/cuisine/category/taste only
-    return (HAY[d.id] = base + " " + kw);
+    if (!kw) return base; // keywords not loaded yet
+    return (HAY[d.id] = base + norm(kw) + " ");
+  }
+  const nameOf = d => d._n || (d._n = " " + norm(d.name) + " ");
+  let VOCAB = null;
+  function vocab() {
+    if (VOCAB && window.DishcoverSearch) return VOCAB;
+    const m = new Map(); DISHES.forEach(d => hayOf(d).split(" ").forEach(w => w.length > 3 && m.set(w, (m.get(w) || 0) + 1)));
+    Object.keys(CONCEPTS).concat(Object.keys(ALIAS), Object.keys(TASTE_WORDS), Object.keys(TYPES), Object.keys(DIET_WORDS)).forEach(w => !w.includes(" ") && m.set(w, (m.get(w) || 0) + 1000));
+    return (VOCAB = m);
+  }
+  function edit1or2(a, b, max) {
+    if (Math.abs(a.length - b.length) > max) return false;
+    let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+    for (let i = 1; i <= a.length; i++) {
+      const cur = [i]; let best = i;
+      for (let j = 1; j <= b.length; j++) { cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); best = Math.min(best, cur[j]); }
+      if (best > max) return false; prev = cur;
+    }
+    return prev[b.length] <= max;
+  }
+  /* Turn a query into a list of terms, each {kind, test(d), weight(d), label}. */
+  function parseQuery(q) {
+    let s = " " + norm(q.replace(/\bnon[\s-]*veg(etarian)?\b/gi, "nonveg")) + " ";
+    const terms = [], fixed = [];
+    // multi-word concepts first
+    Object.keys(CONCEPTS).filter(k => k.includes(" ")).forEach(k => {
+      const re = new RegExp(" " + k.replace(" ", " ") + "(s|es)? ");
+      if (re.test(s)) { s = s.replace(re, " "); terms.push(conceptTerm(k)); }
+    });
+    s.split(" ").filter(Boolean).forEach(raw => {
+      if (FILLER.has(raw)) return;
+      const w = raw, st = stem(raw);
+      if (FILLER.has(st)) return;
+      const t = termFor(w, st); if (t) return terms.push(t);
+      // typo fallback: nothing in any dish starts with this word
+      const fx = fixTypo(st);
+      if (fx) { fixed.push([raw, fx]); terms.push(termFor(fx, stem(fx)) || wordTerm(fx)); }
+      else terms.push(wordTerm(st));
+    });
+    return { terms, fixed };
+  }
+  function conceptTerm(k) { const c = CONCEPTS[k]; return { kind: "cuisine", label: c.label, test: c.f, weight: d => (c.primary.test(d.cuisine) ? 6 : 3) }; }
+  function termFor(w, st) {
+    if (DIET_WORDS[w] || DIET_WORDS[st]) { const ok = DIET_WORDS[w] || DIET_WORDS[st]; return { kind: "diet", label: w === "meat" || st === "nonveg" ? "non-veg" : "veg", test: d => ok.includes(d.diet), weight: () => 0 }; }
+    let ck = CONCEPTS[w] ? w : CONCEPTS[st] ? st : ALIAS[w] || ALIAS[st];
+    if (!ck && w.length >= 4) { // partial word: "chin", "japanes", "ital" -> the cuisine it starts
+      const hits = Object.keys(CONCEPTS).filter(k => !k.includes(" ") && k.startsWith(w));
+      if (hits.length === 1) ck = hits[0];
+    }
+    if (ck) return conceptTerm(ck);
+    if (TYPES[st] && !(st === "sweet" && w === "sweet")) { const [ty, label] = TYPES[st]; return { kind: "type", label, test: d => d.type === ty || (ty === "sweet" && d.cat === "indian-sweets") || (ty === "drink" && d.cat === "drinks"), weight: () => 1 }; }
+    if (TASTE_WORDS[w]) { const k = TASTE_WORDS[w]; return { kind: "taste", label: w, test: d => d.taste[k] >= 3 || (k === "sweet" && d.type === "sweet"), weight: d => d.taste[k] }; }
+    return null;
+  }
+  function wordTerm(w) {
+    const p = " " + w;
+    return { kind: "word", label: w, w,
+      test: d => hayOf(d).includes(p) || (w.length >= 4 && nameOf(d).includes(w)),
+      weight: d => (nameOf(d).includes(p) ? (nameOf(d).startsWith(p) ? 14 : 10) : nameOf(d).includes(w) ? 7 : (" " + norm(d.cuisine)).includes(p) ? 5 : 0) };
+  }
+  function fixTypo(w) {
+    if (w.length < 4 || DISHES.some(d => hayOf(d).includes(" " + w) || nameOf(d).includes(w))) return null;
+    const max = w.length >= 7 ? 2 : 1; let best = null, bestN = 0;
+    for (const [v, n] of vocab()) if (n > bestN && v[0] === w[0] && edit1or2(w, v, max)) { best = v; bestN = n; }
+    return best;
+  }
+  const POPULAR = 274; // Batches 0-1 (the best-known dishes) come first within a tier
+  const idx = Object.fromEntries(DISHES.map((d, i) => [d.id, i]));
+  function search(q, pool) {
+    const { terms, fixed } = parseQuery(q);
+    if (!terms.length) return { list: pool.slice(), terms, fixed };
+    const scored = [];
+    for (const d of pool) {
+      let ok = true, sc = 0;
+      for (const t of terms) { if (!t.test(d)) { ok = false; break; } sc += t.weight(d); }
+      if (ok) scored.push([sc, d]);
+    }
+    scored.sort((a, b) => b[0] - a[0] || rank(a[1], b[1]));
+    return { list: scored.map(x => x[1]), terms, fixed };
+  }
+  function rank(a, b) {
+    const pa = idx[a.id] < POPULAR, pb = idx[b.id] < POPULAR;
+    if (pa !== pb) return pa ? -1 : 1;
+    return pa ? idx[a.id] - idx[b.id] : a.name.localeCompare(b.name);
+  }
+  function resultLabel(n, terms) {
+    const adj = terms.filter(t => t.kind === "taste" || t.kind === "diet").map(t => t.label);
+    const cuis = terms.filter(t => t.kind === "cuisine").map(t => t.label);
+    const ty = terms.find(t => t.kind === "type");
+    const words = terms.filter(t => t.kind === "word");
+    if (!cuis.length && !ty && !adj.length) return null;
+    const noun = ty ? (n === 1 ? ty.label.replace(/s$/, "").toLowerCase() : ty.label.toLowerCase()) : (n === 1 ? "dish" : "dishes");
+    const sf = cuis.includes("street food");
+    return `${n} ${[...adj, ...cuis.filter(c => c !== "street food")].join(" ")}${sf ? " street-food" : ""} ${noun}${words.length ? " with “" + words.map(w => w.label).join(" ") + "”" : ""}`.replace(/\s+/g, " ");
   }
   /* Keyword file loads after first paint (or on first search), then re-runs any active search. */
   let searchReq = false;
@@ -207,15 +343,17 @@
     }
     shown = PAGE;
     const q = query.trim();
-    const list = DISHES.filter(d => (cat === "all" || d.cat === cat) && (!vegOnly || ["veg", "egg", "both"].includes(d.diet)) && matches(d, q));
-    // name matches first
-    if (q) list.sort((a, b) => (b.name.toLowerCase().includes(q.toLowerCase()) - a.name.toLowerCase().includes(q.toLowerCase())));
+    const pool = DISHES.filter(d => (cat === "all" || d.cat === cat) && (!vegOnly || ["veg", "egg", "both"].includes(d.diet)));
+    const res = q ? search(q, pool) : { list: pool, terms: [], fixed: [] };
+    const list = res.list;
     const c = CATS.find(x => x.id === cat);
-    $("#listTitle").textContent = q ? `Results for “${q}”` : (cat === "all" ? "All dishes" : c.label);
-    $("#count").textContent = `${list.length} dish${list.length === 1 ? "" : "es"}`;
+    const lab = q && resultLabel(list.length, res.terms);
+    $("#listTitle").textContent = q ? (lab || `Results for “${q}”`) : (cat === "all" ? "All dishes" : c.label);
+    $("#count").textContent = `${list.length} dish${list.length === 1 ? "" : "es"}${res.fixed.length ? " · showing “" + res.fixed.map(f => f[1]).join(" ") + "”" : ""}`;
+    const hq = (res.terms.find(t => t.kind === "word") || {}).w || "";
     const g = $("#grid"); g.classList.toggle("quiet", !!quiet);
-    lastList = list; lastQ = q;
-    g.innerHTML = list.length ? list.slice(0, shown).map((d, i) => cardHTML(d, i, q)).join("")
+    lastList = list; lastQ = hq;
+    g.innerHTML = list.length ? list.slice(0, shown).map((d, i) => cardHTML(d, i, hq)).join("")
       : `<div class="empty" style="grid-column:1/-1"><div class="mascot" id="emptyMascot">${mascot("thinking")}</div><p><b>Hmm, I don't know “${esc(q)}” yet.</b><br>Try another spelling, or a word like “spicy”, “coffee” or “noodles”.</p></div>`;
     $("#hint").textContent = q ? (list.length ? `Bao found ${list.length} match${list.length === 1 ? "" : "es"} ✨` : "") : "";
     renderMore();
