@@ -272,3 +272,8 @@ mark{background:var(--yellow2);border-radius:4px;padding:0 2px}
 /* Search re-renders: no entrance animation on every keystroke */
 .grid.quiet .card{animation:none}
 .d-hero .tag{max-width:calc(50% - 18px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.more-wrap{display:flex;justify-content:center;padding:18px 0 6px}
+.more-wrap:empty{display:none}
+.more-btn{font-size:14px;padding:11px 20px}
+.more-btn .muted{font-weight:500}

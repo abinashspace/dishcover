@@ -5,6 +5,20 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const DISHES = window.DISHES, CATS = window.CATEGORIES;
   const byId = Object.fromEntries(DISHES.map(d => [d.id, d]));
+  /* Details (steps, sample reviews, photo credit) live in data/detail/<cat>.js — loaded on demand with a script tag (works from file://). */
+  const DET = window.DishcoverDetail = window.DishcoverDetail || { q: [] };
+  const loaded = {}, loading = {};
+  DET.add = () => { while (DET.q.length) { const [c, m] = DET.q.shift(); for (const id in m) if (byId[id]) Object.assign(byId[id], m[id]); loaded[c] = true; } };
+  DET.add();
+  function loadDetail(c) {
+    if (loaded[c]) return Promise.resolve();
+    return loading[c] || (loading[c] = new Promise((res, rej) => {
+      const s = document.createElement("script"); s.src = `data/detail/${c}.js`; s.async = true;
+      s.onload = () => { DET.add(); loaded[c] ? res() : rej(new Error("detail " + c)); };
+      s.onerror = () => { delete loading[c]; s.remove(); rej(new Error("detail " + c)); };
+      document.head.appendChild(s);
+    }));
+  }
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   /* ---------------- Storage ---------------- */
@@ -96,9 +110,9 @@
   }
 
   /* Photo with gentle fade-in; falls back to the emoji if the file can't load. */
-  function photo(d, eager) {
+  function photo(d, eager, big) {
     if (!d.photo) return `<span class="emoji-fb" style="opacity:1">${d.emoji}</span>`;
-    return `<span class="emoji-fb">${d.emoji}</span><img class="photo" src="${d.photo.src}" alt="Photo of ${esc(d.name)}" ${eager ? "" : 'loading="lazy"'} decoding="async"
+    return `<span class="emoji-fb">${d.emoji}</span><img class="photo" src="${big ? d.photo.src : (d.photo.thumb || d.photo.src)}" alt="Photo of ${esc(d.name)}" ${eager ? "" : 'loading="lazy"'} decoding="async"
       onload="this.classList.add('loaded')" onerror="this.parentNode.classList.add('noimg');this.remove()">`;
   }
   function credit(d) {
@@ -157,7 +171,14 @@
     const c = CATS.find(x => x.id === d.cat);
     return (HAY[d.id] = [d.name, d.pron, d.cuisine, c ? c.label : "", d.type, diet, ...tastes, d.what, ...d.ingredients, ...d.goodFor, ...d.texture].join(" ").toLowerCase());
   }
-  function renderGrid(quiet) {
+  const PAGE = 40; let shown = PAGE, lastList = [], lastQ = "";
+  function renderGrid(quiet, more) {
+    if (more) {
+      const from = shown; shown += PAGE;
+      $("#grid").insertAdjacentHTML("beforeend", lastList.slice(from, shown).map((d, i) => cardHTML(d, i, lastQ)).join(""));
+      return renderMore();
+    }
+    shown = PAGE;
     const q = query.trim();
     const list = DISHES.filter(d => (cat === "all" || d.cat === cat) && (!vegOnly || ["veg", "egg", "both"].includes(d.diet)) && matches(d, q));
     // name matches first
@@ -166,9 +187,15 @@
     $("#listTitle").textContent = q ? `Results for “${q}”` : (cat === "all" ? "All dishes" : c.label);
     $("#count").textContent = `${list.length} dish${list.length === 1 ? "" : "es"}`;
     const g = $("#grid"); g.classList.toggle("quiet", !!quiet);
-    g.innerHTML = list.length ? list.map((d, i) => cardHTML(d, i, q)).join("")
+    lastList = list; lastQ = q;
+    g.innerHTML = list.length ? list.slice(0, shown).map((d, i) => cardHTML(d, i, q)).join("")
       : `<div class="empty" style="grid-column:1/-1"><div class="mascot" id="emptyMascot">${mascot("thinking")}</div><p><b>Hmm, I don't know “${esc(q)}” yet.</b><br>Try another spelling, or a word like “spicy”, “coffee” or “noodles”.</p></div>`;
     $("#hint").textContent = q ? (list.length ? `Bao found ${list.length} match${list.length === 1 ? "" : "es"} ✨` : "") : "";
+    renderMore();
+  }
+  function renderMore() {
+    const left = lastList.length - shown, w = $("#moreWrap");
+    w.innerHTML = left > 0 ? `<button class="pill-btn more-btn" id="moreBtn">Show more <span class="muted">(${left} more)</span></button>` : "";
   }
   let searchT;
   function onSearch(e) {
@@ -184,8 +211,15 @@
 
   /* ---------------- Detail sheet ---------------- */
   let currentId = null, stepIdx = 0, reviewStars = 0;
+  let openReq = 0;
   function openDish(id) {
-    const d = byId[id]; if (!d) return;
+    const d = byId[id]; if (!d) return Promise.resolve();
+    if (!d.steps) {
+      const req = ++openReq;
+      return loadDetail(d.cat).then(() => { if (req === openReq) return openDish(id); })
+        .catch(() => toast("Couldn't load that dish — please try again.", "thinking"));
+    }
+    openReq++;
     currentId = id; stepIdx = 0; reviewStars = 0;
     const mine = state.reviews[id] || [];
     const sc = $("#sheetScroll");
@@ -194,7 +228,7 @@
         <button class="icon-btn" id="closeSheet" aria-label="Close">✕</button>
         <button class="icon-btn ${isLiked(id) ? "on" : ""}" id="sheetLike" aria-pressed="${isLiked(id)}" aria-label="Save dish">${heartSVG}</button>
       </div>
-      <div class="d-hero ph" style="background:${d.color}">${photo(d, true)}
+      <div class="d-hero ph" style="background:${d.color}">${photo(d, true, true)}
         <div class="tag">${esc(d.cuisine)}</div><div class="tag diet">${DIET[d.diet]}</div></div>
       ${credit(d)}
       <h2 class="d-name">${esc(d.name)}</h2>
@@ -424,7 +458,7 @@
     const d = top.d;
     $("#quiz").innerHTML = `<div class="q-progress"><i style="width:100%"></i></div>
       <div class="q-wrap"><div class="mascot pop" id="resMascot">${mascot("wow")}</div><div class="bubble" style="margin-bottom:24px">Ta-da! I think you'll love <b>${esc(d.name)}</b>! 🎉</div></div>
-      <div class="result-card"><div class="thumb ph" style="background:${d.color}">${photo(d, true)}</div>
+      <div class="result-card"><div class="thumb ph" style="background:${d.color}">${photo(d, true, true)}</div>
         <div class="body"><span class="match">${pct}% match</span><h3>${esc(d.name)}</h3><div class="muted" style="font-size:13px">${esc(d.cuisine)} · ${esc(d.pron)}</div>
         <p style="color:var(--ink2);line-height:1.5;margin:10px 0 0">${esc(d.what)}</p>
         <ul class="why">${top.r.why.slice(0, 4).map(w => `<li>✓ ${w}</li>`).join("")}</ul>
@@ -496,6 +530,7 @@
       return;
     }
     if (e.target.closest("[data-veg]")) { vegOnly = !vegOnly; renderChips(); renderGrid(); if (vegOnly) sayHome("🟢 Showing veg-friendly dishes (some have veg versions — ask for them!)", "happy"); return; }
+    if (e.target.closest("#moreBtn")) { renderGrid(false, true); return; }
     const tab = e.target.closest("[data-tab]"); if (tab) { showTab(tab.dataset.tab); return; }
     const go = e.target.closest("[data-tab-go]"); if (go) { showTab(go.dataset.tabGo); return; }
     const seg = e.target.closest("[data-seg]"); if (seg) { savedSeg = seg.dataset.seg; renderSaved(); }
