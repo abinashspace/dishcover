@@ -80,7 +80,9 @@
     ["sweet", "Sweet", "#FF9EB5"], ["spicy", "Spicy", "#FF6B4A"], ["sour", "Sour", "#B8D94A"],
     ["salty", "Salty", "#7EB6FF"], ["bitter", "Bitter", "#9B7A5B"], ["mild", "Mild", "#C9B8F2"]
   ];
-  const DIET = { veg: "🟢 Vegetarian", egg: "🟡 Veg, has egg", both: "🟢🔴 Veg & non-veg options", nonveg: "🔴 Non-veg" };
+  const DIET = { veg: "🟢 Vegetarian", egg: "🟡 Veg, has egg", both: "🟢🔴 Veg & non-veg", eggboth: "🟡🔴 Egg & non-veg", nonveg: "🔴 Non-veg" };
+  /* Quiz diet rule: strict veg -> only "veg"; eggs ok -> "veg" + "egg"; anything -> all. */
+  const DIET_OK = { veg: ["veg"], egg: ["veg", "egg"], any: null };
   const topTastes = d => TASTES.filter(([k]) => d.taste[k] >= 3).sort((a, b) => d.taste[b[0]] - d.taste[a[0]]).slice(0, 2).map(t => t[1]);
   const stars = n => "★★★★★".slice(0, Math.round(n)) + "☆☆☆☆☆".slice(0, 5 - Math.round(n));
   const heartSVG = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" stroke="#141414" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
@@ -145,18 +147,26 @@
   }
   function matches(d, q) {
     if (!q) return true;
-    const hay = [d.name, d.pron, d.cuisine, d.what, ...d.ingredients, ...d.goodFor, ...d.texture].join(" ").toLowerCase();
-    return q.toLowerCase().split(/\s+/).every(w => hay.includes(w));
+    return q.toLowerCase().split(/\s+/).every(w => hayOf(d).includes(w));
   }
-  function renderGrid() {
+  const HAY = {};
+  function hayOf(d) {
+    if (HAY[d.id]) return HAY[d.id];
+    const tastes = TASTES.filter(([k]) => d.taste[k] >= 3).map(t => t[1]);
+    const diet = { veg: "veg vegetarian", egg: "egg eggetarian", both: "veg vegetarian non-veg", eggboth: "egg non-veg", nonveg: "non-veg nonveg meat" }[d.diet];
+    const c = CATS.find(x => x.id === d.cat);
+    return (HAY[d.id] = [d.name, d.pron, d.cuisine, c ? c.label : "", d.type, diet, ...tastes, d.what, ...d.ingredients, ...d.goodFor, ...d.texture].join(" ").toLowerCase());
+  }
+  function renderGrid(quiet) {
     const q = query.trim();
-    const list = DISHES.filter(d => (cat === "all" || d.cat === cat) && (!vegOnly || d.diet !== "nonveg") && matches(d, q));
+    const list = DISHES.filter(d => (cat === "all" || d.cat === cat) && (!vegOnly || ["veg", "egg", "both"].includes(d.diet)) && matches(d, q));
     // name matches first
     if (q) list.sort((a, b) => (b.name.toLowerCase().includes(q.toLowerCase()) - a.name.toLowerCase().includes(q.toLowerCase())));
     const c = CATS.find(x => x.id === cat);
     $("#listTitle").textContent = q ? `Results for “${q}”` : (cat === "all" ? "All dishes" : c.label);
     $("#count").textContent = `${list.length} dish${list.length === 1 ? "" : "es"}`;
-    $("#grid").innerHTML = list.length ? list.map((d, i) => cardHTML(d, i, q)).join("")
+    const g = $("#grid"); g.classList.toggle("quiet", !!quiet);
+    g.innerHTML = list.length ? list.map((d, i) => cardHTML(d, i, q)).join("")
       : `<div class="empty" style="grid-column:1/-1"><div class="mascot" id="emptyMascot">${mascot("thinking")}</div><p><b>Hmm, I don't know “${esc(q)}” yet.</b><br>Try another spelling, or a word like “spicy”, “coffee” or “noodles”.</p></div>`;
     $("#hint").textContent = q ? (list.length ? `Bao found ${list.length} match${list.length === 1 ? "" : "es"} ✨` : "") : "";
   }
@@ -166,7 +176,7 @@
     $("#clearSearch").classList.toggle("show", !!query);
     clearTimeout(searchT);
     searchT = setTimeout(() => {
-      renderGrid();
+      renderGrid(true);
       if (query.trim()) sayHome(`Looking for <b>“${esc(query.trim())}”</b>… 🔍`, "thinking");
       else sayHome(tips[0], "happy");
     }, 120);
@@ -237,7 +247,7 @@
     bindSheet(d);
   }
   function similar(d) {
-    const dist = o => TASTES.reduce((s, [k]) => s + Math.abs(o.taste[k] - d.taste[k]), 0) + (o.type === d.type ? 0 : 3);
+    const dist = o => TASTES.reduce((s, [k]) => s + Math.abs(o.taste[k] - d.taste[k]), 0) + (o.type === d.type ? 0 : 3) + (o.cat === d.cat ? 0 : 1.5);
     return DISHES.filter(o => o.id !== d.id).sort((a, b) => dist(a) - dist(b)).slice(0, 2);
   }
   function reviewHTML(r, mine, i) {
@@ -390,8 +400,8 @@
     const back = $("#qBack", el); if (back) back.onclick = () => { qi--; renderQuiz(); };
   }
   function scoreDish(d, a) {
-    if (a.diet === "veg" && (d.diet === "nonveg" || d.diet === "egg")) return -99;
-    if (a.diet === "egg" && d.diet === "nonveg") return -99;
+    const ok = DIET_OK[a.diet];
+    if (ok && !ok.includes(d.diet)) return -99;
     let s = 0; const why = [];
     if (d.type === a.type) { s += 6; why.push({ drink: "It's a drink ☕", snack: "Light snack, as you wanted 🥨", meal: "A proper, filling meal 🍜", sweet: "Sweet treat 🍰" }[a.type]); }
     else if (a.type === "sweet" && d.taste.sweet >= 4) { s += 4; why.push("Nice and sweet 🍰"); }
@@ -404,7 +414,6 @@
     const adv = +a.adv;
     s += 4 - Math.abs(d.adventure - adv) * 2;
     if (d.adventure === adv) why.push(adv === 1 ? "Close to food you know 🛟" : adv === 2 ? "Familiar, with a new twist 🧭" : "A brand-new experience 🚀");
-    if (a.diet === "veg" && d.diet === "both") { s -= 1.5; why.push("Ask for the veg version 🥦"); }
     if (a.diet === "veg" && d.diet === "veg") why.push("Fully vegetarian 🥦");
     return { s, why };
   }
@@ -508,6 +517,7 @@
   $("#surpriseBtn").onclick = () => { const d = DISHES[Math.floor(Math.random() * DISHES.length)]; openDish(d.id); };
 
   /* ---------------- Init ---------------- */
+  $$("[data-total]").forEach(el => (el.textContent = DISHES.length));
   renderChips(); renderGrid(); refreshCounts();
   $("#homeBubble").innerHTML = tips[0];
   setMascot($("#homeMascot"), "happy", "wave");
