@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F0EFF4">
+<title>Dishcover — know your food before you order</title>
+<meta name="description" content="Dishcover explains unfamiliar cafe and restaurant dishes: what they are, how they taste, sample reviews and how to eat them.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A5%9F%3C/text%3E%3C/svg%3E">
+<!-- Optional web fonts (AppLlama uses Instrument Sans + Comfortaa). Falls back to system fonts offline. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+  <aside class="pitch" aria-hidden="true">
+    <p class="logo">Dishcover</p>
+    <p>Never feel lost at a menu again. Look up any dish, see how it tastes, read what people say, and learn exactly how to eat it.</p>
+    <ul>
+      <li>🔎 Search 24 confusing dishes</li>
+      <li>🎚️ Taste meters & textures</li>
+      <li>👣 Step-by-step how to eat</li>
+      <li>🎯 “Help me choose” quiz</li>
+    </ul>
+  </aside>
+
+  <main class="phone" id="phone">
+    <!-- HOME -->
+    <section class="screen active" id="screen-home" aria-label="Explore dishes">
+      <div class="topbar">
+        <div class="brand"><span class="dot"></span>Dishcover</div>
+        <button class="pill-btn" id="surpriseBtn" title="Open a random dish">🎲 Random</button>
+      </div>
+      <div class="hero">
+        <div class="mascot" id="homeMascot" role="button" tabindex="0" aria-label="Bao the mascot — tap for a tip"></div>
+        <div class="bubble" id="homeBubble" aria-live="polite"></div>
+      </div>
+      <h1 class="title">What's on the<br>menu today?</h1>
+      <div class="search">
+        <label class="search-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="search" type="search" placeholder="Search a dish, e.g. “affogato”" autocomplete="off" aria-label="Search dishes">
+          <button class="clear" id="clearSearch" aria-label="Clear search">✕</button>
+        </label>
+        <div class="typing-hint" id="hint"></div>
+      </div>
+      <div class="chips" id="chips" role="tablist" aria-label="Categories"></div>
+      <button class="banner" id="quizBanner">
+        <div><h3>Can't decide? 🤔</h3><p>Answer 5 quick questions and Bao picks a dish for you.</p></div>
+        <span class="go">→</span>
+      </button>
+      <h2 class="section"><span id="listTitle">All dishes</span><small id="count"></small></h2>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="screen" id="screen-quiz" aria-label="Help me choose quiz">
+      <div class="topbar"><div class="brand"><span class="dot"></span>Help me choose</div></div>
+      <div id="quiz"></div>
+    </section>
+
+    <!-- SAVED -->
+    <section class="screen" id="screen-saved" aria-label="Saved and tried dishes">
+      <div class="topbar"><div class="brand"><span class="dot"></span>My food passport</div></div>
+      <div id="saved"></div>
+    </section>
+
+    <nav class="tabbar" aria-label="Main">
+      <button class="tab on" data-tab="home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span class="lbl">Explore</span></button>
+      <button class="tab" data-tab="quiz"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg><span class="lbl">Quiz</span></button>
+      <button class="tab" data-tab="saved"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span class="lbl">Saved</span><span class="count" id="savedCount" hidden></span></button>
+    </nav>
+
+    <div class="scrim" id="scrim"></div>
+    <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Dish details">
+      <div class="grab" id="grab"></div>
+      <div class="sheet-scroll" id="sheetScroll"></div>
+      <div class="actions" id="sheetActions"></div>
+    </div>
+    <div class="toast" id="toast" role="status"><span class="mini" id="toastMascot"></span><span id="toastText"></span></div>
+  </main>
+</div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
