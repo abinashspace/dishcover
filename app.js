@@ -3,7 +3,15 @@
   "use strict";
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const DISHES = window.DISHES, CATS = window.CATEGORIES;
+  /* Expand the slim index rows (see data/index.js header) into dish objects. */
+  const CATS = window.CATEGORIES, TK = ["sweet", "spicy", "sour", "salty", "bitter", "mild"], TY = ["meal", "snack", "sweet", "drink"], DI = ["veg", "egg", "both", "eggboth", "nonveg"];
+  const PAL = Object.fromEntries(CATS.map(c => [c.id, c.pal]));
+  const DISHES = window.DISHES = window.DISH_ROWS.map(r => {
+    const [id, name, emoji, cuisine, cat, ty, di, adventure, t, col, side] = r;
+    const d = { id, name, emoji, cuisine, cat, type: TY[ty], diet: DI[di], adventure, taste: {}, color: typeof col === "number" ? PAL[cat][col] : col,
+      photo: { src: `images/${id}.jpg`, thumb: `images/thumb/${id}.jpg` } };
+    TK.forEach((k, i) => d.taste[k] = +t[i]); if (side) d.side = true; return d;
+  });
   const byId = Object.fromEntries(DISHES.map(d => [d.id, d]));
   /* Details (steps, sample reviews, photo credit) live in data/detail/<cat>.js — loaded on demand with a script tag (works from file://). */
   const DET = window.DishcoverDetail = window.DishcoverDetail || { q: [] };
@@ -151,7 +159,7 @@
   }
   function nextTip() {
     tipI = (tipI + 1) % (tips.length + 1);
-    if (tipI === tips.length) { const d = DISHES[Math.floor(Math.random() * DISHES.length)]; sayHome(`${d.emoji} <b>${esc(d.name)}:</b> ${esc(d.tip)}`, "wink", "pop"); }
+    if (tipI === tips.length) { const d = DISHES[Math.floor(Math.random() * DISHES.length)]; loadDetail(d.cat).then(() => sayHome(`${d.emoji} <b>${esc(d.name)}:</b> ${esc(d.tip)}`, "wink", "pop")).catch(() => sayHome(tips[0], "happy", "pop")); }
     else sayHome(tips[tipI], tipI % 2 ? "wink" : "happy", "pop");
   }
 
@@ -176,7 +184,19 @@
     const tastes = TASTES.filter(([k]) => d.taste[k] >= 3).map(t => t[1]);
     const diet = { veg: "", egg: "egg", both: "", eggboth: "egg", nonveg: "" }[d.diet];
     const c = CATS.find(x => x.id === d.cat);
-    return (HAY[d.id] = [d.name, d.pron, d.cuisine, c ? c.label : "", d.type, diet, ...tastes, d.what, ...d.ingredients, ...d.goodFor, ...d.texture].join(" ").toLowerCase());
+    const base = [d.name, d.cuisine, c ? c.label : "", d.type, diet, ...tastes].join(" ").toLowerCase();
+    const kw = window.DishcoverSearch && window.DishcoverSearch[d.id];
+    if (!kw) return base; // keywords not loaded yet: name/cuisine/category/taste only
+    return (HAY[d.id] = base + " " + kw);
+  }
+  /* Keyword file loads after first paint (or on first search), then re-runs any active search. */
+  let searchReq = false;
+  function loadSearch() {
+    if (searchReq) return; searchReq = true;
+    window.DishcoverSearchReady = () => { if (query.trim()) renderGrid(true); };
+    const s = document.createElement("script"); s.src = "data/search.js"; s.async = true;
+    s.onerror = () => { searchReq = false; s.remove(); };
+    document.head.appendChild(s);
   }
   const PAGE = 40; let shown = PAGE, lastList = [], lastQ = "";
   function renderGrid(quiet, more) {
@@ -206,7 +226,7 @@
   }
   let searchT;
   function onSearch(e) {
-    query = e.target.value;
+    query = e.target.value; loadSearch();
     $("#clearSearch").classList.toggle("show", !!query);
     clearTimeout(searchT);
     searchT = setTimeout(() => {
@@ -462,6 +482,7 @@
   function renderResult() {
     const ranked = DISHES.map(d => ({ d, r: scoreDish(d, answers) })).filter(x => x.r !== -99).sort((a, b) => b.r.s - a.r.s);
     const top = ranked[0], alts = ranked.slice(1, 3);
+    if (!top.d.what) { $("#quiz").innerHTML = `<div class="q-wrap"><div class="bubble">Thinking… 🤔</div></div>`; return loadDetail(top.d.cat).then(renderResult).catch(() => toast("Couldn't load that dish — please try again.", "thinking")); }
     const pct = Math.max(62, Math.min(98, Math.round(55 + (top.r.s / 19) * 43)));
     const d = top.d;
     $("#quiz").innerHTML = `<div class="q-progress"><i style="width:100%"></i></div>
@@ -565,5 +586,6 @@
   $("#homeBubble").innerHTML = tips[0];
   setMascot($("#homeMascot"), "happy", "wave");
   setInterval(() => { if (activeTab === "home" && !currentId && !query && document.activeElement !== $("#search")) nextTip(); }, 15000);
+  if (document.readyState === "complete") setTimeout(loadSearch, 300); else window.addEventListener("load", () => setTimeout(loadSearch, 300));
   window.Dishcover = { openDish, showTab };
 })();

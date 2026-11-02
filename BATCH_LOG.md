@@ -2,12 +2,55 @@
 
 Source list: the WorldCuisines food-kb dataset (2,414 rows). The dataset declares no licence, so only its dish names were used. Every photo was re-checked on Wikimedia Commons for its licence (CC0 / CC BY / CC BY-SA / public domain) and checked by eye to make sure it shows the dish. All text was written for this app, and every review is a labelled SAMPLE.
 
-## Status (after Batch 2, Nov 2 2026)
+## Status (after Batch 3, Nov 2 2026)
 
-- Dishes in the app: **478**. That is 112 original dishes, 162 from Batch 1 and 204 from Batch 2.
-- Dataset rows covered so far, counting alternate names and merged duplicates: 442
-- Pending unique dataset dishes: **1,972**. The list is in `pending_queue.tsv`.
-- Estimated batches left at ~200 per batch: about 10
+- Dishes in the app: **698**. That is 112 original dishes, 162 from Batch 1, 204 from Batch 2 and 220 from Batch 3.
+- Dataset rows covered so far, counting alternate names and merged duplicates: 667
+- Pending unique dataset dishes: **1,747**. The list is in `pending_queue.tsv`.
+- Estimated batches left at ~220 per batch: about 8
+
+## Batch 3: done (220)
+
+- **japan-korea** (31): chahan, donburi, chazuke, champon, agedashi-tofu, hiyayakko, makizushi, nikujaga, hayashi-rice, kakigori, anmitsu, imagawayaki, takikomi-gohan, tamago-kake-gohan, tendon, unadon, nigirizushi, chirashizushi, curry-bread, katsu-sando, kushikatsu, ebi-furai, kakiage, doenjang-jjigae, galbi-jjim, gyeran-jjim, bindae-tteok, kong-guksu, bokkeum-bap, buldak-ramen, gyeran-mari
+- **chinese** (22): claypot-rice, lo-mai-gai, hot-dry-noodles, stinky-tofu, douhua, char-siu-bao, tangbao, shengjian-mantou, turnip-cake, chicken-feet, century-egg, tea-egg, egg-drop-soup, oyster-omelette, youtiao, tingmo, pineapple-bun, mango-pudding, shrimp-toast, chai-tow-kway, yong-tau-foo, tomato-egg-noodles
+- **seasia** (26): rawon, soto-betawi, nasi-uduk, nasi-padang, bubur-ayam, mie-ayam, siomay, perkedel, martabak-manis, penang-hokkien-mee, sinangag, silog, bibingka, siopao, turon, bicol-express, kaldereta, crispy-pata, balut, xoi, banh-beo, banh-bao, nem-nuong, bo-la-lot, rat-na, singapore-hokkien-mee
+- **indian-mains** (3): thalassery-biryani, bhakri, dalcha
+- **south-indian** (2): koottu, kiribath
+- **indian-street** (1): bun-kebab
+- **mideast** (17): bolani, kabuli-pulao, chelow-kabab, baghali-polo, shirin-polo, kuku-sabzi, mirza-ghassemi, cilbir, mercimek-koftesi, sabich, bourekas, sufganiyah, msabbaha, toum, sfiha, lokma, hawawshi
+- **african** (11): yassa, thieboudienne, maafe, waakye, kelewele, moin-moin, pepper-soup, ugali, chakalaka, boerewors, vetkoek
+- **mexican** (13): chalupa, sope, huarache, tlayuda, pambazo, aguachile, carne-asada, menudo, refried-beans, frijoles-charros, salsa-verde, pico-de-gallo, sincronizada
+- **drinks** (1): champurrado
+- **bakes** (32): concha, pan-de-muerto, chocolate-chip-cookie, snickerdoodle, black-and-white-cookie, banana-cream-pie, sweet-potato-pie, quindim, crepes-suzette, paris-brest, palmier, floating-island, meringue, ensaimada, tarta-de-santiago, bakewell-tart, mince-pie, treacle-tart, chelsea-bun, bread-pudding, kaiserschmarrn, linzer-torte, lebkuchen, poffertjes, bougatsa, kurtoskalacs, semla, anzac-biscuit, pavlova, rice-pudding, carrot-cake, gingerbread
+- **americas** (16): knish, detroit-pizza, stromboli, jalapeno-popper, pigs-in-a-blanket, etouffee, dirty-rice, lobster-roll, bandeja-paisa, cachapa, pabellon-criollo, arroz-con-gandules, moros-y-cristianos, doubles, tallarin-saltado, papa-rellena
+- **european** (33): vol-au-vent, lobster-thermidor, blanquette-de-veau, pot-au-feu, jambon-beurre, french-fries, fideua, salmorejo, pisto, fabada, cocido-madrileno, huevos-rotos, steak-and-kidney-pie, lancashire-hotpot, scotch-egg, prawn-cocktail, fish-pie, irish-stew, soda-bread, schweinshaxe, avgolemono, gigantes-plaki, bifana, bacalhau-a-bras, caldo-verde, pirozhki, blini, solyanka, golabki, lecso, varenyky, banitsa, pastizz
+- **italian** (8): farinata, panzerotti, porchetta, piccata, pasta-e-fagioli, frittata, caponata, cotoletta
+- **world** (4): buuz, chebureki, scrambled-eggs, stuffed-peppers
+
+## Batch 3: skipped (3)
+
+- doodhpak: tried again with other sources: a Commons search for doodhpak / doodh pak / dudhpak, the en, gu, hi and mr Wikipedia pages, the Wikidata item Q5296979 (which has no image), and Openverse/Flickr (0 results). No reusable photo was found, so it stays pending.
+- sevai: the only Commons photo is 320px, which is too small. It stays pending.
+- ulava-charu: no Commons photo exists. It stays pending.
+
+The candidate photo for Rolex (Ugandan egg wrap) showed only a street vendor, not the dish, so it was left out and stays pending. About 90 other candidates were fetched but not used this batch. Their images were deleted, and they stay in the queue.
+
+## Batch 3: merged instead of added
+
+- Knafeh was merged into kunafa, New York-style cheesecake into cheesecake, Trdelník into kürtőskalács, Apam balik into martabak-manis (Terang Bulan) and the British Pigs in blankets into pigs-in-a-blanket.
+- Huevos estrellados is listed as huevos-rotos. Each of these dish pages explains the difference: cotoletta and schnitzel, sincronizada and quesadilla, gyeran-mari and tamagoyaki, champon and jjamppong, and Singapore and Penang Hokkien mee.
+
+## Batch 3: photo fixes
+
+The first photo for 11 dishes was wrong or unclear, so each was replaced with a Commons photo checked by eye: curry-bread, rawon, shrimp-toast, bo-la-lot, nem-nuong, huevos-rotos (the first photo showed only chorizo), lobster-thermidor (the first photo looked like a salad), soda-bread (the first photo showed sandwiches), golabki, chelsea-bun and steak-and-kidney-pie. Pambazo and french-fries had no dataset photo, so they also got Commons photos.
+
+## Batch 3: other changes
+
+- **Slim index:** `data/index.js` went from 336KB at 478 dishes to 58KB at 698 dishes. Each dish is now one short array, and photo paths are worked out from the dish id.
+- **Search keywords and lazy loading:** search keywords moved to `data/search.js` (188KB), which loads after the first paint. Description, ingredients, texture, good-for, tip and pronunciation moved to the per-category detail files. The quiz result page and Bao's dish tips load the detail file they need before showing.
+- **Scale test:** with a synthetic 2,400-dish index (221KB), first contentful paint was 130–260ms. With the real 698 dishes it was about 300ms.
+- **Side dishes:** new ones (never quiz picks) are bhakri, toum, ugali, chakalaka, refried-beans, salsa-verde, pico-de-gallo, soda-bread and french-fries.
+- **Diet labels:** ensaimada is marked non-veg because it is made with pork lard, and mince-pie is marked "both" because the suet can be beef.
 
 ## Batch 2: done (204)
 
