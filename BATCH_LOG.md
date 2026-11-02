@@ -2,12 +2,51 @@
 
 Source list: the WorldCuisines food-kb dataset (2,414 rows). The dataset declares no licence, so only its dish names were used. Every photo was re-checked on Wikimedia Commons for its licence (CC0 / CC BY / CC BY-SA / public domain) and checked by eye to make sure it shows the dish. All text was written for this app, and every review is a labelled SAMPLE.
 
-## Status (after Batch 3, Nov 2 2026)
+## Status (after Batch 4, Nov 2 2026)
 
-- Dishes in the app: **698**. That is 112 original dishes, 162 from Batch 1, 204 from Batch 2 and 220 from Batch 3.
-- Dataset rows covered so far, counting alternate names and merged duplicates: 667
-- Pending unique dataset dishes: **1,747**. The list is in `pending_queue.tsv`.
-- Estimated batches left at ~220 per batch: about 8
+- Dishes in the app: **948**. That is 112 original dishes, 162 from Batch 1, 204 from Batch 2, 220 from Batch 3 and 250 from Batch 4.
+- Dataset rows covered so far, counting alternate names and merged duplicates: 921
+- Pending unique dataset dishes: **1,493**. The list is in `pending_queue.tsv`.
+- Estimated batches left at ~250 per batch: about 6
+
+## Batch 4: done (250)
+
+- **bakes** (54): rum-cake, melktert, neenish-tart, capirotada, cocada, bolillo, croquembouche, pain-aux-raisins, gateau-basque, chouquette, polvoron, bunuelo, roscon, tocino-de-cielo, pizzelle, amaretti, spotted-dick, christmas-pudding, digestive-biscuit, custard-cream, bourbon-biscuit, jammie-dodgers, custard-tart, bara-brith, teacake, millionaires-shortbread, barmbrack, germknodel, speculaas, franzbrotchen, pumpernickel, vanillekipferl, cremeschnitte, marillenknodel, swiss-roll, bossche-bol, tiger-bread, kulich, zefir, bialy, papanasi, pogaca, peanut-butter-cookie, oatmeal-raisin-cookie, bear-claw, apple-crisp, blueberry-pie, cherry-pie, mississippi-mud-pie, shoofly-pie, fudge, pacoca, bolo-de-rolo, cuban-pastry
+- **african** (20): efo-riro, msemmen, lablabi, sfenj, briouat, baghrir, amala, eba, ogbono-soup, kenkey, alloco, githeri, kachumbari, chipsi-mayai, sosatie, potjiekos, gatsby, matapa, dabo-kolo, bariis-iskukaris
+- **world** (4): tsuivan, kharcho, lobio, badrijani
+- **japan-korea** (30): hiyashi-chuka, kamameshi, tekkadon, oshizushi, kaki-furai, onsen-tamago, jingisukan, sara-udon, yudoufu, chankonabe, cream-stew, okinawa-soba, abura-soba, senbei, manju, yokan, sakuramochi, warabimochi, bento, kinpira, taco-rice, zosui, oyaki, sata-andagi, juk, janchi-guksu, hoppang, gyeran-ppang, sundae, dubu-kimchi
+- **chinese** (16): luosifen, chongqing-noodles, crossing-the-bridge-noodles, grass-jelly, taro-cake, fun-guo, cocktail-bun, laping, thenthuk, pineapple-cake, fa-gao, jian-dui, fish-ball, duck-rice, mantau, hong-dou-tang
+- **seasia** (35): nasi-kuning, sayur-lodeh, kue-lapis, krupuk, nasi-dagang, nasi-kerabu, puto, champorado, pandesal, taho, tortang-talong, banh-canh, banh-bot-loc, khao-tom, mi-krop, khao-poon, gulai, nasi-campur, lontong, ketupat, kwetiau-goreng, bihun-goreng, bakmi, bubur-ketan-hitam, pineapple-tart, lugaw, biko, suman, pancit-bihon, bistek, buko-pie, cha-lua, banh-bo, maggi-goreng, singapore-hae-mee
+- **indian-mains** (2): pakhala, panta-bhat
+- **south-indian** (1): sanna
+- **indian-sweets** (1): pootharekulu
+- **indian-street** (1): bakarkhani
+- **mideast** (22): sholezard, sangak, barbari, gheimeh, kuru-fasulye, jachnun, saltah, kleicha, kibbeh-nayyeh, kabab-barg, loobia-polo, bazlama, turlu, israeli-couscous, makdous, freekeh, ka-ak, sujuk, kahk, duqqa, bissara, lahoh
+- **mexican** (13): tlacoyo, queso-flameado, panucho, salbute, memela, mixiote, rajas-con-crema, picadillo, poc-chuc, huevos-motulenos, caldo-de-pollo, tostilocos, nopalito
+- **european** (31): piperade, oeuf-mayonnaise, cholent, callos, migas, chicharron, ajoblanco, mushy-peas, devils-on-horseback, scouse, kipper, pork-pie, pie-and-peas, chicken-fillet-roll, weisswurst, maultaschen, toast-hawaii, dutch-pannenkoek, zurcher-geschnetzeltes, fasolada, papoutsakia, bacalhau-com-natas, cozido, polvo-a-lagareiro, shchi, okroshka, dressed-herring, vinegret, porkolt, karelian-pasty, waterzooi
+- **italian** (6): agnolotti, tortelloni, scaloppine, stracciatella, grissini, bresaola
+- **americas** (14): hoppin-john, chipa, locro, coco-bread, jucy-lucy, baked-beans, green-bean-casserole, montreal-style-bagel, hawaiian-pizza, sopaipilla, hallaca, alcapurria, feijao-tropeiro, callaloo
+
+## Batch 4: skipped (7)
+
+- doodhpak, sevai, ulava-charu and rolex were not retried (no clearly reusable photo turned up). They stay pending.
+- albaloo-polo and chamoy: no usable Commons photo. beijinho: the only candidate photo showed a sunset, not the dish. All three stay pending; kipper, barmbrack and bossche-bol were added instead to keep the batch at 250.
+- banh-uc and patlicanli-kebap were dropped because of slug/photo lookup problems; they stay pending. About 185 other candidates were fetched but not used this batch; their images were deleted and they stay in the queue.
+
+## Batch 4: merged instead of added
+
+- Chee Cheong Fun → cheung-fun, Cheese bun → pao-de-queijo, Shahan ful → ful-medames, Bakpau → baozi/siopao (removed from the queue).
+- Dish pages explain look-alikes: panucho vs salbute, tortellini vs tortelloni, stracciatella (cheese / gelato / soup), teacake (English bun vs Tunnock's), migas (Spanish vs Tex-Mex), pörkölt vs goulash, sopaipilla (New Mexico vs Chile).
+
+## Batch 4: photo fixes
+
+The first photo for krupuk, biko, banh-bo, bazlama, tostilocos and coco-bread was wrong or unclear and was replaced with a Commons photo checked by eye. scaloppine and hoppin-john were re-checked and kept. loobia-polo, lahoh, papoutsakia, bacalhau-com-natas and alcapurria had no dataset photo, so Commons photos were found.
+
+## Batch 4: other changes
+
+- **Image re-encode (all 948 dishes):** thumbnails regenerated from the detail photos at 350px, JPEG quality 72 (18MB → 17MB total despite +250 dishes). Detail photos capped at 640px and 70KB each (quality stepped 78→55; 5 photos also scaled to ~504px). Detail photos total 48MB (was 35.7MB for 698). Checked on a phone-sized (iPhone 13) screenshot: grid and dish pages look sharp.
+- **Side dishes (never quiz picks):** amala, eba, kenkey, kachumbari, kinpira, mantau, krupuk, pandesal, ketupat, sanna, sangak, barbari, bazlama, israeli-couscous, makdous, duqqa, lahoh, bolillo, grissini, mushy-peas, pumpernickel, tiger-bread, vinegret, coco-bread, baked-beans, green-bean-casserole.
+- **Tests:** 948/948 thumbs and photos load, FCP ~240ms, 44 quiz runs with no diet violations; 2,400-dish synthetic scale test FCP 170–290ms.
 
 ## Batch 3: done (220)
 

@@ -1,7 +1,7 @@
 Dishcover - know your food before you order.
 Open index.html in any modern browser. No install, build step or internet needed.
 
-- 698 dishes across 16 categories (Indian street food, South Indian, Indian mains, Indian sweets,
+- 948 dishes across 16 categories (Indian street food, South Indian, Indian mains, Indian sweets,
   cafe drinks, bakes & desserts, Italian, European, Japanese & Korean, Chinese & Himalayan,
   Southeast Asian, Middle Eastern, Mexican, Americas, African, around the world).
 - Files: data/index.js is a slim index, with one short row per dish holding only the card, category
@@ -10,8 +10,8 @@ Open index.html in any modern browser. No install, build step or internet needed
   texture) and loads right after the first paint, or on the first search. Until it loads, searching
   matches names, cuisines, categories and tastes. Full details (description, ingredients, how-to-eat
   steps, tip, sample reviews, photo credits) are in data/detail/<category>.js. They load only when a
-  dish is opened, using a script tag, so the app still works from file://. Cards use 400px thumbnails
-  from images/thumb/; the dish page uses 640px photos from images/. The grid shows 40 cards at a time,
+  dish is opened, using a script tag, so the app still works from file://. Cards use 350px thumbnails (quality 72)
+  from images/thumb/; the dish page uses photos of at most 640px and 70KB from images/. The grid shows 40 cards at a time,
   with a "Show more" button.
 - Dishes marked side:true are condiments, pickles, dips, breads and other side-only items. They can be
   searched and browsed, but the quiz never recommends them.
