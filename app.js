@@ -711,12 +711,76 @@
       if (e.key === "ArrowLeft") goStep(stepIdx - 1);
     }
   });
-  $("#scrim").onclick = closeSheet;
+  $("#scrim").onclick = () => { if ($("#randSheet").classList.contains("show")) closeRand(); else closeSheet(); };
   $("#search").addEventListener("input", onSearch);
   $("#clearSearch").onclick = e => { e.preventDefault(); const s = $("#search"); s.value = ""; onSearch({ target: s }); s.focus(); };
   $("#homeMascot").onclick = nextTip;
   $("#quizBanner").onclick = () => { qi = 0; answers = {}; showTab("quiz"); };
-  $("#surpriseBtn").onclick = () => { const d = DISHES[Math.floor(Math.random() * DISHES.length)]; openDish(d.id); };
+
+  /* ---------------- Random picker with constraints ----------------
+     The user picks what they feel like (kind, diet, cuisine); Bao only picks inside that group.
+     Side items (condiments, dips, breads) are never picked, like the quiz. Sweets never include spicy dishes. */
+  const R_TYPES = [["any", "🍽️", "Anything"], ["sweet", "🍰", "Sweets"], ["snack", "🥟", "Snacks"], ["meal", "🍛", "Meals"], ["drink", "🥤", "Drinks"]];
+  const R_DIETS = [["any", "Any"], ["veg", "🟢 Veg only"], ["egg", "🟡 Veg + egg"], ["nonveg", "🔴 Non-veg"]];
+  const R_CUIS = ["any", "indian", "south indian", "chinese", "japanese", "korean", "thai", "italian", "mexican", "french", "middle eastern", "american"];
+  const R_DIET_OK = { veg: ["veg"], egg: ["veg", "egg"], nonveg: ["nonveg", "both", "eggboth"] };
+  const rand = { type: "any", diet: "any", cuisine: "any", recent: [], last: null };
+  function randPool(c = rand) {
+    return DISHES.filter(d => !d.side
+      && (c.type === "any" || (d.type === c.type && (c.type !== "sweet" || d.taste.spicy < 2)))
+      && (c.diet === "any" || R_DIET_OK[c.diet].includes(d.diet))
+      && (c.cuisine === "any" || CONCEPTS[c.cuisine].f(d)));
+  }
+  function randLabel(c = rand) {
+    const t = { any: "dish", sweet: "sweet", snack: "snack", meal: "meal", drink: "drink" }[c.type];
+    const di = { any: "", veg: "veg", egg: "veg/egg", nonveg: "non-veg" }[c.diet];
+    const cu = c.cuisine === "any" ? "" : CONCEPTS[c.cuisine].label;
+    return ["Random", di, cu, t].filter(Boolean).join(" ");
+  }
+  function randPick(c = rand) {
+    const pool = randPool(c); if (!pool.length) return null;
+    const key = c.type + c.diet + c.cuisine; if (rand.key !== key) { rand.key = key; rand.recent = []; }
+    const avoid = new Set(rand.recent.slice(-Math.min(10, pool.length - 1)));
+    const free = pool.filter(d => !avoid.has(d.id));
+    const d = (free.length ? free : pool)[Math.floor(Math.random() * (free.length || pool.length))];
+    rand.recent.push(d.id); if (rand.recent.length > 20) rand.recent.shift();
+    return d;
+  }
+  window.DishcoverRandom = { pool: randPool, pick: randPick, label: randLabel };
+  function renderRandChips() {
+    $("#randType").innerHTML = R_TYPES.map(([k, e, l]) => `<button class="chip ${rand.type === k ? "on" : ""}" data-rtype="${k}" aria-pressed="${rand.type === k}">${e} ${l}</button>`).join("");
+    $("#randDiet").innerHTML = R_DIETS.map(([k, l]) => `<button class="chip ${rand.diet === k ? "on" : ""}" data-rdiet="${k}" aria-pressed="${rand.diet === k}">${l}</button>`).join("");
+    $("#randCuisine").innerHTML = R_CUIS.map(k => `<button class="chip ${rand.cuisine === k ? "on" : ""}" data-rcui="${k}" aria-pressed="${rand.cuisine === k}">${k === "any" ? "🌍 Any" : CONCEPTS[k].label}</button>`).join("");
+    const n = randPool().length;
+    $("#randSub").textContent = n ? `Bao will only pick from these ${n} dish${n === 1 ? "" : "es"}.` : "Nothing matches that combo. Try loosening a filter.";
+    $("#randGo").disabled = !n;
+    $("#randGo").textContent = rand.last ? "🎲 Another one" : "🎲 Pick for me";
+  }
+  function randShow(d) {
+    rand.last = d;
+    $("#randResult").innerHTML = d ? `<div class="rs-card" data-rid="${d.id}">
+      <div class="thumb" style="background:${d.color}">${d.emoji}<img src="${d.photo.thumb}" alt="Photo of ${esc(d.name)}" onerror="this.remove()"></div>
+      <div><span class="tag" id="randTag">🎲 ${esc(randLabel())}</span><h4>${esc(d.name)}</h4><div class="cuisine">${esc(d.cuisine)} · ${DIET[d.diet]}</div><button class="open" data-ropen="${d.id}">See how to eat it →</button></div></div>` : "";
+    setMascot($("#randMascot"), d ? "wow" : "thinking", "pop");
+    renderRandChips();
+  }
+  function openRand() {
+    rand.last = null; $("#randResult").innerHTML = ""; setMascot($("#randMascot"), "happy");
+    renderRandChips();
+    $("#scrim").classList.add("show"); $("#randSheet").classList.add("show");
+  }
+  function closeRand() { $("#randSheet").classList.remove("show"); if (!$("#sheet").classList.contains("show")) $("#scrim").classList.remove("show"); }
+  $("#randSheet").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.rtype) rand.type = b.dataset.rtype; else if (b.dataset.rdiet) rand.diet = b.dataset.rdiet; else if (b.dataset.rcui) rand.cuisine = b.dataset.rcui;
+    else if (b.id === "randGo") return randShow(randPick());
+    else if (b.dataset.ropen) { closeRand(); return openDish(b.dataset.ropen); }
+    else if (b.id === "randClose") return closeRand();
+    else return;
+    rand.last = null; $("#randResult").innerHTML = ""; renderRandChips();
+  });
+  $("#surpriseBtn").onclick = openRand;
+
 
   /* ---------------- Init ---------------- */
   $$("[data-total]").forEach(el => (el.textContent = DISHES.length));

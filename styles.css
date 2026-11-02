@@ -277,3 +277,27 @@ mark{background:var(--yellow2);border-radius:4px;padding:0 2px}
 .more-wrap:empty{display:none}
 .more-btn{font-size:14px;padding:11px 20px}
 .more-btn .muted{font-weight:500}
+
+/* Random picker (bottom sheet with constraints) */
+.rsheet{position:absolute;left:0;right:0;bottom:0;max-height:92%;background:var(--bg2);border-radius:32px 32px 0 0;z-index:32;transform:translateY(105%);transition:transform .45s var(--ease);display:flex;flex-direction:column;overflow-y:auto;padding:0 18px 18px;scrollbar-width:none}
+.rsheet.show{transform:none}
+.rsheet .grab{width:44px;height:5px;border-radius:3px;background:#d0d0d6;margin:10px auto 6px;flex:none}
+.rs-head{display:flex;align-items:center;gap:10px}
+.rs-head .mascot.mini{width:54px;height:54px;flex:none}
+.rs-head h3{margin:0;font-size:18px}.rs-head p{margin:2px 0 0;font-size:13px}
+.rs-head .close-x{margin-left:auto;width:36px;height:36px;border-radius:50%;background:var(--surface);box-shadow:var(--shadow);font-size:15px;flex:none}
+.rs-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:14px 0 6px}
+.rs-chips{display:flex;flex-wrap:wrap;gap:8px}
+.rs-chips .chip{padding:8px 12px;font-size:13px}
+.rs-result{margin-top:14px}
+.rs-card{display:flex;gap:12px;align-items:center;background:var(--surface);border-radius:20px;padding:10px;box-shadow:var(--shadow);animation:pop .5s var(--spring)}
+.rs-card .thumb{width:84px;height:84px;border-radius:16px;overflow:hidden;position:relative;flex:none;display:grid;place-items:center;font-size:34px}
+.rs-card .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.rs-card h4{margin:2px 0;font-size:16px}.rs-card .tag{display:inline-block;font-size:11px;font-weight:700;background:#FFF1C9;border-radius:999px;padding:3px 8px}
+.rs-card .cuisine{font-size:12px;color:var(--muted)}
+.rs-card .open{margin-top:6px;font-size:13px;font-weight:700;text-decoration:underline}
+.rs-empty{font-size:14px;color:var(--muted);padding:8px 2px}
+.rs-actions{display:flex;gap:10px;margin-top:14px}
+.rs-actions .cta{flex:1;background:var(--ink);color:#fff;border-radius:999px;padding:14px;font-weight:700;font-size:15px}
+.rs-actions .cta:active{transform:scale(.97)}
+.rs-actions .cta:disabled{opacity:.4}

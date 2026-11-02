@@ -30,7 +30,7 @@
     <section class="screen active" id="screen-home" aria-label="Explore dishes">
       <div class="topbar">
         <div class="brand"><span class="dot"></span>Dishcover</div>
-        <button class="pill-btn" id="surpriseBtn" title="Open a random dish">🎲 Random</button>
+        <button class="pill-btn" id="surpriseBtn" title="Pick a random dish" aria-haspopup="dialog">🎲 Random</button>
       </div>
       <div class="hero">
         <div class="mascot" id="homeMascot" role="button" tabindex="0" aria-label="Bao the mascot — tap for a tip"></div>
@@ -78,6 +78,15 @@
       <div class="grab" id="grab"></div>
       <div class="sheet-scroll" id="sheetScroll"></div>
       <div class="actions" id="sheetActions"></div>
+    </div>
+    <div class="rsheet" id="randSheet" role="dialog" aria-modal="true" aria-label="Random dish picker">
+      <div class="grab"></div>
+      <div class="rs-head"><div class="mascot mini" id="randMascot"></div><div><h3>What do you feel like?</h3><p class="muted" id="randSub">Bao will only pick from what you choose.</p></div><button class="close-x" id="randClose" aria-label="Close">✕</button></div>
+      <div class="rs-label">Kind</div><div class="rs-chips" id="randType"></div>
+      <div class="rs-label">Diet</div><div class="rs-chips" id="randDiet"></div>
+      <div class="rs-label">Cuisine</div><div class="rs-chips" id="randCuisine"></div>
+      <div class="rs-result" id="randResult"></div>
+      <div class="rs-actions"><button class="cta" id="randGo">🎲 Pick for me</button></div>
     </div>
     <div class="toast" id="toast" role="status"><span class="mini" id="toastMascot"></span><span id="toastText"></span></div>
   </main>
