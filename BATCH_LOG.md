@@ -2,12 +2,50 @@
 
 Source list: the WorldCuisines food-kb dataset (2,414 rows). The dataset declares no licence, so only its dish names were used. Every photo was re-checked on Wikimedia Commons for its licence (CC0 / CC BY / CC BY-SA / public domain) and checked by eye to make sure it shows the dish. All text was written for this app, and every review is a labelled SAMPLE.
 
-## Status (after Batch 4, Nov 2 2026)
+## Status (after Batch 5, Nov 2 2026)
 
-- Dishes in the app: **948**. That is 112 original dishes, 162 from Batch 1, 204 from Batch 2, 220 from Batch 3 and 250 from Batch 4.
-- Dataset rows covered so far, counting alternate names and merged duplicates: 921
-- Pending unique dataset dishes: **1,493**. The list is in `pending_queue.tsv`.
-- Estimated batches left at ~250 per batch: about 6
+- Dishes in the repo: **1,198** (112 original + 162 + 204 + 220 + 250 + 250 from Batches 1–5). The live site still has 948 (Batch 5 not deployed, by request).
+- Dataset rows covered so far, counting alternate names and merged duplicates: 1,174
+- Pending unique dataset dishes: **1,240**. The list is in `pending_queue.tsv`.
+- Estimated batches left at ~250 per batch: about 5
+
+## Batch 5: done (250)
+
+- **bakes** (48): black-bottom-pie, buttermilk-pie, chess-pie, cobbler, frozen-custard, honey-bun, lemon-ice-box-pie, sugar-cookie, hamantash, rugelach, canjica, passion-fruit-mousse, pave, rock-cake, saffron-bun, ginger-snap, fried-ice-cream, butter-cookie, vlaai, gingerbread-man, sally-lunn-bun, marzipan, egg-pie, ube-crinkles, joulutorttu, charlotte, fougasse, ladyfinger, pithivier, pain-de-campagne, sable, dampfnudel, schneeball, tapioca-pudding, sticky-bun, zopf, rainbow-cookie, fortune-cookie, pan-dulce, afghan, lefse, bolo-do-caco, broa, cozonac, paskha, sushki, pionono, basler-lackerli
+- **americas** (22): johnnycake, shrimp-creole, steak-and-eggs, succotash, texas-toast, vegetarian-chili, yaka-mein, italian-sausage, fugazza, galinhada, tamale-pie, locrio, llapingacho, guyanese-pepperpot, bammy, run-down, nacatamal, pasteles, sorullos, aloo-pie, pan-de-jamon, boliche
+- **japan-korea** (27): mochi-ice-cream, akashiyaki, botamochi, chanpuru, ganmodoki, karinto, konpeito, kusa-mochi, kuzumochi, mizutaki, momiji-manju, monaka, motsunabe, negimaki, raindrop-cake, satsuma-age, shiruko, tokoroten, toshikoshi-soba, yakisoba-pan, yatsuhashi, zoni, agwi-jjim, hwajeon, mak-guksu, mujigae-tteok, jeungpyeon
+- **world** (2): khash, sulguni
+- **european** (40): blintz, matzah-brei, vienna-sausage, steak-and-kidney-pudding, pasticada, hutspot, chicken-and-mushroom-pie, scotch-pie, andouille, boudin, garbure, navarin, roulade, bockwurst, eisbein, stuffed-mushrooms, flaki, zrazy, kaszanka, bacalhau-a-gomes-de-sa, canja-de-galinha, tripas-a-moda-do-porto, placinta, coulibiac, kholodets, rassolnik, pozharsky-cutlet, mimosa-salad, oladyi, ukha, bridie, arroz-caldoso, arros-negre, cachopo, caldo-galego, escabeche, fabes-con-almejas, sobrassada, wallenbergare, pampushka
+- **seasia** (49): burmese-tofu, khauk-swe-thoke, meeshay, ang-ku-kueh, mee-pok, banmian, ngo-hiang, goto, kutsinta, laing, maja-blanca, mechado, nilaga, okoy, pancit-malabon, pata-tim, puto-bumbong, sapin-sapin, tokwat-baboy, bakpia, lemper, kue-putu, dodol, nasi-liwet, serabi, urap, sayur-asem, semur, tahu-campur, nasi-kebuli, lemang, nagasari, khao-piak-sen, sai-ua, bahulu, pie-tee, roti-tissue, hokkien-char-mee, asam-pedas, bubur-kacang-hijau, khanom-bueang, khao-lam, kluai-khaek, banh-tet, banh-duc, chao, nem-chua, pate-chaud, bun-oc
+- **chinese** (18): buttered-pineapple-bun, ox-tongue-pastry, ham-and-egg-bun, cart-noodle, put-chai-ko, pork-chop-bun, ciba-cake, osmanthus-cake, qingtuan, pearl-meatballs, tong-sui, shanghai-fried-noodles, paper-wrapped-cake, yau-gok, bah-oan, chiayi-turkey-rice, dan-zai-noodles, egg-yolk-pastry
+- **drinks** (1): red-bean-ice
+- **mideast** (10): eggah, taftan, amba, saj-bread, taboon-bread, bamia, sulu-kofte, patlicanli-kebap, cezerye, stuffed-mussels
+- **african** (9): himbasha, makroudh, mechoui, chermoula, matbucha, bambalouni, ofada-rice, ndole, frikkadel
+- **south-indian** (1): ada
+- **indian-sweets** (1): jaynagarer-moa
+- **italian** (6): baci-di-dama, ricciarelli, ciceri-e-tria, rustico, paccheri, pancetta
+- **mexican** (14): arroz-a-la-tumbada, bionico, borracho-beans, caldo-de-siete-mares, carne-a-la-tampiquena, entomatada, gringas, huachinango-a-la-veracruzana, machaca, manchamanteles, mole-de-olla, mole-verde, molote, papadzules
+- **indian-mains** (2): bannu-pulao, sajji
+
+## Batch 5: skipped
+
+- Still not retried (no clearly reusable photo found quickly): doodhpak, sevai, ulava-charu, rolex, albaloo-polo, chamoy, beijinho. They stay pending.
+- **Retried with corrected spellings and now added:** banh-uc → **banh-duc** (Bánh đúc; the "đ" had been dropped from the slug) and patlcanl-kebap → **patlicanli-kebap** (Patlıcanlı kebap; the dotless "ı" had been dropped).
+- No usable photo in the dataset (26, still pending): shorgoghal, manjar-branco, iced-bun, burmese-fried-rice, nan-gyi-thoke, beaver-tail, liangfen, kulen, cronut, diri-djondjon, molagoottal, kateh, shir-berenj, hard-dough-bread, stew-peas, red-peas-soup, coconut-drop, purin, chilorio, balila, rewena-bread, concoction-rice, chanfana, dombolo, khai-yat-sai, banh-khoai-mi.
+- Photo rejected after eyeballing (still pending): damper, pork-roll and pepperoni-roll (packaging only), jam-roly-poly, mont-lin-maya (street scene), shotis-puri, palitaw (packet), lupis, java-rice, manicotti (dry pasta), marquesita (no food visible), cheese-roll (blurry), jjolmyeon (plain noodles), ovos-moles, queijada, khapse (too dark), rellenitos-de-platano (fire scene), seco, lorne-sausage; rugbrød, rød pølse, flatbrød and pets de sœurs were also left out because "ø/œ" broke their slugs (to fix next batch).
+- About 330 other fetched candidates were not used this batch; their images were deleted and they stay in the queue.
+
+## Batch 5: merged instead of added
+
+- Pasty → cornish-pasty, Cabbage roll → golabki/sarma, Rosca de reyes → roscon (removed from the queue).
+- Dish pages explain look-alikes: andouille (French tripe vs Cajun smoked), boudin (noir/blanc/Cajun), roulade (meat vs sponge), Vienna sausage vs frankfurter names, chao vs congee/juk, Hokkien char mee (KL) vs Singapore/Penang Hokkien mee, eisbein vs schweinshaxe, cobbler vs crisp vs crumble.
+
+## Batch 5: other changes
+
+- New images encoded to the Batch 4 sizes (detail ≤640px and ≤70KB, thumbs 350px q72). Detail photos 60MB and thumbnails 22MB in total for 1,198 dishes.
+- **Side dishes (never quiz picks):** johnnycake, succotash, texas-toast, fougasse, pain-de-campagne, urap, lemang, taftan, amba, bammy, chermoula, matbucha, borracho-beans, saj-bread, taboon-bread, broa, pampushka.
+- **Tests:** 1198/1198 thumbs and photos load, FCP ~256ms, 44 quiz runs with no diet violations, diet search clean; 2,400-dish scale test FCP 156–348ms; phone (iPhone 13) screenshot of a new dish page looks sharp.
+- **Delivery change (user instruction):** no Netlify deploy, no GitHub push and no zip for this batch — local git commit only. The live site still shows Batch 4 (948 dishes).
 
 ## Batch 4: done (250)
 
