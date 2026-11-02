@@ -159,15 +159,22 @@
     $("#chips").innerHTML = CATS.map(c => `<button class="chip ${c.id === cat ? "on" : ""}" data-cat="${c.id}" role="tab" aria-selected="${c.id === cat}">${c.emoji} ${c.label}</button>`).join("")
       + `<button class="chip veg ${vegOnly ? "on" : ""}" data-veg="1" aria-pressed="${vegOnly}">🟢 Veg-friendly</button>`;
   }
+  /* Diet words match the diet label, not text ("veg" must not hit "non-veg" or "vegetables"). */
+  const DIET_WORDS = {
+    veg: ["veg", "both"], vegetarian: ["veg", "both"], veggie: ["veg", "both"], vegan: ["veg", "both"],
+    eggetarian: ["veg", "egg", "both", "eggboth"],
+    "non-veg": ["nonveg", "both", "eggboth"], nonveg: ["nonveg", "both", "eggboth"], meat: ["nonveg", "both", "eggboth"]
+  };
+  function qWords(q) { return q.toLowerCase().replace(/\bnon[\s-]+veg(etarian)?\b/g, "non-veg").split(/\s+/).filter(Boolean); }
   function matches(d, q) {
     if (!q) return true;
-    return q.toLowerCase().split(/\s+/).every(w => hayOf(d).includes(w));
+    return qWords(q).every(w => DIET_WORDS[w] ? DIET_WORDS[w].includes(d.diet) : hayOf(d).includes(w));
   }
   const HAY = {};
   function hayOf(d) {
     if (HAY[d.id]) return HAY[d.id];
     const tastes = TASTES.filter(([k]) => d.taste[k] >= 3).map(t => t[1]);
-    const diet = { veg: "veg vegetarian", egg: "egg eggetarian", both: "veg vegetarian non-veg", eggboth: "egg non-veg", nonveg: "non-veg nonveg meat" }[d.diet];
+    const diet = { veg: "", egg: "egg", both: "", eggboth: "egg", nonveg: "" }[d.diet];
     const c = CATS.find(x => x.id === d.cat);
     return (HAY[d.id] = [d.name, d.pron, d.cuisine, c ? c.label : "", d.type, diet, ...tastes, d.what, ...d.ingredients, ...d.goodFor, ...d.texture].join(" ").toLowerCase());
   }
@@ -436,6 +443,7 @@
   function scoreDish(d, a) {
     const ok = DIET_OK[a.diet];
     if (ok && !ok.includes(d.diet)) return -99;
+    if (d.side) return -99; // condiments, dips, breads & side-only items are never quiz picks
     let s = 0; const why = [];
     if (d.type === a.type) { s += 6; why.push({ drink: "It's a drink ☕", snack: "Light snack, as you wanted 🥨", meal: "A proper, filling meal 🍜", sweet: "Sweet treat 🍰" }[a.type]); }
     else if (a.type === "sweet" && d.taste.sweet >= 4) { s += 4; why.push("Nice and sweet 🍰"); }
