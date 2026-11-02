@@ -2,12 +2,48 @@
 
 Source list: the WorldCuisines food-kb dataset (2,414 rows). The dataset declares no licence, so only its dish names were used. Every photo was re-checked on Wikimedia Commons for its licence (CC0 / CC BY / CC BY-SA / public domain) and checked by eye to make sure it shows the dish. All text was written for this app, and every review is a labelled SAMPLE.
 
-## Status (after Batch 6, Nov 2 2026)
+## Status (after Batch 7, Nov 2 2026)
 
-- Dishes in the repo: **1,448** (112 original + 162 + 204 + 220 + 250 + 250 + 250 from Batches 1–6). The live site still has 948 (Batches 5–6 not deployed, by request).
-- Dataset rows covered so far, counting alternate names and merged duplicates: 1,424
-- Pending unique dataset dishes: **990**. The list is in `pending_queue.tsv`.
-- Estimated batches left at ~250 per batch: about 4
+- Dishes in the repo: **1,690** (112 original + 162 + 204 + 220 + 250 + 250 + 250 + 242 from Batches 1–7). The live site still has 948 (Batches 5–7 not deployed, by request).
+- Dataset rows covered so far, counting alternate names and merged duplicates: 1,670
+- Pending unique dataset dishes: **744**. The list is in `pending_queue.tsv`.
+- Estimated batches left at ~250 per batch: about 3
+
+## Batch 7: done (242)
+
+- **bakes** (95): matzah, zwieback, garibaldi-biscuit, rich-tea, crispbread, barm-cake, teurgoule, aachener-printen, springerle, bethmannchen, koulourakia, puto-seco, rijstevlaai, krapfen, lucky-tattie, cabinet-pudding, figgy-pudding, persimmon-pudding, jam-roly-poly, sussex-pond-pudding, biscocho, melba-toast, paximathia, abernethy-biscuit, almond-biscuit, aparon, ballokume, barquillo, berner-haselnusslebkuchen, bizcochito, bredele, cat-tongue, caycay, chocolate-coated-marshmallow-treats, cowboy-cookies, cuchufli, macaroon, cornish-fairing, dutch-letter, fig-roll, finskepinner, flour-kurabiye, fudge-cookie, rosquillo, galletas-de-patatas, jacobina, joe-frogger, jodenkoek, jumble, kaasstengels, kiam-piann, kichel, kue-satu, lengua-de-gato, linga, mamon-tostado, maple-leaf-cream-cookie, marie-biscuit, paciencia, paborita, paprenjak, petit-beurre, pinata-cookie, roscas, rosette, rum-ball, kue-semprong, tahini-cookie, tareco, teiglach, tirggel, ugoy-ugoy, wibele, shrewsbury-cake, sandie, alexandertorte, bakpia-pathok, bichon-au-citron, bizcocho, bundevara, butterkaka, carac, cheesymite-scroll, conversation-tart, fazuelos, flaugnarde, flao, flies-graveyard, gustavus-adolphus-pastry, haddekuche, jambon, jesuite, kniekuchle, kok, kolach
+- **americas** (9): egg-salad, steamed-clams, arroz-con-huevo-frito, arroz-con-maiz, arroz-de-lisa, rice-and-gravy, chow-mein-sandwich, chicken-riggies, klobasnik
+- **mideast** (5): lentil-soup, orez-shuit, saffron-rice, muhallebi, kesme
+- **european** (13): liverwurst, salo, longaniza, cervelat, lincolnshire-sausage, battered-sausage, carniolan-sausage, bundnerfleisch, kogel-mogel, kalakukko, grey-peas, szczecin-paprikash, palatschinke
+- **african** (4): mealie-bread, droewors, eru, achu
+- **chinese** (16): iron-egg, hokkien-fried-rice, yin-yang-fried-rice, cifantuan, gaifan, jiuniang, tube-rice-pudding, ludagun, white-sugar-sponge-cake, su-style-noodles, pidan-doufu, gaobuli, lotus-seed-bun, longevity-peach, mandarin-roll, steamed-meatball
+- **world** (9): gundruk, kwati, dhindo, chataamari, sapu-mhicha, thukpa-bhatuk, bappir, boortsog, khapse
+- **japan-korea** (17): nurungji, kongbap, jat-guksu, milmyeon, yakimochi, bupyeon, otaru-ankake-yakisoba, shirataki-noodles, tensoba, ulmyeon, buchimgae, jjim, seon, jjinppang, uiro, karukan, karakudamono
+- **seasia** (62): soto-banjar, pindang-patin, aligue-fried-rice, java-rice, ampaw, arem-arem, balao-balao, baye-baye, binignit, burasa, burong-isda, pe-htaw-bhut-htamin, ginataang-munggo, hsi-htamin, htamane, kalamay, khao-kan-chin, kiampong, kuning, lepet, madumongso, tapai, masi, nasi-ambeng, nasi-bogana, nasi-gurih, nasi-jinggo, nasi-kapau, nasi-tim, nasi-timbel, nasi-tutug-oncom, nasi-tumpang, nasi-ulam, panyalam, pastil, pinipig, puso, salukara, thingyan-rice, tinutuan, tupig, lupis, banh-to, chwee-kueh, khanom-sot-sai, tibok-tibok, mie-goreng, ifumi, mie-kering, mont-di, kat-kyi-kaik, kyay-oh, lakso, lard-na, pisang-molen, maruya, chuoi-chien, mun-tahu, sapo-tahu, tahu-sumedang, banh-te, clorot
+- **indian-mains** (1): akhni
+- **south-indian** (2): rice-and-curry, sandige
+- **mexican** (1): sopa-de-fideo
+- **italian** (7): cotoletta-alla-bolognese, cavallucci, krumiri, nocciolini-di-canzo, pinolate, bruttiboni, crocetta-di-caltanissetta
+- **indian-sweets** (1): manda-pitha
+
+## Batch 7: skipped
+
+- The 7 known skips are still left out: doodhpak, sevai, ulava charu, rolex, albaloo-polo, chamoy, beijinho.
+- No Commons photo found (5): tinapayan, nan-gyi-thohk, banh-khoai-mi, cronut, shorgoghal.
+- Dropped because the photo was wrong, unclear or only showed packaging (30): moche, kiping, rijsttafel, mont-lin-maya, moron, moffle, funing-big-cake, palitaw, jjolmyeon, kripik, apas, camachile-cookie, lincoln-biscuit, nice-biscuit, malted-milk, cream-cracker, bath-oliver, charcoal-biscuit, animal-cracker, berger-cookies, drabbelkoek, masa-podrida, kue-gapit, uraro, countess, conejito, carrot-cake-cookie, half-moon-cookie, song-gao, rice-bread.
+- Left out as brand products or generic terms (still pending): Kraft Dinner, Rice Krispies, Hello Panda, Royal Dansk, Lorna Doone, E.L. Fudge, sorbet, custard, crouton, wafer, baked potato, chocolate pudding, sandwich cookie, square cookie, puffed rice, potato pancake, choux pastry, bing.
+
+## Batch 7: merged instead of added
+
+- Cream horn → schaumrolle; da bao → baozi; chelow → chelow-kabab; tofu skin → tofu-skin-roll; nan gyi thoke (duplicate spelling).
+
+## Batch 7: other changes
+
+- All 39 dishes held back from Batch 6 were added. Their photos were fetched again, and their licences re-checked.
+- The ID-fix script is now in the repo at `tools/slug.py`.
+- Dishes made with suet or lard are labelled non-veg: figgy pudding, jam roly-poly, Sussex pond pudding, bizcochito, roscas.
+- Not deployed, not pushed, zip not rebuilt (by request).
+
 
 ## Batch 6: done (250)
 
