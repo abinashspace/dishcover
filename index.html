@@ -4,9 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#F0EFF4">
-<title>Dishcover — know your food before you order</title>
+<title>Dishcover with Bae — know your food before you order</title>
 <meta name="description" content="Dishcover explains unfamiliar cafe and restaurant dishes: what they are, how they taste, sample reviews and how to eat them.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A5%9F%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="mascot/favicon-64.png">
+<link rel="apple-touch-icon" href="mascot/icon-192.png">
+<meta property="og:image" content="mascot/bae-512.jpg">
 <!-- Optional web fonts (AppLlama uses Instrument Sans + Comfortaa). Falls back to system fonts offline. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Instrument+Sans:wght@400;500;600;700&display=swap">
@@ -15,6 +17,7 @@
 <body>
 <div class="stage">
   <aside class="pitch" aria-hidden="true">
+    <img class="pitch-bae" src="mascot/bae-256.webp" alt="" width="120" height="120">
     <p class="logo">Dishcover</p>
     <p>Never feel lost at a menu again. Look up any dish, see how it tastes, read what people say, and learn exactly how to eat it.</p>
     <ul>
@@ -29,11 +32,11 @@
     <!-- HOME -->
     <section class="screen active" id="screen-home" aria-label="Explore dishes">
       <div class="topbar">
-        <div class="brand"><span class="dot"></span>Dishcover</div>
+        <div class="brand"><img class="brand-bae" src="mascot/bae-128.webp" alt="" width="30" height="30">Dishcover</div>
         <button class="pill-btn" id="surpriseBtn" title="Pick a random dish" aria-haspopup="dialog">🎲 Random</button>
       </div>
       <div class="hero">
-        <div class="mascot" id="homeMascot" role="button" tabindex="0" aria-label="Bao the mascot — tap for a tip"></div>
+        <div class="mascot" id="homeMascot" role="button" tabindex="0" aria-label="Bae the mascot — tap for a tip"></div>
         <div class="bubble" id="homeBubble" aria-live="polite"></div>
       </div>
       <h1 class="title">What's on the<br>menu today?</h1>
@@ -47,7 +50,7 @@
       </div>
       <div class="chips" id="chips" role="tablist" aria-label="Categories"></div>
       <button class="banner" id="quizBanner">
-        <div><h3>Can't decide? 🤔</h3><p>Answer 5 quick questions and Bao picks a dish for you.</p></div>
+        <div><h3>Can't decide? 🤔</h3><p>Answer 5 quick questions and Bae picks a dish for you.</p></div>
         <span class="go">→</span>
       </button>
       <h2 class="section"><span id="listTitle">All dishes</span><small id="count"></small></h2>
@@ -57,13 +60,13 @@
 
     <!-- QUIZ -->
     <section class="screen" id="screen-quiz" aria-label="Help me choose quiz">
-      <div class="topbar"><div class="brand"><span class="dot"></span>Help me choose</div></div>
+      <div class="topbar"><div class="brand"><img class="brand-bae" src="mascot/bae-128.webp" alt="" width="30" height="30">Help me choose</div></div>
       <div id="quiz"></div>
     </section>
 
     <!-- SAVED -->
     <section class="screen" id="screen-saved" aria-label="Saved and tried dishes">
-      <div class="topbar"><div class="brand"><span class="dot"></span>My food passport</div></div>
+      <div class="topbar"><div class="brand"><img class="brand-bae" src="mascot/bae-128.webp" alt="" width="30" height="30">My food passport</div></div>
       <div id="saved"></div>
     </section>
 
@@ -81,7 +84,7 @@
     </div>
     <div class="rsheet" id="randSheet" role="dialog" aria-modal="true" aria-label="Random dish picker">
       <div class="grab"></div>
-      <div class="rs-head"><div class="mascot mini" id="randMascot"></div><div><h3>What do you feel like?</h3><p class="muted" id="randSub">Bao will only pick from what you choose.</p></div><button class="close-x" id="randClose" aria-label="Close">✕</button></div>
+      <div class="rs-head"><div class="mascot mini" id="randMascot"></div><div><h3>What do you feel like?</h3><p class="muted" id="randSub">Bae will only pick from what you choose.</p></div><button class="close-x" id="randClose" aria-label="Close">✕</button></div>
       <div class="rs-label">Kind</div><div class="rs-chips" id="randType"></div>
       <div class="rs-label">Diet</div><div class="rs-chips" id="randDiet"></div>
       <div class="rs-label">Cuisine</div><div class="rs-chips" id="randCuisine"></div>

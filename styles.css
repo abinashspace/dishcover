@@ -49,12 +49,11 @@ h2.section small{font-size:13px;color:var(--muted);font-weight:500;letter-spacin
 /* ---------- Mascot ---------- */
 .hero{display:flex;align-items:flex-end;gap:6px;margin:4px 0 6px}
 .mascot{width:96px;height:96px;flex:none;cursor:pointer;transform-origin:50% 100%}
-.mascot>svg{display:block;animation:bob 6s ease-in-out infinite;will-change:transform}
-.mascot svg{width:100%;height:100%;overflow:visible}
-.mascot .eyes{transform-box:fill-box;transform-origin:center;animation:blink 6s infinite}
-.mascot .arm-r{transform-box:fill-box;transform-origin:0% 50%}
-.mascot.wave .arm-r{animation:wave 1.6s ease-in-out 1}
-.mascot.pop{animation:pop .9s ease-in-out}
+.mascot{position:relative}
+.mascot>img.bae{display:block;width:100%;height:100%;object-fit:contain;animation:bob 6s ease-in-out infinite;will-change:transform;filter:drop-shadow(0 4px 6px rgba(80,60,120,.12));user-select:none}
+.bae-fx{position:absolute;top:-4px;right:-6px;font-size:22px;animation:bob 6s ease-in-out infinite}
+.brand-bae{width:30px;height:30px;object-fit:contain}
+.mascot.pop{animation:pop 1.2s ease-in-out}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 @keyframes blink{0%,46%,50%,100%{transform:scaleY(1)}48%{transform:scaleY(.1)}}
 @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-20deg)}}
@@ -253,7 +252,7 @@ mark{background:var(--yellow2);border-radius:4px;padding:0 2px}
   transition:opacity .3s,transform .45s var(--spring);pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .toast .mini{width:38px;height:38px;border-radius:50%;background:#2a2a2a;display:grid;place-items:center}
-.toast .mini svg{width:34px;height:34px}
+.toast .mini{position:relative}.toast .mini img.bae{width:34px;height:34px;object-fit:contain}.toast .mini .bae-fx{font-size:13px;top:-6px;right:-6px}
 .sheet-open .toast{bottom:92px}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.15s!important}}
@@ -301,3 +300,4 @@ mark{background:var(--yellow2);border-radius:4px;padding:0 2px}
 .rs-actions .cta{flex:1;background:var(--ink);color:#fff;border-radius:999px;padding:14px;font-weight:700;font-size:15px}
 .rs-actions .cta:active{transform:scale(.97)}
 .rs-actions .cta:disabled{opacity:.4}
+.pitch-bae{width:120px;height:120px;object-fit:contain;display:block;margin-bottom:8px;animation:bob 6s ease-in-out infinite}

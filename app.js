@@ -39,49 +39,12 @@
   function save() { mem = state; try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
   let state = load();
 
-  /* ---------------- Mascot: "Bao" the steamed-bun chef ---------------- */
+  /* ---------------- Mascot: "Bae" the steamed-bun chef ---------------- */
+  /* Bae: kawaii chef onigiri (AI-generated art, mascot/). Expressions are small emoji accents next to her. */
+  const BAE_FX = { happy: "", wink: "✨", thinking: "💭", love: "💖", wow: "⭐" };
   function mascot(expr = "happy") {
-    const ink = "#2B2118";
-    const eye = (x, y) => `<ellipse cx="${x}" cy="${y}" rx="4.2" ry="5.6" fill="${ink}"/><circle cx="${x + 1.4}" cy="${y - 2}" r="1.5" fill="#fff"/>`;
-    const heart = (x, y) => `<path d="M${x} ${y + 5} l-5.5 -5.5 a3.3 3.3 0 0 1 5.5 -3.8 a3.3 3.3 0 0 1 5.5 3.8z" fill="#FF5A7A"/>`;
-    let eyes, mouth, extra = "";
-    switch (expr) {
-      case "wink":
-        eyes = `<g class="eyes">${eye(46, 71)}</g><path d="M68 72 q6 -6 12 0" stroke="${ink}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
-        mouth = `<path d="M52 82 q8 10 16 0 z" fill="#7A2E22"/>`; break;
-      case "thinking":
-        eyes = `<g class="eyes"><ellipse cx="49" cy="68" rx="4" ry="5.2" fill="${ink}"/><ellipse cx="77" cy="68" rx="4" ry="5.2" fill="${ink}"/><circle cx="50.5" cy="66" r="1.4" fill="#fff"/><circle cx="78.5" cy="66" r="1.4" fill="#fff"/></g>`;
-        mouth = `<path d="M55 86 q6 -3 11 0" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
-        extra = `<circle cx="104" cy="40" r="3" fill="#C9C3D6"/><circle cx="111" cy="30" r="4.5" fill="#C9C3D6"/><circle cx="120" cy="17" r="6.5" fill="#C9C3D6"/>`; break;
-      case "love":
-        eyes = `<g>${heart(46, 69)}${heart(74, 69)}</g>`;
-        mouth = `<path d="M51 82 q9 12 18 0 z" fill="#7A2E22"/><path d="M55 85 q5 4 10 0" fill="#FF8A8A"/>`; break;
-      case "wow":
-        eyes = `<g class="eyes"><ellipse cx="46" cy="70" rx="5" ry="6.5" fill="${ink}"/><ellipse cx="74" cy="70" rx="5" ry="6.5" fill="${ink}"/><circle cx="47.6" cy="67.5" r="1.8" fill="#fff"/><circle cx="75.6" cy="67.5" r="1.8" fill="#fff"/></g>`;
-        mouth = `<ellipse cx="60" cy="86" rx="5" ry="6" fill="#7A2E22"/>`;
-        extra = `<path d="M14 40 l3 6 6 3 -6 3 -3 6 -3 -6 -6 -3 6 -3z" fill="#FFD476"/><path d="M104 30 l2 4 4 2 -4 2 -2 4 -2 -4 -4 -2 4 -2z" fill="#FFD476"/>`; break;
-      default:
-        eyes = `<g class="eyes">${eye(46, 71)}${eye(74, 71)}</g>`;
-        mouth = `<path d="M52 82 q8 10 16 0 z" fill="#7A2E22"/>`;
-    }
-    const armL = expr === "thinking"
-      ? `<ellipse cx="66" cy="94" rx="7" ry="5.5" fill="#FFF7EA" stroke="${ink}" stroke-width="3"/>`
-      : `<ellipse cx="19" cy="86" rx="6" ry="8" fill="#FFF7EA" stroke="${ink}" stroke-width="3" transform="rotate(25 19 86)"/>`;
-    return `<svg viewBox="0 0 124 124" aria-hidden="true">
-      <ellipse cx="60" cy="114" rx="30" ry="5" fill="rgba(20,20,20,.10)"/>
-      ${armL}
-      <g class="arm-r"><ellipse cx="101" cy="84" rx="6" ry="8" fill="#FFF7EA" stroke="${ink}" stroke-width="3" transform="rotate(-25 101 84)"/></g>
-      <path d="M20 82 C20 52 38 40 60 40 C82 40 100 52 100 82 C100 100 83 108 60 108 C37 108 20 100 20 82 Z" fill="#FFF7EA" stroke="${ink}" stroke-width="3.2"/>
-      <path d="M40 50 q6 6 4 12 M80 50 q-6 6 -4 12" stroke="#E9DCC5" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <g>
-        <rect x="42" y="26" width="36" height="16" rx="5" fill="#FFD476" stroke="${ink}" stroke-width="3"/>
-        <path d="M44 28 C30 28 30 8 46 11 C48 0 72 0 74 11 C90 8 90 28 76 28 Z" fill="#fff" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M52 22 q2 -6 0 -9 M68 22 q-2 -6 0 -9" stroke="#E7E3EE" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      </g>
-      <ellipse cx="36" cy="82" rx="7" ry="4.2" fill="#FFB0A8" opacity=".85"/>
-      <ellipse cx="84" cy="82" rx="7" ry="4.2" fill="#FFB0A8" opacity=".85"/>
-      ${eyes}${mouth}${extra}
-    </svg>`;
+    return `<img class="bae" src="mascot/bae-256.webp" srcset="mascot/bae-128.webp 128w, mascot/bae-256.webp 256w, mascot/bae-512.webp 512w" sizes="(min-width: 700px) 120px, 96px"
+      alt="" draggable="false" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='mascot/bae-512.jpg'">${BAE_FX[expr] ? `<span class="bae-fx bae-${expr}" aria-hidden="true">${BAE_FX[expr]}</span>` : ""}`;
   }
   function setMascot(el, expr, anim) {
     el.innerHTML = mascot(expr);
@@ -144,7 +107,7 @@
   /* ---------------- Home ---------------- */
   let cat = "all", vegOnly = false, query = "";
   const tips = [
-    "Hi, I'm <b>Bao</b>! 👋 Seen a dish name you don't know? Search it and I'll explain.",
+    "Hi, I'm <b>Bae</b>! 👋 Seen a dish name you don't know? Search it and I'll explain.",
     "Tap any dish to see its <b>taste</b>, <b>reviews</b> and <b>how to eat it</b>.",
     "Tip: tap the 🔊 pronunciation so you can order with confidence!",
     "Can't choose? Try the <b>Help me choose</b> quiz below.",
@@ -355,7 +318,7 @@
     lastList = list; lastQ = hq;
     g.innerHTML = list.length ? list.slice(0, shown).map((d, i) => cardHTML(d, i, hq)).join("")
       : `<div class="empty" style="grid-column:1/-1"><div class="mascot" id="emptyMascot">${mascot("thinking")}</div><p><b>Hmm, I don't know “${esc(q)}” yet.</b><br>Try another spelling, or a word like “spicy”, “coffee” or “noodles”.</p></div>`;
-    $("#hint").textContent = q ? (list.length ? `Bao found ${list.length} match${list.length === 1 ? "" : "es"} ✨` : "") : "";
+    $("#hint").textContent = q ? (list.length ? `Bae found ${list.length} match${list.length === 1 ? "" : "es"} ✨` : "") : "";
     renderMore();
   }
   function renderMore() {
@@ -414,7 +377,7 @@
           <div class="nav-btns"><button class="round" id="prevStep" aria-label="Previous step" disabled>←</button><button class="round dark" id="nextStep" aria-label="Next step">→</button></div></div>
       </div>
 
-      <div class="box"><h3>💡 Bao's tip</h3><p>${esc(d.tip)}</p></div>
+      <div class="box"><h3>💡 Bae's tip</h3><p>${esc(d.tip)}</p></div>
 
       <div class="box" id="reviewsBox"><h3>💬 Reviews</h3>
         <div class="rating-row"><span class="big-rate">${d.reviews.rating.toFixed(1)}</span><div><div class="stars">${stars(d.reviews.rating)}</div><div class="muted" style="font-size:12px">sample rating</div></div></div>
@@ -718,7 +681,7 @@
   $("#quizBanner").onclick = () => { qi = 0; answers = {}; showTab("quiz"); };
 
   /* ---------------- Random picker with constraints ----------------
-     The user picks what they feel like (kind, diet, cuisine); Bao only picks inside that group.
+     The user picks what they feel like (kind, diet, cuisine); Bae only picks inside that group.
      Side items (condiments, dips, breads) are never picked, like the quiz. Sweets never include spicy dishes. */
   const R_TYPES = [["any", "🍽️", "Anything"], ["sweet", "🍰", "Sweets"], ["snack", "🥟", "Snacks"], ["meal", "🍛", "Meals"], ["drink", "🥤", "Drinks"]];
   const R_DIETS = [["any", "Any"], ["veg", "🟢 Veg only"], ["egg", "🟡 Veg + egg"], ["nonveg", "🔴 Non-veg"]];
@@ -752,7 +715,7 @@
     $("#randDiet").innerHTML = R_DIETS.map(([k, l]) => `<button class="chip ${rand.diet === k ? "on" : ""}" data-rdiet="${k}" aria-pressed="${rand.diet === k}">${l}</button>`).join("");
     $("#randCuisine").innerHTML = R_CUIS.map(k => `<button class="chip ${rand.cuisine === k ? "on" : ""}" data-rcui="${k}" aria-pressed="${rand.cuisine === k}">${k === "any" ? "🌍 Any" : CONCEPTS[k].label}</button>`).join("");
     const n = randPool().length;
-    $("#randSub").textContent = n ? `Bao will only pick from these ${n} dish${n === 1 ? "" : "es"}.` : "Nothing matches that combo. Try loosening a filter.";
+    $("#randSub").textContent = n ? `Bae will only pick from these ${n} dish${n === 1 ? "" : "es"}.` : "Nothing matches that combo. Try loosening a filter.";
     $("#randGo").disabled = !n;
     $("#randGo").textContent = rand.last ? "🎲 Another one" : "🎲 Pick for me";
   }

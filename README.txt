@@ -24,3 +24,11 @@ Open index.html in any modern browser. No install, build step or internet needed
 - Dish selection and image links partly drawn from the WorldCuisines food-kb dataset
   (huggingface.co/datasets/worldcuisines/food-kb); explanations, taste ratings, how-to-eat steps and
   tips were written for this app.
+
+Mascot
+------
+The mascot is "Bae", a kawaii chef onigiri with a pink bow (she replaced the earlier
+"Bao" steamed-bun SVG). The artwork was AI-generated for this app. Files live in mascot/:
+bae-source.jpg (original 1024px, white background), bae-512/256/128.webp (transparent
+background, made by flood-filling the white backdrop), bae-128.png, bae-512.jpg
+(white-background fallback), favicon-64.png and icon-192.png.
