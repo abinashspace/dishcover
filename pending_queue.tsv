@@ -1,488 +1,348 @@
-row	name	cuisines	countries	cat_guess
-94	Rijsttafel	['Indonesian']	['Indonesia', 'Netherlands', 'Belgium']	["side dish"]
-112	Kiping	['Filipino']	['Philippines']	["snack"]
-133	Moche	['Filipino']	['Philippines']	["dessert", "snack"]
-135	Moffle	['Japanese']	['Japan']	["dessert", "snack"]
-136	Mont lin maya	['Burmese']	['Myanmar']	["snack"]
-137	Moron	['Filipino']	['Philippines']	["dessert"]
-139	Puffed rice	['South East Asian', 'East Asian', 'South Asian']	['China', 'Taiwan', 'Japan', 'Korea', 'Philippines', 'Thailand', 'Malaysia', 'Nepal', 'India', 'Bangladesh', 'Czech Republic', 'Slovakia']	["rice"]
-166	Palitaw	['Filipino']	['Philippines']	["snack"]
-174	Pitha	['Bangladeshi', 'Indian']	['Bangladesh', 'India']	["pancake", "rice cake", "fritter"]
-187	Rice bread	['Global']	['Global']	["bread"]
-188	Rice Krispies	['Global']	['Global']	["cereal"]
-213	Tinapayan	['Filipino']	['Philippines']	["rice"]
-227	Funing big cake	['Chinese']	['China']	["cake"]
-232	Song gao	['Chinese']	['China']	["snack","cake"]
-303	Nan gyi thohk	['Burmese']	['Myanmar']	["noodle"]
-336	Jjolmyeon	['Korean']	['Korea']	["noodle"]
-359	Sevai	['Indian']	['India']	["noodle"]
-366	Kraft Dinner	['American']	['United States', 'Canada', 'Australia', 'New Zealand']	["pasta"]
-375	Nan gyi thoke	['Burmese']	['Myanmar']	["noodle", "salad"]
-393	Kripik	['Indonesian']	['Indonesia']	["potato", "snack"]
-411	Bing	['Chinese']	['China']	["bread"]
-440	Potato pancake	['Eastern European', 'Northern European']	['Russia', 'Ukraine', 'Belarus', 'Sweden']	["pancake"]
-446	Sorbet	['Iranian']	['Iran']	["dessert"]
-492	Bánh khoai mì	['Vietnamese']	['Vietnam']	["dessert"]
-509	Wotou	['Chinese']	['China']	["bread"]
-545	Chocolate pudding	['Global']	['Global']	["pudding"]
-546	Custard	['Global']	['Global']	["dessert"]
-563	Crouton	['French']	['France']	["bread"]
-570	Rusk	['Global']	['Global']	["bread"]
-571	Baked potato	['Peruvian']	['Peru']	["potato"]
-580	Animal cracker	['English']	['England']	["snack"]
-583	Apas	['Filipino']	['Philippines']	["snack"]
-588	Bath Oliver	['English']	['England']	["dessert"]
-589	Berger Cookies	['American']	['United States']	["dessert"]
-598	Camachile cookie	['Filipino']	['Philippines']	["dessert"]
-600	Carrot cake cookie	['British']	['United Kingdom']	["dessert"]
-604	Charcoal biscuit	['English']	['England']	["snack"]
-612	Cream cracker	['Irish']	['Ireland']	["snack"]
-616	Drabbelkoek	['Dutch']	['Netherlands']	["snack"]
-633	Half-moon cookie	['Filipino']	['Philippines']	["snack"]
-649	Kue gapit	['Indonesian']	['Indonesia']	["snack"]
-654	Lincoln biscuit	['Irish']	['Ireland']	["snack"]
-658	Malted milk	['English']	['England']	["snack"]
-662	Masa podrida	['Filipino']	['Philippines']	["dessert"]
-663	Nice biscuit	['British']	['England']	["snack"]
-687	Sandwich cookie	['Global']	['Global']	["cookies"]
-695	Square cookie	['Taiwanese']	['Taiwan']	["cookies", "biscuit"]
-705	Uraro	['Filipino']	['Philippines']	["cookies"]
-707	Wafer	['Global']	['Global']	["biscuit"]
-709	Countess	['French']	['France']	["cake"]
-710	E.L. Fudge	['American']	['United States']	["cookies"]
-712	Hello Panda	['Japanese']	['Japan']	["biscuit"]
-713	Lorna Doone	['Irish']	['Ireland']	["cookies"]
-714	Royal Dansk	['Danish']	['Denmark']	["cookies"]
-747	Choux pastry	['French']	['France']	["pastry"]
-750	Conejito	['Chilean']	['Chile']	["pastry"]
-757	Cronut	['French']	['France']	["doughnut"]
-773	Shorgoghal	['Azerbaijani']	['Azerbaijan']	["pastry"]
-803	Lattice	['Global']	['Global']	["pastry"]
-867	Shortcrust pastry	['Global']	['Global']	["pastry"]
-878	Toaster pastry	['Global']	['Global']	["pastry"]
-883	Turnover	['Global']	['Global']	["pastry"]
-884	Otap	['Filipino']	['Philippines']	["pastry"]
-886	Viennoiserie	['French']	['France']	["pastry"]
-921	Cream pie	['American']	['United States']	["pastry"]
-922	Cookie cake	['American']	['United States']	["pastry"]
-948	Meat pie	['Global']	['Global']	["pastry"]
-957	Pască	['Romanian', 'Moldovan']	['Romania', 'Moldova']	["pastry"]
-963	Pie à la Mode	['American']	['United States']	["pastry"]
-1017	Whole wheat bread	['American', 'Canadian', 'English']	['United States', 'Canada', 'England']	["bread"]
-1018	White bread	['Global']	['Global']	["bread"]
-1030	Sprouted bread	['Global']	['Global']	["bread"]
-1031	Spelt bread	['German', 'Austrian']	['Germany', 'Austria']	["bread"]
-1042	Rye bread	['European', 'North American', 'Israeli']	['Iceland', 'Germany', 'Austria', 'Denmark', 'Sweden', 'Norway', 'Finland', 'Estonia', 'Latvia', 'Lithuania', 'Poland', 'Belarus', 'Ukraine', 'Russia', 'Netherlands', 'Belgium', 'France', 'Czech Republic', 'Switzerland', 'Israel']	["bread"]
-1050	Bread roll	['European']	['Germany', 'Switzerland', 'Austria', 'Hungary', 'Denmark', 'Norway', 'Netherlands']	["bread"]
-1054	Brown bread	['Global']	['Global']	["bread"]
-1062	Christmas wafer	['Polish']	['Poland', 'Lithuania', 'Slovakia']	["bread"]
-1069	Cracker	['Global']	['Global']	["biscuit"]
-1072	Damper	['Australian']	['Australia', 'New Zealand', 'England']	["bread"]
-1074	Dumb bread	['American', 'English']	['United States', 'England']	["bread"]
-1078	French roll	['Global']	['Global']	["bread"]
-1090	Hoagie roll	['Global']	['Global']	["bread"]
-1091	Hot and spicy cheese bread	['American']	['United States']	["bread"]
-1096	Kitcha	['Eritrean']	['Eritrea']	["bread"]
-1101	Laobing	['Chinese']	['China']	["bread"]
-1124	Sandwich roll	['Mexican']	['Mexico']	["bread"]
-1143	Pan brioche	['Italian']	['Italy']	["bread"]
-1148	Peg bread	['Jamaican', 'West Indian']	['Jamaica']	["bread"]
-1178	Solomon Gundy	['Jamaican']	['Jamaica']	["fish"]
-1180	Bulla cake	['Jamaican']	['Jamaica']	["cake"]
-1182	Toto	['Jamaican']	['Jamaica']	["cake"]
-1186	Stroganina	['Russian']	['Russia']	["fish"]
-1187	Zakuski	['Eurasian']	['Russia']	["side dish"]
-1208	Varenye	['Russian', 'Ukrainian', 'Belarusian', 'Latvian', 'Lithuanian', 'Estonian']	['Russia', 'Ukraine', 'Belarus', 'Latvia', 'Lithuania', 'Estonia']	["dessert"]
-1211	Chrain	['Slovenian', 'Croatian', 'Belarusian', 'Czech', 'Slovak', 'German', 'Romanian', 'Latvian', 'Lithuanian', 'Polish', 'Russian', 'Ukrainian']	['Slovenia', 'Croatia', 'Belarus', 'Czech Republic', 'Slovakia', 'Germany', 'Romania', 'Latvia', 'Lithuania', 'Poland', 'Russia', 'Ukraine']	["condiment"]
-1213	Smetana	['Central European', 'Eastern European', 'Southeastern European', 'Central Asian']	['Austria', 'Czech Republic', 'Germany', 'Hungary', 'Liechtenstein', 'Poland', 'Slovakia', 'Slovenia', 'Belarus', 'Estonia', 'Latvia', 'Lithuania', 'Moldova', 'Russia', 'Ukraine', 'Albania', 'Bosnia and Herzegovina', 'Bulgaria', 'Croatia', 'Greece', 'Montenegro', 'North Macedonia', 'Romania', 'Serbia', 'Kazakhstan', 'Kyrgyzstan', 'Tajikistan', 'Turkmenistan', 'Uzbekistan']	["dairy"]
-1219	Guryev porridge	['Russian']	['Russia']	["porridge"]
-1224	Curd snack	['Russian']	['Russia']	["snack","cheese"]
-1228	Ahriche	['Moroccan']	['Morocco']	["skewer"]
-1240	Tapalapa	['Senegalese']	['Senegal']	["bread"]
-1246	Tahini	['Middle Eastern']	['Bahrain', 'Cyprus', 'Egypt', 'Iran', 'Iraq', 'Israel', 'Jordan', 'Kuwait', 'Lebanon', 'Oman', 'Palestine', 'Qatar', 'Saudi Arabia', 'Syria', 'United Arab Emirates', 'Yemen']	["condiment"]
-1255	Delele	['Zimbabwean', 'Zambian', 'Botswana', 'South African']	['Zimbabwe', 'Zambia', 'Botswana', 'South Africa']	["side dish", "vegetable"]
-1260	Echicha	['Igbo']	['Nigeria']	["vegetable"]
-1261	Edikang ikong	['Efik', 'Ibibio']	['Nigeria']	["soup"]
-1304	Mesfouf	['Tunisian', 'Algerian']	['Tunisia', 'Algeria']	["sweets"]
-1315	Iru	['Nigerian']	['Nigeria']	["beans"]
-1328	Tihlo	['Ethiopian']	['Ethiopia']	["snack"]
-1336	Galantine	['French']	['France']	["fish", "meat"]
-1341	Stuffed crust pizza	['American']	['United States']	["pizza"]
-1348	Stuffed apples	['Turkish', 'Azerbaijani']	['Turkey', 'Azerbaijan']	["fruit"]
-1349	Stuffed quinces	['Turkish', 'Azerbaijani']	['Turkey', 'Azerbaijan']	["fruit"]
-1351	Pizza snack rolls	['American']	['United States']	["pizza"]
-1376	Bagel dog	['American']	['United States']	["sandwich"]
-1406	Pocket sandwich	['Global']	['Global']	["bread"]
-1417	Banana boat	['Global']	['Global']	["dessert"]
-1419	Jelly doughnut	['German']	['Germany']	["doughnut"]
-1422	Rellenitos de plátano	['Guatemalan']	['Guatemala']	["dessert"]
-1433	Hot Pockets	['American']	['United States']	["pastry", "sandwich"]
-1469	Breakfast roll	['Irish']	['Ireland']	["bread"]
-1476	Tootsie Roll	['American']	['United States']	["snack"]
-1477	Salted Nut Roll	['American']	['United States']	["snack"]
-1478	Pork roll	['American']	['United States']	["meat"]
-1484	Fruit Roll-Ups	['American']	['United States']	["snack"]
-1485	Fruit by the Foot	['American']	['Canada', 'Mexico', 'United States', 'United Kingdom']	["snack"]
-1552	Maconochie	['Scottish']	['Scotland']	["stew"]
-1568	Seco	['Peruvian', 'Ecuadorian']	['Peru', 'Ecuador']	["stew"]
-1613	Dashi	['Japanese']	['Japan']	["stock"]
-1619	Cup Noodles	['Japanese']	['Japan']	["noodle"]
-1623	Harihari-nabe	['Japanese']	['Japan']	["soup"]
-1626	Imoni	['Japanese']	['Japan']	["soup"]
-1632	Green laver	['Japanese']	['Japan']	["seaweed"]
-1640	Tokyo Banana	['Japanese']	['Japan']	["dessert"]
-1642	Wagashi	['Japanese']	['Japan']	["confectionery"]
-1644	Red bean paste	['Japanese']	['Japan']	["sweet paste"]
-1652	Namagashi	['Japanese']	['Japan']	["sweets"]
-1654	Wasanbon	['Japanese']	['Japan']	["sweets", "sugar"]
-1658	Arare	['Japanese']	['Japan']	["snack", "rice"]
-1662	Chitose ame	['Japanese']	['Japan']	["candy"]
-1669	Higashi	['Japanese']	['Japan']	["sweets", "dessert"]
-1670	Hishi mochi	['Japanese']	['Japan']	["sweets"]
-1671	Agar	['Global']	['Global']	["sweets"]
-1678	Mizuame	['Japanese']	['Japan']	["sweetener"]
-1699	Okazu	['Japanese']	['Japan']	["side dish"]
-1725	Bath bun	['English']	['England']	["bread"]
-1733	Fruit bun	['British']	['United Kingdom', 'Jamaica', 'Australia', 'Singapore', 'India']	["bread"]
-1747	Hot dog bun	['American']	['United States']	["bread"]
-1751	Christmas ham	['Northern European']	['Sweden', 'Finland', 'United States', 'Australia', 'Philippines']	["meat"]
-1755	Ham and cheese sandwich	['British']	['United Kingdom']	["bread"]
-1758	Ham sandwich	['British']	['United Kingdom']	["bread"]
-1764	Plecing Kangkung	['Indonesian']	['Indonesia']	["vegetable"]
-1765	Cap cay	['Chinese']	['China', 'Indonesia']	["stir fry"]
-1779	Schnitz un knepp	['American']	['United States']	["meat"]
-1781	Senate bean soup	['American']	['United States']	["soup"]
-1784	Paksiw na baboy	['Filipino']	['Philippines']	["meat"]
-1788	Akok	['Malaysian']	['Malaysia']	["dessert", "snack"]
-1789	Aletria	['Portuguese']	['Portugal']	["dessert"]
-1790	Ant egg soup	['Lao', 'Thai']	['Laos', 'Thailand', 'Cambodia']	["soup"]
-1794	Fried egg	['Global']	['Global']	["egg"]
-1798	Creamed eggs on toast	['American']	['United States']	["bread"]
-1799	Boiled egg	['Global']	['Global']	["egg"]
-1800	Coddled egg	['Global']	['Global']	["egg"]
-1801	Custard pie	['American']	['United States']	["cake", "dessert"]
-1804	Divinity	['American']	['United States']	["confectionery"]
-1805	Deep fried egg	['Global']	['Global']	["egg"]
-1807	Egg butter	['Finnish']	['Finland', 'Estonia']	["egg", "spread"]
-1811	Telur pindang	['Indonesian']	['Indonesia', 'Malaysia', 'Singapore']	["egg"]
-1812	Telur gulung	['Indonesian']	['Indonesia']	["egg"]
-1814	Nargesi	['Iranian']	['Iran']	["egg"]
-1828	Egg sandwich	['Global']	['Global']	["egg", "sandwich"]
-1829	Eggs and brains	['Portuguese']	['Portugal', 'Austria', 'United States']	["egg", "meat"]
-1830	Haminados	['Spanish']	['Spain']	["egg"]
-1833	Perico	['Colombian', 'Venezuelan']	['Colombia', 'Venezuela']	["egg"]
-1837	Machacado con huevo	['Mexican']	['Mexico', 'United States']	["egg", "meat"]
-1845	Smoked egg	['Global']	['Global']	["egg"]
-1848	Scotch woodcock	['British']	['United Kingdom']	["egg", "bread"]
-1850	Salted duck egg	['East Asian']	['China']	["egg"]
-1851	Rafanata	['Italian']	['Italy']	["egg"]
-1853	Queijada	['Portuguese']	['Portugal']	["sweets"]
-1858	Omelette	['Iranian']	['Global']	["egg"]
-1860	Ovos moles	['Portuguese']	['Portugal']	["sweets", "dessert"]
-1863	Poached egg	['Global']	['Global']	["egg"]
-1864	Pickled egg	['American']	['United States']	["egg"]
-1866	Pastel de Tentúgal	['Portuguese']	['Portugal']	["sweets", "pastry"]
-1867	Chhurpi	['Nepalese']	['Nepal', 'Bhutan']	["cheese"]
-1869	Sinki	['Nepalese', 'Bhutanese']	['Nepal', 'Bhutan']	["vegetable"]
-1870	Kinema	['Nepalese', 'Bhutanese', 'Indian']	['Nepal', 'Bhutan', 'India']	["soybeans"]
-1876	Bap	['Korean']	['Korea']	["rice"]
-1877	Bean chip	['American']	['United States']	["snack"]
-1878	Wandouhuang	['Chinese']	['China']	["sweets", "dessert"]
-1880	Tortillitas de camarones	['Andalusian']	['Spain']	["snack"]
-1881	Tomato omelette	['Maharashtrian']	['India']	["pancake"]
-1882	Texas caviar	['Texan']	['United States']	["salad"]
-1885	Liangfen	['Chinese']	['China']	["porridge"]
-1887	Judd mat Gaardebounen	['Luxembourgish']	['Luxembourg']	["beans", "meat"]
-1892	Pea soup	['Greek']	['Global']	["soup"]
-1901	Peabutter	['Canadian']	['Canada']	["nuts", "beans", "spread"]
-1903	Red bean cake	['Chinese']	['China']	["beans", "cake"]
-1907	Piyaz	['Iraqi', 'Iranian', 'Turkish']	['Iraq', 'Iran', 'Turkey']	["salad"]
-1910	Matevž	['Slovenian']	['Slovenia']	["beans", "potato"]
-1911	Moro de guandules	['Dominican']	['Dominican Republic']	["beans", "rice"]
-1916	Chhena Matar Tarkari	['Indian']	['India']	["peas","cheese"]
-1921	Guernsey bean jar	['Guernsey']	['Guernsey']	["beans", "stew"]
-1928	Douzhi	['Chinese']	['China']	["beans", "beverages"]
-1930	Dilly beans	['American']	['United States']	["beans"]
-1931	Frijoles negros	['Guatemalan', 'Cuban', 'Venezuelan', 'Puerto Rican', 'Mexican']	['Guatemala', 'Cuba', 'Venezuela', 'Puerto Rico', 'Mexico', 'Argentina', 'Bolivia', 'Brazil', 'Chile', 'Colombia', 'Costa Rica', 'Cuba', 'Dominican Republic', 'Ecuador', 'El Salvador', 'Guatemala', 'Haiti', 'Honduras', 'Mexico', 'Nicaragua', 'Panama', 'Paraguay', 'Peru', 'Uruguay', 'Venezuela']	["beans"]
-1932	Deep-fried peanuts	['Global']	['Global']	["snack"]
-1934	Cowboy beans	['American']	['United States']	["stew"]
-1936	Bean salad	['Global']	['Global']	["salad"]
-1940	Bigilla	['Maltese']	['Malta']	["dip", "beans"]
-1945	Boiled peanuts	['Global']	['Global']	["beans"]
-1948	Bouneschlupp	['Luxembourgish']	['Luxembourg', 'Germany', 'Belgium', 'France']	["soup"]
-1950	Chipolata	['French']	['France', 'United Kingdom']	["meat"]
-1951	Medisterpølse	['Danish', 'Norwegian']	['Denmark', 'Norway', 'Sweden']	["meat"]
-1953	Chorizo	['Portuguese', 'Spanish']	['Portugal', 'Spain', 'Timor Leste', 'Philippines', 'India', 'Mexico', 'United States']	["meat"]
-1955	Devon	['Australian', 'New Zealand']	['Australia', 'New Zealand']	["meat"]
-1962	Salchichón	['Spanish']	['Spain', 'United States']	["meat"]
-1965	Butifarra Soledeñas	['Colombian']	['Colombia']	["meat"]
-1966	Češnovka	['Croatian']	['Croatia']	["meat"]
-1967	Moronga	['Argentinian', 'Cuban', 'Colombian', 'Puerto Rican', 'Central American', 'Mexican', 'Paraguayan']	['Argentina', 'Cuba', 'Colombia', 'Puerto Rico', 'Mexico', 'Paraguay']	["meat"]
-1973	Hog maw	['Global']	['United States']	["meat"]
-1977	Hot link sausage	['American']	['United States']	["bread"]
-1979	Goetta	['American']	['United States']	["bread"]
-1980	Breakfast sausage	['American']	['Global']	["meat"]
-1981	Bologna sausage	['Italian']	['Global']	["meat"]
-1984	Stornoway black pudding	['British']	['United Kingdom']	["meat"]
-1985	Sibiu Salami	['Romanian']	['Romania', 'Italy']	["meat"]
-1986	Botillo	['Spanish', 'Portuguese']	['Spain', 'Portugal']	["meat"]
-1987	Babic sausage	['Romanian']	['Romania', 'Bulgaria', 'Serbia']	["meat"]
-1990	Qazı	['Bashkir', 'Kazakh', 'Kyrgyz', 'Uzbek', 'Russian']	['Kazakhstan', 'Kyrgyzstan', 'Uzbekistan', 'Russia']	["meat"]
-1994	Tokushima Ramen	['Japanese']	['Japan']	["noodle", "soup"]
-1995	Qarta	['Kazakh', 'Kyrgyz', 'Uzbek']	['Kazakhstan', 'Kyrgyzstan', 'Uzbekistan']	["meat"]
-1997	Ishikari-nabe	['Japanese']	['Japan']	["hot pot"]
-2000	Burro percherón	['Mexican']	['Mexico']	["bread"]
-2013	Escamol	['Mexican']	['Mexico']	["caviar"]
-2015	Kishka	['Polish', 'Belarusian', 'Ukrainian', 'Lithuanian', 'Russian']	['Poland', 'Belarus', 'Ukraine', 'Lithuania', 'Russia', 'Latvia', 'Estonia']	["meat"]
-2017	Japanese-style peanuts	['Mexican']	['Mexico', 'Japan']	["snack", "nuts"]
-2032	Hog's pudding	['English']	['United Kingdom']	["meat"]
-2034	Doctor's sausage	['Russian']	['Russia']	["meat"]
-2035	Oxford sausage	['English']	['United Kingdom']	["meat"]
-2036	Lorne sausage	['English']	['United Kingdom']	["meat"]
-2037	Bhakkha	['Indian', 'Nepalese']	['India', 'Nepal']	["rice"]
-2038	Katiya	['Nepalese']	['Nepal']	["stew"]
-2039	Dahi	['Bangladeshi', 'Indian', 'Nepalese', 'Pakistani', 'Sri Lankan']	['Bangladesh', 'India', 'Nepal', 'Pakistan', 'Sri Lanka']	["dairy"]
-2043	Bagiya	['Indian', 'Nepalese']	['India', 'Nepal']	["pastry"]
-2045	Salsa	['Mexican']	['Mexico']	["condiment"]
-2050	Tripas	['Mexican']	['Mexico']	["meat"]
-2059	New Orleans hot sausage	['American']	['United States']	["meat"]
-2061	Beefsteak	['Australian', 'French', 'Indonesian', 'Italian', 'Mexican', 'Spanish', 'British', 'American']	['Australia', 'France', 'Indonesia', 'Italy', 'Mexico', 'Spain', 'United Kingdom', 'United States']	["meat"]
-2064	Cabrito	['Argentinian']	['Argentina', 'Mexico', 'Portugal', 'Brazil']	["meat"]
-2066	Pickled pigs' feet	['Mexican', 'Chinese', 'French', 'Scandinavian', 'American']	['Mexico', 'China', 'France', 'Germany']	["meat"]
-2071	Puntas	['Mexican']	['Mexico']	["stew"]
-2072	Chamoy	['Mexican']	['Mexico']	["sauce"]
-2075	Chipotle	['Mexican']	['Mexico']	["vegetable"]
-2078	Arroz negro	['Mexican']	['Mexico']	["rice"]
-2079	Arroz poblano	['Mexican']	['Mexico']	["rice"]
-2080	Morisqueta	['Mexican']	['Mexico']	["rice"]
-2089	Calavera	['Mexican']	['Mexico']	["sweets"]
-2093	Coconut candy	['Vietnamese']	['Vietnam', 'United States']	["sweets"]
-2094	Cochinito de piloncillo	['Mexican']	['Mexico', 'United States']	["bread"]
-2097	Frozen banana	['American']	['United States']	["dessert"]
-2098	Manjar blanco	['Spanish', 'Catalan']	['Spain', 'Peru', 'Ecuador', 'Chile', 'Bolivia', 'Colombia', 'Guatemala', 'El Salvador', 'Philippines', 'Puerto Rico', 'United Kingdom']	["dessert"]
-2099	Marquesita	['Mexican']	['Mexico']	["dessert", "pastry"]
-2101	Nicuatole	['Mexican']	['Mexico']	["dessert"]
-2108	Wensleydale cheese	['English']	['England']	["cheese"]
-2110	Scamorza	['Italian']	['Italy']	["cheese"]
-2111	Ricotta	['Italian']	['Italy']	["cheese"]
-2112	Nori	['Japanese']	['Japan', 'Korea', 'China', 'Wales', 'Ireland']	["seafood"]
-2115	Brési	['French', 'Swiss']	['France', 'Switzerland']	["meat"]
-2118	Katsuobushi	['Japanese']	['Japan']	["fish", "snack"]
-2121	Beijinho	['Brazilian']	['Brazil']	["sweets"]
-2126	Creme de papaya	['Brazilian']	['Brazil']	["dessert"]
-2128	Mané pelado	['Brazilian']	['Brazil']	["cake"]
-2129	Sagu	['Brazilian']	['Brazil']	["dessert"]
-2132	Papo-de-anjo	['Portuguese']	['Portugal']	["dessert"]
-2133	Maria-mole	['Brazilian']	['Brazil']	["dessert"]
-2135	Olho de sogra	['Brazilian']	['Brazil']	["sweets", "snack"]
-2139	Bacalhau à Zé do Pipo	['Portuguese']	['Portugal']	["casserole", "seafood", "potato"]
-2141	Panela	['Chilean', 'Bolivian', 'Peruvian', 'Mexican']	['Chile', 'Bolivia', 'Peru', 'Mexico']	["sugar"]
-2142	Čvarci	['Austrian', 'Croatian', 'Czech', 'Hungarian', 'Polish', 'Romanian', 'Serbian', 'Slovak', 'Slovenian', 'Ukrainian', 'Slavic']	['Serbia', 'Bosnia and Herzegovina', 'Croatia', 'Slovenia', 'Romania', 'Bulgaria', 'North Macedonia', 'Poland', 'Czech Republic', 'Slovakia', 'Austria', 'Hungary', 'Ukraine', 'Belarus']	["meat"]
-2143	Žganci	['Croatian', 'Slovenian']	['Slovenia', 'Croatia']	["grain"]
-2144	Brudet	['Croatian']	['Croatia', 'Montenegro']	["stew"]
-2146	Kotlovina	['Croatian']	['Croatia']	["meat", "stew"]
-2147	Meso 'z tiblice	['Croatian']	['Croatia']	["meat"]
-2148	Fritaja	['Croatian', 'Slovenian']	['Croatia', 'Slovenia']	["fritter"]
-2149	Fisherman's soup	['Croatian', 'Hungarian']	['Croatia', 'Hungary']	["soup"]
-2150	Međimurska gibanica	['Croatian']	['Croatia']	["cake"]
-2151	Frittella	['Croatian', 'Italian', 'Slovenian', 'Montenegrin']	['Croatia', 'Italy', 'Slovenia', 'Montenegro']	["doughnut", "snack"]
-2152	Grahova pretepena juha	['Croatian']	['Croatia']	["soup"]
-2153	Aspic	['Romanian', 'Moldovan', 'Korean', 'Nepalese', 'Polish', 'Belarusian', 'Russian', 'Ukrainian', 'Croatian', 'Slovenian', 'Danish', 'Georgian', 'Belgian', 'Chinese', 'Vietnamese']	['Romania', 'Moldova', 'Korea', 'Nepal', 'Poland', 'Belarus', 'Russia', 'Ukraine', 'Croatia', 'Slovenia', 'Denmark', 'Georgia', 'Belgium', 'China', 'Vietnam']	["meat", "seafood"]
-2155	Krofne	['Albanian', 'Croatian', 'Slovenian', 'Bosnian', 'Serbian', 'Slovenian', 'Macedonian']	['Croatia', 'Slovenia', 'Serbia', 'Bosnia and Herzegovina', 'Albania', 'Bulgaria', 'Greece', 'Montenegro']	["doughnut"]
-2156	Turoš	['Croatian']	['Croatia']	["cheese"]
-2157	Areias	['Portuguese']	['Portugal']	["pastry"]
-2162	Broa de Avintes	['Portuguese']	['Portugal']	["bread"]
-2163	Torricado	['Portuguese']	['Portugal']	["bread"]
-2165	Queijo de Azeitão	['Portuguese']	['Portugal']	["cheese"]
-2166	Pão de Mafra	['Portuguese']	['Portugal']	["bread"]
-2171	Roast chicken	['Global']	['Global']	["chicken"]
-2173	Xarém	['Portuguese']	['Portugal', 'Cabo Verde', 'Brazil']	["soup"]
-2175	Cebolada	['Portuguese']	['Portugal']	["stew"]
-2179	Akkawi	['Israeli', 'Palestinian', 'Lebanese', 'Jordanian', 'Syrian', 'Egyptian', 'Cypriot']	['Israel', 'Palestine', 'Lebanon', 'Jordan', 'Syria', 'Egypt', 'Cyprus']	["cheese"]
-2181	Sopa de cacahuete	['African']	['Taiwan', 'United States', 'Argentina', 'Bolivia', 'Peru', 'Ghana', 'Nigeria', 'Sierra Leone']	["soup"]
-2183	Koba	['Madagascan']	['Madagascar']	["sweets", "cake"]
-2190	Caruru	['Brazilian']	['Brazil']	["side dish"]
-2198	Malewa	['Ugandan']	['Uganda']	["vegetable"]
-2199	Apio	['Balkan Jewish']	['Bulgaria', 'Macedonia', 'Israel']	["salad"]
-2202	Kikomando	['Ugandan']	['Uganda']	["bread"]
-2205	Carrot salad	['Global']	['Global']	["salad"]
-2206	Carrot pudding	['British']	['Global']	["dessert", "sweets", "carrot"]
-2209	Kubaneh	['Yemenite Jewish']	['Israel']	["bread"]
-2213	Candied carrots	['Global']	['Global']	["side dish", "carrot"]
-2214	Porkkanalaatikko	['Finnish']	['Finland']	["casserole", "carrot"]
-2216	Compote	['Medieval European']	['France', 'England', 'Spain', 'Portugal', 'Italy', 'Denmark', 'Sweden', 'Norway', 'Poland', 'Hungary', 'Scotland', 'Ireland', 'Russia']	["dessert"]
-2217	Tzfatit	['Israeli']	['Israel']	["cheese"]
-2218	Carrot chip	['Global']	['Global']	["snack"]
-2219	Morkovcha	['South Korean']	['South Korea']	["salad"]
-2220	Rujak shanghai	['Indonesian']	['Indonesia']	["salad"]
-2225	Asinan	['Chinese Indonesian']	['Indonesia']	["snack"]
-2226	Babi hong	['Indonesian']	['Indonesia']	["meat"]
-2228	Bakwan	['Chinese', 'Indonesian']	['Indonesia']	["fritter"]
-2230	Sekoteng	['Indonesian']	['Indonesia']	["beverages"]
-2231	Guazi	['Chinese', 'Malaysian', 'Indonesian']	['China', 'Malaysia', 'Indonesia']	["snack"]
-2235	Yusheng	['Chinese']	['Malaysia', 'Singapore', 'Brunei Darussalam', 'Indonesia', 'China']	["salad"]
-2236	Tee long pan	['Malaysian', 'Singaporean', 'Indonesian']	['Malaysia', 'Singapore', 'Indonesia']	["rice"]
-2237	Soto Klethuk	['Indonesian']	['Indonesia']	["soup"]
-2238	Burmese fried rice	['Burmese']	['Myanmar']	["rice"]
-2239	Morisqueta tostada	['Filipino']	['Philippines']	["rice"]
-2240	Bagoong fried rice	['Filipino']	['Philippines']	["rice"]
-2241	Albaloo polo	['Iranian']	['Iran']	["rice"]
-2242	Bai pong moan	['Cambodian']	['Cambodia']	["rice"]
-2243	Bubur pedas	['Indonesian']	['Indonesia', 'Malaysia']	["rice"]
-2244	Charleston red rice	['American']	['United States']	["rice"]
-2245	Concoction rice	['Nigerian']	['Nigeria']	["rice"]
-2246	Diri djondjon	['Haitian']	['Haiti']	["rice"]
-2247	Kateh	['Iranian']	['Iran']	["rice"]
-2249	Chongyang cake	['Chinese']	['China']	["cake"]
-2250	Erkuai	['Chinese']	['China']	["snack"]
-2251	Mache	['Filipino']	['Philippines']	["rice","snack"]
-2252	Seenakku	['Sri Lankan']	['Sri Lanka']	["rice"]
-2254	Puffed rice cakes	['Global']	['Global']	["rice"]
-2255	Shir Berenj	['Persian']	['Iran']	["rice"]
-2256	Doodhpak	['Indian']	['India']	["dessert"]
-2258	Vanillerostbraten	['Austrian']	['Austria']	["cutlet"]
-2260	Pek nga	['Malaysian']	['Malaysia']	["pancake"]
-2261	Bein mont	['Burmese']	['Myanmar']	["pancake", "snack"]
-2262	bakabana	['Surinamese']	['Suriname']	["fritter"]
-2263	Huai'an Pingqiao tofu	['Chinese']	['China']	["tofu"]
-2265	Kwacoco	['Cameroonian']	['Cameroon']	["vegetable"]
-2266	Tekeli Pitha	['Indian']	['India']	["rice"]
-2267	Dombolo	['South African']	['South Africa']	["bread"]
-2268	Milk roll	['English', 'Japanese', 'Dutch']	['England', 'Japan', 'Netherlands']	["bread"]
-2269	Khanom sai bua	['Thai']	['Thailand']	["dessert"]
-2270	Suet pudding	['British']	['United Kingdom']	["dessert"]
-2271	Fruit hat	['British']	['United Kingdom']	["dessert"]
-2272	Butter pecan	['American']	['United States']	["dessert"]
-2273	Galletas pesquera	['Filipino']	['Philippines']	["snack"]
-2274	Moravian spice cookies	['American']	['United States']	["snack"]
-2275	Picnic biscuit	['Turkish', 'Romanian']	['Turkey', 'Romania']	["snack"]
-2277	Repostería	['Mexican']	['Mexico']	["cookies"]
-2278	Beaver Tail	['Canadian']	['Canada']	["snack", "dessert"]
-2279	Belokranjska povitica	['Slovenian']	['Slovenia']	["pastry"]
-2280	Chasan	['Chinese']	['China']	["pastry"]
-2282	Concave cake	['Chinese']	['China']	["cake"]
-2283	Croline	['Global']	['Global']	["pastry"]
-2284	Flaky pastry	['Global']	['Global']	["pastry"]
-2285	Gundain	['Tibetan']	['China']	["pastry"]
-2286	Hellimli	['Cypriot']	['Cyprus']	["bread"]
-2287	Hot water crust pastry	['English']	['England']	["pastry"]
-2288	Huff paste	['English']	['England']	["pastry"]
-2289	Inipit	['Filipino']	['Philippines']	["pastry"]
-2290	Ji dan gao	['Taiwanese']	['China']	["cake"]
-2291	Kue makmur	['Bruneian', 'Indonesian', 'Malaysian', 'Singaporean']	['Brunei Darussalam', 'Indonesia', 'Malaysia', 'Singapore']	["cake"]
-2292	Malsouka	['Global']	['Global']	["pastry"]
-2293	Mantecada	['Spanish']	['Spain']	["pastry"]
-2294	Masan	['Tibetan']	['China']	["pastry"]
-2295	Nunt	['Jewish']	['Global']	["pastry"]
-2296	Pastry heart	['American']	['United States']	["pastry"]
-2297	Yurla	['Tibetan']	['China']	["pastry"]
-2298	Chestnut pie	['French', 'Italian', 'American']	['France', 'Italy', 'United States']	["pastry"]
-2299	Flipper pie	['Canadian']	['Canada']	["pastry"]
-2300	Lanttusupikas	['Finnish']	['Finland']	["pastry"]
-2302	Milk pie	['Indonesian']	['Indonesia']	["pastry"]
-2303	Sea-pie	['American', 'Canadian']	['United States', 'Canada']	["pastry"]
-2304	Wagafi bread	['Iranian']	['Iran']	["bread"]
-2305	Ttongppang	['Korean']	['Korea']	["bread"]
-2306	Canadian white bread	['Canadian', 'American']	['Canada', 'United States']	["bread"]
-2307	Cholermus	['Swiss']	['Switzerland']	["pancake"]
-2308	Hard dough bread	['Jamaican']	['Jamaica']	["bread"]
-2309	Khubz	['Middle Eastern']	['Bahrain', 'Kuwait', 'Oman', 'Qatar', 'Saudi Arabia', 'United Arab Emirates', 'Yemen', 'Cyprus', 'Israel', 'Jordan', 'Lebanon', 'Palestine', 'Syria', 'Turkey', 'Egypt', 'Iran', 'Iraq']	["bread"]
-2310	Kisra	['Chadian', 'Sudanese', 'South Sudan', 'Algerian', 'Ugandan']	['Chad', 'Sudan', 'South Sudan', 'Algeria', 'Uganda']	["bread"]
-2311	Palianytsia	['Ukrainian']	['Ukraine']	["bread"]
-2312	Ngome	['Malian']	['Mali']	["bread"]
-2314	Penia	['Italian']	['Italy']	["bread"]
-2315	Rēwena bread	['New Zealand']	['New Zealand']	["bread"]
-2316	Grater cake	['Jamaican']	['Jamaica']	["dessert"]
-2317	Asham	['Caribbean']	['Antigua and Barbuda', 'Bahamas', 'Barbados', 'Cuba', 'Dominica', 'Dominican Republic', 'Grenada', 'Haiti', 'Jamaica', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines', 'Trinidad and Tobago']	["dessert"]
-2318	Stew peas	['Jamaican']	['Jamaica']	["stew"]
-2319	Red Peas Soup	['Jamaican']	['Jamaica']	["soup"]
-2320	Coconut drop	['Jamaican']	['Jamaica']	["dessert"]
-2321	Cocktion	['Jamaican']	['Jamaica']	["dessert"]
-2322	Tabil	['Tunisian']	['Tunisia']	["condiment"]
-2323	Fio Fio	['Nigerian']	['Nigeria']	["soup"]
-2324	Frejon	['Global']	['Global']	["soup"]
-2325	Funkaso	['Hausa', 'West African']	['Benin', 'Burkina Faso', 'Cabo Verde', "Côte d'Ivoire", 'Gambia', 'Ghana', 'Guinea', 'Guinea-Bissau', 'Liberia', 'Mali', 'Niger', 'Nigeria', 'Senegal', 'Sierra Leone', 'Togo']	["side dish", "snack"]
-2326	Skilpadjies	['South African']	['South Africa']	["meat"]
-2327	Marghi special	['Nigerian']	['Nigeria']	["soup"]
-2328	Isidudu	['South African']	['South Africa']	["porridge"]
-2329	Harqma	['Maghrebi']	['Algeria', 'Libya', 'Morocco', 'Tunisia', 'Mauritania']	["soup", "stew"]
-2331	Chaudin	['American']	['United States']	["meat"]
-2332	Stuffed ribs	['Turkish']	['Turkey']	["meat"]
-2333	Stuffed mallow	['Turkish', 'Balkan', 'Levantine']	['Turkey', 'Israel', 'Lebanon', 'Syria', 'Palestine', 'Bosnia and Herzegovina']	["meat"]
-2334	Stuffed melon	['Turkish']	['Turkey']	["fruit"]
-2335	Occhi di lupo	['Italian']	['Italy']	["pasta"]
-2336	Crappit heid	['Scottish']	['Scotland']	["fish"]
-2337	Guanime	['Puerto Rican']	['Puerto Rico']	["bread"]
-2338	Ayam pansuh	['Indonesian', 'Malaysian']	['Indonesia', 'Malaysia']	["chicken"]
-2339	Khai yat sai	['Thai']	['Thailand']	["egg"]
-2340	Ladera	['Ottoman']	['Greece', 'Turkey', 'Saudi Arabia']	["vegetable"]
-2341	Scovardă	['Romanian']	['Romania']	["pastry"]
-2342	Carpetbag steak	['British']	['United Kingdom']	["meat"]
-2343	Stuffed chine	['British']	['United Kingdom']	["meat"]
-2345	Stuffed sorrel	['Mediterranean']	['Albania', 'Bosnia and Herzegovina', 'Bulgaria', 'Croatia', 'Montenegro', 'North Macedonia', 'Romania', 'Serbia', 'Slovenia', 'Cyprus', 'Israel', 'Jordan', 'Lebanon', 'Palestine', 'Syria', 'Egypt', 'Turkey']	["vegetable"]
-2346	Braciolone	['Italian']	['Italy']	["meat"]
-2348	Zoervleis	['Belgian', 'Dutch']	['Belgium', 'Netherlands']	["stew"]
-2349	Alicot	['French']	['France']	["stew"]
-2350	Kadyos, baboy, kag langka	['Filipino']	['Philippines']	["soup"]
-2351	Kadyos, manok, kag ubad	['Filipino']	['Philippines']	["soup"]
-2352	Linat-an	['Filipino']	['Philippines']	["stew"]
-2353	Lobby	['British']	['United Kingdom']	["stew", "casserole"]
-2354	Lunggoi Katsa	['Tibetan']	['Bhutan', 'China', 'India', 'Nepal', 'Pakistan']	["stew"]
-2355	Molagoottal	['Indian']	['India']	["stew"]
-2356	Spanish fricco	['German']	['Germany']	["stew"]
-2357	Sonofabitch stew	['American']	['United States']	["stew"]
-2358	Sagamite	['American']	['United States']	["stew"]
-2359	Rubaboo	['Canadian']	['Canada']	["stew", "porridge"]
-2360	Qoiri	['Tibetan']	['Bhutan', 'China', 'India', 'Nepal', 'Pakistan']	["stew"]
-2361	Mulligan stew	['American']	['United States']	["stew"]
-2362	Ollada	['French']	['France']	["casserole"]
-2363	Pepper pot soup	['American']	['United States']	["stew"]
-2364	Ostrich stew	['South African']	['South Africa']	["stew"]
-2365	Caldillo de perro	['Spanish']	['Spain']	["soup"]
-2366	Zoque	['Spanish']	['Spain']	["soup"]
-2367	Sopa de gato	['Spanish']	['Spain']	["soup"]
-2368	Noppe	['Japanese']	['Japan']	["stew"]
-2369	Purin	['Japanese']	['Japan']	["dessert"]
-2370	Gionbō	['Japanese']	['Japan']	["sweets"]
-2371	Gyūhi	['Japanese']	['Japan']	["rice","sweets"]
-2372	Chinese flaky pastry	['Chinese']	['China']	["pastry"]
-2373	Colston bun	['English']	['England']	["bread"]
-2374	Currant bun	['European']	['Belgium', 'France', 'Germany', 'Ireland', 'Luxembourg', 'Netherlands', 'United Kingdom']	["bread"]
-2375	London bun	['British']	['United Kingdom']	["bread"]
-2376	Spiced bun	['Global']	['Global']	["bread"]
-2377	Penny bun	['English']	['England']	["bread"]
-2378	Rum roll	['American']	['United States']	["bread"]
-2379	Pebete	['Argentinian', 'Uruguayan']	['Argentina', 'Uruguay']	["bread"]
-2380	Iced bun	['British']	['United Kingdom']	["bread"]
-2381	Fläsklägg med rotmos	['Swedish']	['Sweden']	["meat"]
-2382	Amish preaching soup	['American']	['United States']	["soup"]
-2383	Khanom khai	['Thai']	['Thailand']	["dessert"]
-2384	Eggs Beauregard	['American']	['United States']	["egg"]
-2385	Shirred eggs	['French']	['France']	["egg"]
-2386	Balila	['Levantine']	['Cyprus', 'Israel', 'Jordan', 'Lebanon', 'Palestine', 'Syria']	["vegetable"]
-2387	Yun dou juan	['Chinese']	['China']	["beans"]
-2388	Ulava charu	['Andhra']	['India']	["soup"]
-2389	Purtumute	['Peruvian']	['Peru']	["stew"]
-2390	Chouriço doce	['Portuguese']	['Portugal']	["meat"]
-2391	Kulen	['Croatian', 'Serbian']	['Croatia', 'Serbia']	["meat"]
-2392	Head cheese	['Global']	['Global']	["meat"]
-2393	Calabacitas con puerco	['Mexican']	['Mexico']	["meat"]
-2394	Chilorio	['Mexican']	['Mexico']	["meat"]
-2395	Cajeta de piña y plátano	['Mexican']	['Mexico']	["paste"]
-2396	Frijoles Puercos	['Mexican']	['Mexico']	["beans","stew"]
-2397	Rauchkäse	['German']	['Germany']	["cheese"]
-2398	Balyk	['Turkish']	['Russia']	["fish"]
-2399	Bijajica	['Brazilian']	['Brazil']	["sweets", "snack"]
-2400	Manjar branco	['Brazilian']	['Brazil']	["dessert"]
-2401	Sač	['Turkish']	['Turkey', 'Albania', 'Bulgaria', 'Bosnia and Herzegovina', 'Croatia', 'Greece', 'Montenegro', 'North Macedonia', 'Serbia', 'Slovenia']	["meat", "vegetable"]
-2402	Fusi	['Croatian', 'Slovenian']	['Croatia', 'Slovenia']	["pasta"]
-2404	Bacalhau com todos	['Portuguese']	['Portugal']	["fish"]
-2405	Paio	['Spanish', 'Portuguese', 'Brazilian']	['Spain', 'Portugal', 'Brazil']	["meat"]
-2406	Chanfana	['Portuguese']	['Portugal']	["meat"]
-2407	Caravane cheese	['Mauritanian']	['Mauritania', 'Senegal']	["cheese"]
-2408	Lauzinaj	['Arab']	['Saudi Arabia']	["sweets"]
-2409	Catatos	['Angolan']	['Angola']	["meat"]
-2410	Maboké	['Centrafrican']	['Central African Republic', 'Congo']	["fish"]
-2411	Sangah	['Cameroonian']	['Cameroon']	["stew"]
-2412	Sabaayad	['Somalian', 'Djiboutian', 'Kenyan']	['Somalia', 'Kenya', 'Djibouti']	["bread"]
-2413	Rolex	['Ugandan']	['Uganda']	["bread"]
+row	name	cuisines	countries	cat_guess	status
+94	Rijsttafel	['Indonesian']	['Indonesia', 'Netherlands', 'Belgium']	"[""side dish""]"	skip:weak-or-wrong-photo
+112	Kiping	['Filipino']	['Philippines']	"[""snack""]"	skip:weak-or-wrong-photo
+133	Moche	['Filipino']	['Philippines']	"[""dessert"", ""snack""]"	skip:weak-or-wrong-photo
+135	Moffle	['Japanese']	['Japan']	"[""dessert"", ""snack""]"	skip:weak-or-wrong-photo
+136	Mont lin maya	['Burmese']	['Myanmar']	"[""snack""]"	skip:weak-or-wrong-photo
+137	Moron	['Filipino']	['Philippines']	"[""dessert""]"	skip:weak-or-wrong-photo
+139	Puffed rice	['South East Asian', 'East Asian', 'South Asian']	['China', 'Taiwan', 'Japan', 'Korea', 'Philippines', 'Thailand', 'Malaysia', 'Nepal', 'India', 'Bangladesh', 'Czech Republic', 'Slovakia']	"[""rice""]"	skip:generic
+166	Palitaw	['Filipino']	['Philippines']	"[""snack""]"	skip:weak-or-wrong-photo
+174	Pitha	['Bangladeshi', 'Indian']	['Bangladesh', 'India']	"[""pancake"", ""rice cake"", ""fritter""]"	skip:generic
+187	Rice bread	['Global']	['Global']	"[""bread""]"	skip:weak-or-wrong-photo
+188	Rice Krispies	['Global']	['Global']	"[""cereal""]"	skip:brand
+213	Tinapayan	['Filipino']	['Philippines']	"[""rice""]"	skip:no-reusable-photo
+227	Funing big cake	['Chinese']	['China']	"[""cake""]"	skip:weak-or-wrong-photo
+232	Song gao	['Chinese']	['China']	"[""snack"",""cake""]"	skip:weak-or-wrong-photo
+303	Nan gyi thohk	['Burmese']	['Myanmar']	"[""noodle""]"	skip:no-reusable-photo
+336	Jjolmyeon	['Korean']	['Korea']	"[""noodle""]"	skip:weak-or-wrong-photo
+359	Sevai	['Indian']	['India']	"[""noodle""]"	skip:weak-or-wrong-photo
+366	Kraft Dinner	['American']	['United States', 'Canada', 'Australia', 'New Zealand']	"[""pasta""]"	skip:brand
+375	Nan gyi thoke	['Burmese']	['Myanmar']	"[""noodle"", ""salad""]"	skip:no-reusable-photo
+393	Kripik	['Indonesian']	['Indonesia']	"[""potato"", ""snack""]"	skip:weak-or-wrong-photo
+411	Bing	['Chinese']	['China']	"[""bread""]"	skip:weak-or-wrong-photo
+440	Potato pancake	['Eastern European', 'Northern European']	['Russia', 'Ukraine', 'Belarus', 'Sweden']	"[""pancake""]"	skip:generic
+446	Sorbet	['Iranian']	['Iran']	"[""dessert""]"	skip:generic
+492	Bánh khoai mì	['Vietnamese']	['Vietnam']	"[""dessert""]"	skip:no-reusable-photo
+509	Wotou	['Chinese']	['China']	"[""bread""]"	skip:weak-or-wrong-photo
+545	Chocolate pudding	['Global']	['Global']	"[""pudding""]"	skip:generic
+546	Custard	['Global']	['Global']	"[""dessert""]"	skip:generic
+563	Crouton	['French']	['France']	"[""bread""]"	skip:generic
+570	Rusk	['Global']	['Global']	"[""bread""]"	skip:generic
+571	Baked potato	['Peruvian']	['Peru']	"[""potato""]"	skip:generic
+580	Animal cracker	['English']	['England']	"[""snack""]"	skip:weak-or-wrong-photo
+583	Apas	['Filipino']	['Philippines']	"[""snack""]"	skip:weak-or-wrong-photo
+588	Bath Oliver	['English']	['England']	"[""dessert""]"	skip:weak-or-wrong-photo
+589	Berger Cookies	['American']	['United States']	"[""dessert""]"	skip:weak-or-wrong-photo
+598	Camachile cookie	['Filipino']	['Philippines']	"[""dessert""]"	skip:weak-or-wrong-photo
+600	Carrot cake cookie	['British']	['United Kingdom']	"[""dessert""]"	skip:weak-or-wrong-photo
+604	Charcoal biscuit	['English']	['England']	"[""snack""]"	skip:weak-or-wrong-photo
+612	Cream cracker	['Irish']	['Ireland']	"[""snack""]"	skip:weak-or-wrong-photo
+616	Drabbelkoek	['Dutch']	['Netherlands']	"[""snack""]"	skip:weak-or-wrong-photo
+633	Half-moon cookie	['Filipino']	['Philippines']	"[""snack""]"	skip:weak-or-wrong-photo
+649	Kue gapit	['Indonesian']	['Indonesia']	"[""snack""]"	skip:weak-or-wrong-photo
+654	Lincoln biscuit	['Irish']	['Ireland']	"[""snack""]"	skip:weak-or-wrong-photo
+658	Malted milk	['English']	['England']	"[""snack""]"	skip:weak-or-wrong-photo
+662	Masa podrida	['Filipino']	['Philippines']	"[""dessert""]"	skip:weak-or-wrong-photo
+663	Nice biscuit	['British']	['England']	"[""snack""]"	skip:weak-or-wrong-photo
+687	Sandwich cookie	['Global']	['Global']	"[""cookies""]"	skip:generic
+695	Square cookie	['Taiwanese']	['Taiwan']	"[""cookies"", ""biscuit""]"	skip:generic
+705	Uraro	['Filipino']	['Philippines']	"[""cookies""]"	skip:weak-or-wrong-photo
+707	Wafer	['Global']	['Global']	"[""biscuit""]"	skip:generic
+709	Countess	['French']	['France']	"[""cake""]"	skip:weak-or-wrong-photo
+710	E.L. Fudge	['American']	['United States']	"[""cookies""]"	skip:brand
+712	Hello Panda	['Japanese']	['Japan']	"[""biscuit""]"	skip:brand
+713	Lorna Doone	['Irish']	['Ireland']	"[""cookies""]"	skip:brand
+714	Royal Dansk	['Danish']	['Denmark']	"[""cookies""]"	skip:brand
+747	Choux pastry	['French']	['France']	"[""pastry""]"	skip:generic
+750	Conejito	['Chilean']	['Chile']	"[""pastry""]"	skip:weak-or-wrong-photo
+757	Cronut	['French']	['France']	"[""doughnut""]"	skip:weak-or-wrong-photo
+773	Shorgoghal	['Azerbaijani']	['Azerbaijan']	"[""pastry""]"	skip:no-reusable-photo
+803	Lattice	['Global']	['Global']	"[""pastry""]"	skip:generic
+867	Shortcrust pastry	['Global']	['Global']	"[""pastry""]"	skip:generic
+878	Toaster pastry	['Global']	['Global']	"[""pastry""]"	skip:generic
+883	Turnover	['Global']	['Global']	"[""pastry""]"	skip:generic
+886	Viennoiserie	['French']	['France']	"[""pastry""]"	skip:generic
+921	Cream pie	['American']	['United States']	"[""pastry""]"	skip:generic
+922	Cookie cake	['American']	['United States']	"[""pastry""]"	skip:generic
+948	Meat pie	['Global']	['Global']	"[""pastry""]"	skip:generic
+957	Pască	['Romanian', 'Moldovan']	['Romania', 'Moldova']	"[""pastry""]"	skip:weak-or-wrong-photo
+1017	Whole wheat bread	['American', 'Canadian', 'English']	['United States', 'Canada', 'England']	"[""bread""]"	skip:generic
+1018	White bread	['Global']	['Global']	"[""bread""]"	skip:generic
+1030	Sprouted bread	['Global']	['Global']	"[""bread""]"	skip:generic
+1031	Spelt bread	['German', 'Austrian']	['Germany', 'Austria']	"[""bread""]"	skip:generic
+1042	Rye bread	['European', 'North American', 'Israeli']	['Iceland', 'Germany', 'Austria', 'Denmark', 'Sweden', 'Norway', 'Finland', 'Estonia', 'Latvia', 'Lithuania', 'Poland', 'Belarus', 'Ukraine', 'Russia', 'Netherlands', 'Belgium', 'France', 'Czech Republic', 'Switzerland', 'Israel']	"[""bread""]"	skip:generic
+1050	Bread roll	['European']	['Germany', 'Switzerland', 'Austria', 'Hungary', 'Denmark', 'Norway', 'Netherlands']	"[""bread""]"	skip:generic
+1054	Brown bread	['Global']	['Global']	"[""bread""]"	skip:generic
+1062	Christmas wafer	['Polish']	['Poland', 'Lithuania', 'Slovakia']	"[""bread""]"	skip:weak-or-wrong-photo
+1069	Cracker	['Global']	['Global']	"[""biscuit""]"	skip:generic
+1072	Damper	['Australian']	['Australia', 'New Zealand', 'England']	"[""bread""]"	skip:weak-or-wrong-photo
+1074	Dumb bread	['American', 'English']	['United States', 'England']	"[""bread""]"	skip:weak-or-wrong-photo
+1078	French roll	['Global']	['Global']	"[""bread""]"	skip:generic
+1090	Hoagie roll	['Global']	['Global']	"[""bread""]"	skip:generic
+1091	Hot and spicy cheese bread	['American']	['United States']	"[""bread""]"	skip:weak-or-wrong-photo
+1096	Kitcha	['Eritrean']	['Eritrea']	"[""bread""]"	skip:weak-or-wrong-photo
+1101	Laobing	['Chinese']	['China']	"[""bread""]"	skip:weak-or-wrong-photo
+1124	Sandwich roll	['Mexican']	['Mexico']	"[""bread""]"	skip:generic
+1143	Pan brioche	['Italian']	['Italy']	"[""bread""]"	skip:weak-or-wrong-photo
+1148	Peg bread	['Jamaican', 'West Indian']	['Jamaica']	"[""bread""]"	skip:weak-or-wrong-photo
+1178	Solomon Gundy	['Jamaican']	['Jamaica']	"[""fish""]"	skip:weak-or-wrong-photo
+1180	Bulla cake	['Jamaican']	['Jamaica']	"[""cake""]"	skip:weak-or-wrong-photo
+1182	Toto	['Jamaican']	['Jamaica']	"[""cake""]"	skip:weak-or-wrong-photo
+1186	Stroganina	['Russian']	['Russia']	"[""fish""]"	skip:weak-or-wrong-photo
+1187	Zakuski	['Eurasian']	['Russia']	"[""side dish""]"	skip:weak-or-wrong-photo
+1208	Varenye	['Russian', 'Ukrainian', 'Belarusian', 'Latvian', 'Lithuanian', 'Estonian']	['Russia', 'Ukraine', 'Belarus', 'Latvia', 'Lithuania', 'Estonia']	"[""dessert""]"	skip:ingredient
+1211	Chrain	['Slovenian', 'Croatian', 'Belarusian', 'Czech', 'Slovak', 'German', 'Romanian', 'Latvian', 'Lithuanian', 'Polish', 'Russian', 'Ukrainian']	['Slovenia', 'Croatia', 'Belarus', 'Czech Republic', 'Slovakia', 'Germany', 'Romania', 'Latvia', 'Lithuania', 'Poland', 'Russia', 'Ukraine']	"[""condiment""]"	skip:weak-or-wrong-photo
+1213	Smetana	['Central European', 'Eastern European', 'Southeastern European', 'Central Asian']	['Austria', 'Czech Republic', 'Germany', 'Hungary', 'Liechtenstein', 'Poland', 'Slovakia', 'Slovenia', 'Belarus', 'Estonia', 'Latvia', 'Lithuania', 'Moldova', 'Russia', 'Ukraine', 'Albania', 'Bosnia and Herzegovina', 'Bulgaria', 'Croatia', 'Greece', 'Montenegro', 'North Macedonia', 'Romania', 'Serbia', 'Kazakhstan', 'Kyrgyzstan', 'Tajikistan', 'Turkmenistan', 'Uzbekistan']	"[""dairy""]"	skip:ingredient
+1219	Guryev porridge	['Russian']	['Russia']	"[""porridge""]"	skip:no-reusable-photo
+1224	Curd snack	['Russian']	['Russia']	"[""snack"",""cheese""]"	skip:ingredient
+1228	Ahriche	['Moroccan']	['Morocco']	"[""skewer""]"	skip:weak-or-wrong-photo
+1240	Tapalapa	['Senegalese']	['Senegal']	"[""bread""]"	skip:weak-or-wrong-photo
+1246	Tahini	['Middle Eastern']	['Bahrain', 'Cyprus', 'Egypt', 'Iran', 'Iraq', 'Israel', 'Jordan', 'Kuwait', 'Lebanon', 'Oman', 'Palestine', 'Qatar', 'Saudi Arabia', 'Syria', 'United Arab Emirates', 'Yemen']	"[""condiment""]"	skip:ingredient
+1255	Delele	['Zimbabwean', 'Zambian', 'Botswana', 'South African']	['Zimbabwe', 'Zambia', 'Botswana', 'South Africa']	"[""side dish"", ""vegetable""]"	skip:weak-or-wrong-photo
+1260	Echicha	['Igbo']	['Nigeria']	"[""vegetable""]"	skip:weak-or-wrong-photo
+1261	Edikang ikong	['Efik', 'Ibibio']	['Nigeria']	"[""soup""]"	skip:weak-or-wrong-photo
+1304	Mesfouf	['Tunisian', 'Algerian']	['Tunisia', 'Algeria']	"[""sweets""]"	skip:weak-or-wrong-photo
+1315	Iru	['Nigerian']	['Nigeria']	"[""beans""]"	skip:ingredient
+1328	Tihlo	['Ethiopian']	['Ethiopia']	"[""snack""]"	skip:weak-or-wrong-photo
+1336	Galantine	['French']	['France']	"[""fish"", ""meat""]"	skip:weak-or-wrong-photo
+1348	Stuffed apples	['Turkish', 'Azerbaijani']	['Turkey', 'Azerbaijan']	"[""fruit""]"	skip:weak-or-wrong-photo
+1349	Stuffed quinces	['Turkish', 'Azerbaijani']	['Turkey', 'Azerbaijan']	"[""fruit""]"	skip:weak-or-wrong-photo
+1351	Pizza snack rolls	['American']	['United States']	"[""pizza""]"	skip:brand
+1376	Bagel dog	['American']	['United States']	"[""sandwich""]"	skip:weak-or-wrong-photo
+1406	Pocket sandwich	['Global']	['Global']	"[""bread""]"	skip:generic
+1417	Banana boat	['Global']	['Global']	"[""dessert""]"	skip:weak-or-wrong-photo
+1419	Jelly doughnut	['German']	['Germany']	"[""doughnut""]"	skip:generic
+1422	Rellenitos de plátano	['Guatemalan']	['Guatemala']	"[""dessert""]"	skip:weak-or-wrong-photo
+1433	Hot Pockets	['American']	['United States']	"[""pastry"", ""sandwich""]"	skip:brand
+1469	Breakfast roll	['Irish']	['Ireland']	"[""bread""]"	skip:generic
+1476	Tootsie Roll	['American']	['United States']	"[""snack""]"	skip:brand
+1477	Salted Nut Roll	['American']	['United States']	"[""snack""]"	skip:brand
+1478	Pork roll	['American']	['United States']	"[""meat""]"	skip:weak-or-wrong-photo
+1484	Fruit Roll-Ups	['American']	['United States']	"[""snack""]"	skip:brand
+1485	Fruit by the Foot	['American']	['Canada', 'Mexico', 'United States', 'United Kingdom']	"[""snack""]"	skip:brand
+1552	Maconochie	['Scottish']	['Scotland']	"[""stew""]"	skip:weak-or-wrong-photo
+1568	Seco	['Peruvian', 'Ecuadorian']	['Peru', 'Ecuador']	"[""stew""]"	skip:weak-or-wrong-photo
+1613	Dashi	['Japanese']	['Japan']	"[""stock""]"	skip:ingredient
+1619	Cup Noodles	['Japanese']	['Japan']	"[""noodle""]"	skip:brand
+1623	Harihari-nabe	['Japanese']	['Japan']	"[""soup""]"	skip:offlimits
+1632	Green laver	['Japanese']	['Japan']	"[""seaweed""]"	skip:ingredient
+1640	Tokyo Banana	['Japanese']	['Japan']	"[""dessert""]"	skip:brand
+1642	Wagashi	['Japanese']	['Japan']	"[""confectionery""]"	skip:generic
+1644	Red bean paste	['Japanese']	['Japan']	"[""sweet paste""]"	skip:ingredient
+1652	Namagashi	['Japanese']	['Japan']	"[""sweets""]"	skip:generic
+1654	Wasanbon	['Japanese']	['Japan']	"[""sweets"", ""sugar""]"	skip:ingredient
+1658	Arare	['Japanese']	['Japan']	"[""snack"", ""rice""]"	skip:ingredient
+1662	Chitose ame	['Japanese']	['Japan']	"[""candy""]"	skip:weak-or-wrong-photo
+1669	Higashi	['Japanese']	['Japan']	"[""sweets"", ""dessert""]"	skip:generic
+1671	Agar	['Global']	['Global']	"[""sweets""]"	skip:ingredient
+1678	Mizuame	['Japanese']	['Japan']	"[""sweetener""]"	skip:ingredient
+1699	Okazu	['Japanese']	['Japan']	"[""side dish""]"	skip:generic
+1725	Bath bun	['English']	['England']	"[""bread""]"	skip:weak-or-wrong-photo
+1733	Fruit bun	['British']	['United Kingdom', 'Jamaica', 'Australia', 'Singapore', 'India']	"[""bread""]"	skip:weak-or-wrong-photo
+1747	Hot dog bun	['American']	['United States']	"[""bread""]"	skip:generic
+1751	Christmas ham	['Northern European']	['Sweden', 'Finland', 'United States', 'Australia', 'Philippines']	"[""meat""]"	skip:weak-or-wrong-photo
+1755	Ham and cheese sandwich	['British']	['United Kingdom']	"[""bread""]"	skip:generic
+1758	Ham sandwich	['British']	['United Kingdom']	"[""bread""]"	skip:generic
+1790	Ant egg soup	['Lao', 'Thai']	['Laos', 'Thailand', 'Cambodia']	"[""soup""]"	skip:offlimits
+1794	Fried egg	['Global']	['Global']	"[""egg""]"	skip:generic
+1799	Boiled egg	['Global']	['Global']	"[""egg""]"	skip:generic
+1800	Coddled egg	['Global']	['Global']	"[""egg""]"	skip:generic
+1801	Custard pie	['American']	['United States']	"[""cake"", ""dessert""]"	skip:generic
+1805	Deep fried egg	['Global']	['Global']	"[""egg""]"	skip:generic
+1807	Egg butter	['Finnish']	['Finland', 'Estonia']	"[""egg"", ""spread""]"	skip:weak-or-wrong-photo
+1828	Egg sandwich	['Global']	['Global']	"[""egg"", ""sandwich""]"	skip:generic
+1829	Eggs and brains	['Portuguese']	['Portugal', 'Austria', 'United States']	"[""egg"", ""meat""]"	skip:weak-or-wrong-photo
+1845	Smoked egg	['Global']	['Global']	"[""egg""]"	skip:generic
+1853	Queijada	['Portuguese']	['Portugal']	"[""sweets""]"	skip:weak-or-wrong-photo
+1858	Omelette	['Iranian']	['Global']	"[""egg""]"	skip:generic
+1863	Poached egg	['Global']	['Global']	"[""egg""]"	skip:generic
+1864	Pickled egg	['American']	['United States']	"[""egg""]"	skip:generic
+1867	Chhurpi	['Nepalese']	['Nepal', 'Bhutan']	"[""cheese""]"	skip:ingredient
+1869	Sinki	['Nepalese', 'Bhutanese']	['Nepal', 'Bhutan']	"[""vegetable""]"	skip:ingredient
+1870	Kinema	['Nepalese', 'Bhutanese', 'Indian']	['Nepal', 'Bhutan', 'India']	"[""soybeans""]"	skip:ingredient
+1876	Bap	['Korean']	['Korea']	"[""rice""]"	skip:weak-or-wrong-photo
+1877	Bean chip	['American']	['United States']	"[""snack""]"	skip:generic
+1885	Liangfen	['Chinese']	['China']	"[""porridge""]"	skip:weak-or-wrong-photo
+1901	Peabutter	['Canadian']	['Canada']	"[""nuts"", ""beans"", ""spread""]"	skip:weak-or-wrong-photo
+1930	Dilly beans	['American']	['United States']	"[""beans""]"	skip:no-reusable-photo
+1932	Deep-fried peanuts	['Global']	['Global']	"[""snack""]"	skip:generic
+1934	Cowboy beans	['American']	['United States']	"[""stew""]"	skip:weak-or-wrong-photo
+1936	Bean salad	['Global']	['Global']	"[""salad""]"	skip:generic
+1940	Bigilla	['Maltese']	['Malta']	"[""dip"", ""beans""]"	skip:weak-or-wrong-photo
+1945	Boiled peanuts	['Global']	['Global']	"[""beans""]"	skip:generic
+1950	Chipolata	['French']	['France', 'United Kingdom']	"[""meat""]"	skip:weak-or-wrong-photo
+1955	Devon	['Australian', 'New Zealand']	['Australia', 'New Zealand']	"[""meat""]"	skip:weak-or-wrong-photo
+1980	Breakfast sausage	['American']	['Global']	"[""meat""]"	skip:generic
+1990	Qazı	['Bashkir', 'Kazakh', 'Kyrgyz', 'Uzbek', 'Russian']	['Kazakhstan', 'Kyrgyzstan', 'Uzbekistan', 'Russia']	"[""meat""]"	skip:weak-or-wrong-photo
+1995	Qarta	['Kazakh', 'Kyrgyz', 'Uzbek']	['Kazakhstan', 'Kyrgyzstan', 'Uzbekistan']	"[""meat""]"	skip:weak-or-wrong-photo
+2013	Escamol	['Mexican']	['Mexico']	"[""caviar""]"	skip:offlimits
+2017	Japanese-style peanuts	['Mexican']	['Mexico', 'Japan']	"[""snack"", ""nuts""]"	skip:weak-or-wrong-photo
+2036	Lorne sausage	['English']	['United Kingdom']	"[""meat""]"	skip:weak-or-wrong-photo
+2037	Bhakkha	['Indian', 'Nepalese']	['India', 'Nepal']	"[""rice""]"	skip:weak-or-wrong-photo
+2039	Dahi	['Bangladeshi', 'Indian', 'Nepalese', 'Pakistani', 'Sri Lankan']	['Bangladesh', 'India', 'Nepal', 'Pakistan', 'Sri Lanka']	"[""dairy""]"	skip:ingredient
+2045	Salsa	['Mexican']	['Mexico']	"[""condiment""]"	skip:ingredient
+2050	Tripas	['Mexican']	['Mexico']	"[""meat""]"	skip:weak-or-wrong-photo
+2061	Beefsteak	['Australian', 'French', 'Indonesian', 'Italian', 'Mexican', 'Spanish', 'British', 'American']	['Australia', 'France', 'Indonesia', 'Italy', 'Mexico', 'Spain', 'United Kingdom', 'United States']	"[""meat""]"	skip:generic
+2072	Chamoy	['Mexican']	['Mexico']	"[""sauce""]"	skip:weak-or-wrong-photo
+2075	Chipotle	['Mexican']	['Mexico']	"[""vegetable""]"	skip:ingredient
+2093	Coconut candy	['Vietnamese']	['Vietnam', 'United States']	"[""sweets""]"	skip:generic
+2097	Frozen banana	['American']	['United States']	"[""dessert""]"	skip:generic
+2099	Marquesita	['Mexican']	['Mexico']	"[""dessert"", ""pastry""]"	skip:weak-or-wrong-photo
+2108	Wensleydale cheese	['English']	['England']	"[""cheese""]"	skip:ingredient
+2110	Scamorza	['Italian']	['Italy']	"[""cheese""]"	skip:ingredient
+2111	Ricotta	['Italian']	['Italy']	"[""cheese""]"	skip:ingredient
+2112	Nori	['Japanese']	['Japan', 'Korea', 'China', 'Wales', 'Ireland']	"[""seafood""]"	skip:ingredient
+2115	Brési	['French', 'Swiss']	['France', 'Switzerland']	"[""meat""]"	skip:ingredient
+2118	Katsuobushi	['Japanese']	['Japan']	"[""fish"", ""snack""]"	skip:ingredient
+2121	Beijinho	['Brazilian']	['Brazil']	"[""sweets""]"	skip:weak-or-wrong-photo
+2141	Panela	['Chilean', 'Bolivian', 'Peruvian', 'Mexican']	['Chile', 'Bolivia', 'Peru', 'Mexico']	"[""sugar""]"	skip:ingredient
+2142	Čvarci	['Austrian', 'Croatian', 'Czech', 'Hungarian', 'Polish', 'Romanian', 'Serbian', 'Slovak', 'Slovenian', 'Ukrainian', 'Slavic']	['Serbia', 'Bosnia and Herzegovina', 'Croatia', 'Slovenia', 'Romania', 'Bulgaria', 'North Macedonia', 'Poland', 'Czech Republic', 'Slovakia', 'Austria', 'Hungary', 'Ukraine', 'Belarus']	"[""meat""]"	skip:weak-or-wrong-photo
+2147	Meso 'z tiblice	['Croatian']	['Croatia']	"[""meat""]"	skip:weak-or-wrong-photo
+2153	Aspic	['Romanian', 'Moldovan', 'Korean', 'Nepalese', 'Polish', 'Belarusian', 'Russian', 'Ukrainian', 'Croatian', 'Slovenian', 'Danish', 'Georgian', 'Belgian', 'Chinese', 'Vietnamese']	['Romania', 'Moldova', 'Korea', 'Nepal', 'Poland', 'Belarus', 'Russia', 'Ukraine', 'Croatia', 'Slovenia', 'Denmark', 'Georgia', 'Belgium', 'China', 'Vietnam']	"[""meat"", ""seafood""]"	skip:generic
+2156	Turoš	['Croatian']	['Croatia']	"[""cheese""]"	skip:weak-or-wrong-photo
+2165	Queijo de Azeitão	['Portuguese']	['Portugal']	"[""cheese""]"	skip:ingredient
+2171	Roast chicken	['Global']	['Global']	"[""chicken""]"	skip:generic
+2179	Akkawi	['Israeli', 'Palestinian', 'Lebanese', 'Jordanian', 'Syrian', 'Egyptian', 'Cypriot']	['Israel', 'Palestine', 'Lebanon', 'Jordan', 'Syria', 'Egypt', 'Cyprus']	"[""cheese""]"	skip:ingredient
+2198	Malewa	['Ugandan']	['Uganda']	"[""vegetable""]"	skip:weak-or-wrong-photo
+2205	Carrot salad	['Global']	['Global']	"[""salad""]"	skip:generic
+2213	Candied carrots	['Global']	['Global']	"[""side dish"", ""carrot""]"	skip:generic
+2216	Compote	['Medieval European']	['France', 'England', 'Spain', 'Portugal', 'Italy', 'Denmark', 'Sweden', 'Norway', 'Poland', 'Hungary', 'Scotland', 'Ireland', 'Russia']	"[""dessert""]"	skip:generic
+2217	Tzfatit	['Israeli']	['Israel']	"[""cheese""]"	skip:ingredient
+2218	Carrot chip	['Global']	['Global']	"[""snack""]"	skip:generic
+2231	Guazi	['Chinese', 'Malaysian', 'Indonesian']	['China', 'Malaysia', 'Indonesia']	"[""snack""]"	skip:ingredient
+2235	Yusheng	['Chinese']	['Malaysia', 'Singapore', 'Brunei Darussalam', 'Indonesia', 'China']	"[""salad""]"	skip:weak-or-wrong-photo
+2237	Soto Klethuk	['Indonesian']	['Indonesia']	"[""soup""]"	skip:no-reusable-photo
+2238	Burmese fried rice	['Burmese']	['Myanmar']	"[""rice""]"	skip:weak-or-wrong-photo
+2239	Morisqueta tostada	['Filipino']	['Philippines']	"[""rice""]"	skip:no-reusable-photo
+2240	Bagoong fried rice	['Filipino']	['Philippines']	"[""rice""]"	skip:no-reusable-photo
+2241	Albaloo polo	['Iranian']	['Iran']	"[""rice""]"	skip:weak-or-wrong-photo
+2242	Bai pong moan	['Cambodian']	['Cambodia']	"[""rice""]"	skip:no-reusable-photo
+2243	Bubur pedas	['Indonesian']	['Indonesia', 'Malaysia']	"[""rice""]"	skip:weak-or-wrong-photo
+2245	Concoction rice	['Nigerian']	['Nigeria']	"[""rice""]"	skip:no-reusable-photo
+2246	Diri djondjon	['Haitian']	['Haiti']	"[""rice""]"	skip:no-reusable-photo
+2247	Kateh	['Iranian']	['Iran']	"[""rice""]"	skip:no-reusable-photo
+2250	Erkuai	['Chinese']	['China']	"[""snack""]"	skip:weak-or-wrong-photo
+2251	Mache	['Filipino']	['Philippines']	"[""rice"",""snack""]"	skip:no-reusable-photo
+2252	Seenakku	['Sri Lankan']	['Sri Lanka']	"[""rice""]"	skip:no-reusable-photo
+2254	Puffed rice cakes	['Global']	['Global']	"[""rice""]"	skip:weak-or-wrong-photo
+2255	Shir Berenj	['Persian']	['Iran']	"[""rice""]"	skip:no-reusable-photo
+2256	Doodhpak	['Indian']	['India']	"[""dessert""]"	skip:weak-or-wrong-photo
+2258	Vanillerostbraten	['Austrian']	['Austria']	"[""cutlet""]"	skip:no-reusable-photo
+2260	Pek nga	['Malaysian']	['Malaysia']	"[""pancake""]"	skip:no-reusable-photo
+2261	Bein mont	['Burmese']	['Myanmar']	"[""pancake"", ""snack""]"	skip:no-reusable-photo
+2262	bakabana	['Surinamese']	['Suriname']	"[""fritter""]"	skip:no-reusable-photo
+2263	Huai'an Pingqiao tofu	['Chinese']	['China']	"[""tofu""]"	skip:no-reusable-photo
+2265	Kwacoco	['Cameroonian']	['Cameroon']	"[""vegetable""]"	skip:weak-or-wrong-photo
+2266	Tekeli Pitha	['Indian']	['India']	"[""rice""]"	skip:no-reusable-photo
+2267	Dombolo	['South African']	['South Africa']	"[""bread""]"	skip:no-reusable-photo
+2268	Milk roll	['English', 'Japanese', 'Dutch']	['England', 'Japan', 'Netherlands']	"[""bread""]"	skip:generic
+2269	Khanom sai bua	['Thai']	['Thailand']	"[""dessert""]"	skip:no-reusable-photo
+2270	Suet pudding	['British']	['United Kingdom']	"[""dessert""]"	skip:no-reusable-photo
+2271	Fruit hat	['British']	['United Kingdom']	"[""dessert""]"	skip:weak-or-wrong-photo
+2272	Butter pecan	['American']	['United States']	"[""dessert""]"	skip:generic
+2273	Galletas pesquera	['Filipino']	['Philippines']	"[""snack""]"	skip:no-reusable-photo
+2275	Picnic biscuit	['Turkish', 'Romanian']	['Turkey', 'Romania']	"[""snack""]"	skip:no-reusable-photo
+2277	Repostería	['Mexican']	['Mexico']	"[""cookies""]"	skip:generic
+2278	Beaver Tail	['Canadian']	['Canada']	"[""snack"", ""dessert""]"	skip:no-reusable-photo
+2279	Belokranjska povitica	['Slovenian']	['Slovenia']	"[""pastry""]"	skip:no-reusable-photo
+2280	Chasan	['Chinese']	['China']	"[""pastry""]"	skip:no-reusable-photo
+2283	Croline	['Global']	['Global']	"[""pastry""]"	skip:no-reusable-photo
+2284	Flaky pastry	['Global']	['Global']	"[""pastry""]"	skip:generic
+2285	Gundain	['Tibetan']	['China']	"[""pastry""]"	skip:ingredient
+2286	Hellimli	['Cypriot']	['Cyprus']	"[""bread""]"	skip:weak-or-wrong-photo
+2287	Hot water crust pastry	['English']	['England']	"[""pastry""]"	skip:generic
+2288	Huff paste	['English']	['England']	"[""pastry""]"	skip:generic
+2292	Malsouka	['Global']	['Global']	"[""pastry""]"	skip:weak-or-wrong-photo
+2293	Mantecada	['Spanish']	['Spain']	"[""pastry""]"	skip:weak-or-wrong-photo
+2294	Masan	['Tibetan']	['China']	"[""pastry""]"	skip:no-reusable-photo
+2295	Nunt	['Jewish']	['Global']	"[""pastry""]"	skip:no-reusable-photo
+2296	Pastry heart	['American']	['United States']	"[""pastry""]"	skip:generic
+2297	Yurla	['Tibetan']	['China']	"[""pastry""]"	skip:no-reusable-photo
+2298	Chestnut pie	['French', 'Italian', 'American']	['France', 'Italy', 'United States']	"[""pastry""]"	skip:weak-or-wrong-photo
+2300	Lanttusupikas	['Finnish']	['Finland']	"[""pastry""]"	skip:no-reusable-photo
+2303	Sea-pie	['American', 'Canadian']	['United States', 'Canada']	"[""pastry""]"	skip:no-reusable-photo
+2304	Wagafi bread	['Iranian']	['Iran']	"[""bread""]"	skip:no-reusable-photo
+2306	Canadian white bread	['Canadian', 'American']	['Canada', 'United States']	"[""bread""]"	skip:generic
+2307	Cholermus	['Swiss']	['Switzerland']	"[""pancake""]"	skip:no-reusable-photo
+2308	Hard dough bread	['Jamaican']	['Jamaica']	"[""bread""]"	skip:weak-or-wrong-photo
+2309	Khubz	['Middle Eastern']	['Bahrain', 'Kuwait', 'Oman', 'Qatar', 'Saudi Arabia', 'United Arab Emirates', 'Yemen', 'Cyprus', 'Israel', 'Jordan', 'Lebanon', 'Palestine', 'Syria', 'Turkey', 'Egypt', 'Iran', 'Iraq']	"[""bread""]"	skip:generic
+2312	Ngome	['Malian']	['Mali']	"[""bread""]"	skip:no-reusable-photo
+2314	Penia	['Italian']	['Italy']	"[""bread""]"	skip:no-reusable-photo
+2316	Grater cake	['Jamaican']	['Jamaica']	"[""dessert""]"	skip:no-reusable-photo
+2317	Asham	['Caribbean']	['Antigua and Barbuda', 'Bahamas', 'Barbados', 'Cuba', 'Dominica', 'Dominican Republic', 'Grenada', 'Haiti', 'Jamaica', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines', 'Trinidad and Tobago']	"[""dessert""]"	skip:no-reusable-photo
+2320	Coconut drop	['Jamaican']	['Jamaica']	"[""dessert""]"	skip:no-reusable-photo
+2321	Cocktion	['Jamaican']	['Jamaica']	"[""dessert""]"	skip:no-reusable-photo
+2322	Tabil	['Tunisian']	['Tunisia']	"[""condiment""]"	skip:ingredient
+2323	Fio Fio	['Nigerian']	['Nigeria']	"[""soup""]"	skip:no-reusable-photo
+2324	Frejon	['Global']	['Global']	"[""soup""]"	skip:no-reusable-photo
+2326	Skilpadjies	['South African']	['South Africa']	"[""meat""]"	skip:no-reusable-photo
+2328	Isidudu	['South African']	['South Africa']	"[""porridge""]"	skip:no-reusable-photo
+2331	Chaudin	['American']	['United States']	"[""meat""]"	skip:no-reusable-photo
+2332	Stuffed ribs	['Turkish']	['Turkey']	"[""meat""]"	skip:generic
+2334	Stuffed melon	['Turkish']	['Turkey']	"[""fruit""]"	skip:generic
+2335	Occhi di lupo	['Italian']	['Italy']	"[""pasta""]"	skip:no-reusable-photo
+2336	Crappit heid	['Scottish']	['Scotland']	"[""fish""]"	skip:no-reusable-photo
+2337	Guanime	['Puerto Rican']	['Puerto Rico']	"[""bread""]"	skip:no-reusable-photo
+2339	Khai yat sai	['Thai']	['Thailand']	"[""egg""]"	skip:no-reusable-photo
+2340	Ladera	['Ottoman']	['Greece', 'Turkey', 'Saudi Arabia']	"[""vegetable""]"	skip:weak-or-wrong-photo
+2341	Scovardă	['Romanian']	['Romania']	"[""pastry""]"	skip:no-reusable-photo
+2342	Carpetbag steak	['British']	['United Kingdom']	"[""meat""]"	skip:no-reusable-photo
+2343	Stuffed chine	['British']	['United Kingdom']	"[""meat""]"	skip:weak-or-wrong-photo
+2345	Stuffed sorrel	['Mediterranean']	['Albania', 'Bosnia and Herzegovina', 'Bulgaria', 'Croatia', 'Montenegro', 'North Macedonia', 'Romania', 'Serbia', 'Slovenia', 'Cyprus', 'Israel', 'Jordan', 'Lebanon', 'Palestine', 'Syria', 'Egypt', 'Turkey']	"[""vegetable""]"	skip:no-reusable-photo
+2346	Braciolone	['Italian']	['Italy']	"[""meat""]"	skip:no-reusable-photo
+2349	Alicot	['French']	['France']	"[""stew""]"	skip:no-reusable-photo
+2351	Kadyos, manok, kag ubad	['Filipino']	['Philippines']	"[""soup""]"	skip:no-reusable-photo
+2352	Linat-an	['Filipino']	['Philippines']	"[""stew""]"	skip:no-reusable-photo
+2353	Lobby	['British']	['United Kingdom']	"[""stew"", ""casserole""]"	skip:no-reusable-photo
+2354	Lunggoi Katsa	['Tibetan']	['Bhutan', 'China', 'India', 'Nepal', 'Pakistan']	"[""stew""]"	skip:no-reusable-photo
+2355	Molagoottal	['Indian']	['India']	"[""stew""]"	skip:weak-or-wrong-photo
+2356	Spanish fricco	['German']	['Germany']	"[""stew""]"	skip:no-reusable-photo
+2357	Sonofabitch stew	['American']	['United States']	"[""stew""]"	skip:offlimits
+2358	Sagamite	['American']	['United States']	"[""stew""]"	skip:no-reusable-photo
+2359	Rubaboo	['Canadian']	['Canada']	"[""stew"", ""porridge""]"	skip:no-reusable-photo
+2360	Qoiri	['Tibetan']	['Bhutan', 'China', 'India', 'Nepal', 'Pakistan']	"[""stew""]"	skip:no-reusable-photo
+2361	Mulligan stew	['American']	['United States']	"[""stew""]"	skip:weak-or-wrong-photo
+2362	Ollada	['French']	['France']	"[""casserole""]"	skip:no-reusable-photo
+2363	Pepper pot soup	['American']	['United States']	"[""stew""]"	skip:weak-or-wrong-photo
+2364	Ostrich stew	['South African']	['South Africa']	"[""stew""]"	skip:no-reusable-photo
+2365	Caldillo de perro	['Spanish']	['Spain']	"[""soup""]"	skip:offlimits
+2366	Zoque	['Spanish']	['Spain']	"[""soup""]"	skip:no-reusable-photo
+2367	Sopa de gato	['Spanish']	['Spain']	"[""soup""]"	skip:offlimits
+2368	Noppe	['Japanese']	['Japan']	"[""stew""]"	skip:no-reusable-photo
+2369	Purin	['Japanese']	['Japan']	"[""dessert""]"	skip:weak-or-wrong-photo
+2370	Gionbō	['Japanese']	['Japan']	"[""sweets""]"	skip:no-reusable-photo
+2371	Gyūhi	['Japanese']	['Japan']	"[""rice"",""sweets""]"	skip:weak-or-wrong-photo
+2372	Chinese flaky pastry	['Chinese']	['China']	"[""pastry""]"	skip:generic
+2373	Colston bun	['English']	['England']	"[""bread""]"	skip:no-reusable-photo
+2374	Currant bun	['European']	['Belgium', 'France', 'Germany', 'Ireland', 'Luxembourg', 'Netherlands', 'United Kingdom']	"[""bread""]"	skip:generic
+2375	London bun	['British']	['United Kingdom']	"[""bread""]"	skip:no-reusable-photo
+2376	Spiced bun	['Global']	['Global']	"[""bread""]"	skip:generic
+2377	Penny bun	['English']	['England']	"[""bread""]"	skip:generic
+2378	Rum roll	['American']	['United States']	"[""bread""]"	skip:no-reusable-photo
+2380	Iced bun	['British']	['United Kingdom']	"[""bread""]"	skip:weak-or-wrong-photo
+2381	Fläsklägg med rotmos	['Swedish']	['Sweden']	"[""meat""]"	skip:no-reusable-photo
+2382	Amish preaching soup	['American']	['United States']	"[""soup""]"	skip:no-reusable-photo
+2384	Eggs Beauregard	['American']	['United States']	"[""egg""]"	skip:no-reusable-photo
+2386	Balila	['Levantine']	['Cyprus', 'Israel', 'Jordan', 'Lebanon', 'Palestine', 'Syria']	"[""vegetable""]"	skip:weak-or-wrong-photo
+2387	Yun dou juan	['Chinese']	['China']	"[""beans""]"	skip:no-reusable-photo
+2388	Ulava charu	['Andhra']	['India']	"[""soup""]"	skip:weak-or-wrong-photo
+2389	Purtumute	['Peruvian']	['Peru']	"[""stew""]"	skip:no-reusable-photo
+2390	Chouriço doce	['Portuguese']	['Portugal']	"[""meat""]"	skip:no-reusable-photo
+2392	Head cheese	['Global']	['Global']	"[""meat""]"	skip:generic
+2393	Calabacitas con puerco	['Mexican']	['Mexico']	"[""meat""]"	skip:no-reusable-photo
+2394	Chilorio	['Mexican']	['Mexico']	"[""meat""]"	skip:weak-or-wrong-photo
+2395	Cajeta de piña y plátano	['Mexican']	['Mexico']	"[""paste""]"	skip:no-reusable-photo
+2396	Frijoles Puercos	['Mexican']	['Mexico']	"[""beans"",""stew""]"	skip:no-reusable-photo
+2397	Rauchkäse	['German']	['Germany']	"[""cheese""]"	skip:ingredient
+2398	Balyk	['Turkish']	['Russia']	"[""fish""]"	skip:ingredient
+2399	Bijajica	['Brazilian']	['Brazil']	"[""sweets"", ""snack""]"	skip:no-reusable-photo
+2400	Manjar branco	['Brazilian']	['Brazil']	"[""dessert""]"	skip:no-reusable-photo
+2402	Fusi	['Croatian', 'Slovenian']	['Croatia', 'Slovenia']	"[""pasta""]"	skip:generic
+2404	Bacalhau com todos	['Portuguese']	['Portugal']	"[""fish""]"	skip:no-reusable-photo
+2405	Paio	['Spanish', 'Portuguese', 'Brazilian']	['Spain', 'Portugal', 'Brazil']	"[""meat""]"	skip:no-reusable-photo
+2406	Chanfana	['Portuguese']	['Portugal']	"[""meat""]"	skip:weak-or-wrong-photo
+2407	Caravane cheese	['Mauritanian']	['Mauritania', 'Senegal']	"[""cheese""]"	skip:ingredient
+2408	Lauzinaj	['Arab']	['Saudi Arabia']	"[""sweets""]"	skip:no-reusable-photo
+2409	Catatos	['Angolan']	['Angola']	"[""meat""]"	skip:no-reusable-photo
+2411	Sangah	['Cameroonian']	['Cameroon']	"[""stew""]"	skip:no-reusable-photo
+2413	Rolex	['Ugandan']	['Uganda']	"[""bread""]"	skip:weak-or-wrong-photo

@@ -2,12 +2,44 @@
 
 Source list: the WorldCuisines food-kb dataset (2,414 rows). The dataset declares no licence, so only its dish names were used. Every photo was re-checked on Wikimedia Commons for its licence (CC0 / CC BY / CC BY-SA / public domain) and checked by eye to make sure it shows the dish. All text was written for this app, and every review is a labelled SAMPLE.
 
-## Status (after Batch 8, Nov 2 2026)
+## Status (after Batch 9, Nov 2 2026): dataset fully worked through
 
-- Dishes in the repo: **1,939** (112 original + 162 + 204 + 220 + 250 + 250 + 250 + 242 + 249 from Batches 1–8). The live site still has 948 (Batches 5–8 not deployed, by request).
-- Dataset rows covered so far, counting alternate names and merged duplicates: 1,927
-- Pending unique dataset dishes: **487**. The list is in `pending_queue.tsv`. Many of these have no usable Commons photo, so expect fewer than 250 per batch from here.
-- Estimated batches left at ~250 per batch: about 2
+- Dishes in the repo: **2,077** (112 original + 162 + 204 + 220 + 250 + 250 + 250 + 242 + 249 + 138 from Batches 1–9). The live site still has 948 (Batches 5–9 not deployed, by request).
+- Pending dishes: **0**. All 2,414 dataset rows are now added, merged, or permanently skipped.
+- `pending_queue.tsv` now has a `status` column. All 347 remaining rows are marked `skip:<reason>` so future runs filter them out:
+  - `skip:weak-or-wrong-photo` (119): rejected on eyeball (packaged, blurry, tiny, wrong dish, not food), including the earlier batches' rejects.
+  - `skip:no-reusable-photo` (91): no CC/PD photo in the dataset or as the Wikipedia lead image.
+  - `skip:generic` (83): generic terms, not distinct dishes (white bread, fried egg, custard, turnover…).
+  - `skip:ingredient` (34): ingredients/condiments/cheeses (dashi, nori, tahini, ricotta…).
+  - `skip:brand` (14): brand products (Rice Krispies, Hot Pockets, Tokyo Banana…).
+  - `skip:offlimits` (6): dog, cat, whale or insect dishes and similar.
+
+## Batch 9: done (138)
+
+- **seasia** (18): otap, plecing-kangkung, cap-cay, paksiw-na-baboy, akok, telur-pindang, telur-gulung, rujak-shanghai, asinan, babi-hong, bakwan, tee-long-pan, milk-pie, inipit, kue-makmur, ayam-pansuh, kadyos-baboy-kag-langka, khanom-khai
+- **bakes** (8): pie-a-la-mode, divinity, areias, broa-de-avintes, pao-de-mafra, carrot-pudding, moravian-spice-cookies, palianytsia
+- **italian** (2): stuffed-crust-pizza, rafanata
+- **japan-korea** (6): imoni, tokushima-ramen, ishikari-nabe, morkovcha, hishi-mochi, ttongppang
+- **americas** (24): schnitz-un-knepp, senate-bean-soup, creamed-eggs-on-toast, perico, texas-caviar, moro-de-guandules, frijoles-negros, butifarra-soledenas, moronga, hot-link-sausage, goetta, bologna-sausage, new-orleans-hot-sausage, creme-de-papaya, mane-pelado, sagu, maria-mole, olho-de-sogra, caruru, charleston-red-rice, flipper-pie, stew-peas, red-peas-soup, pebete
+- **european** (41): aletria, scotch-woodcock, ovos-moles, pastel-de-tentugal, tortillitas-de-camarones, judd-mat-gaardebounen, pea-soup, matevz, guernsey-bean-jar, bouneschlupp, medisterpolse, chorizo, salchichon, cesnovka, sibiu-salami, botillo, babic-sausage, kishka, hogs-pudding, doctors-sausage, oxford-sausage, manjar-blanco, papo-de-anjo, bacalhau-a-ze-do-pipo, zganci, brudet, kotlovina, fritaja, fishermans-soup, medimurska-gibanica, frittella, grahova-pretepena-juha, torricado, xarem, cebolada, porkkanalaatikko, stuffed-mallow, zoervleis, shirred-eggs, kulen, sac
+- **mideast** (5): nargesi, haminados, piyaz, apio, kubaneh
+- **mexican** (10): machacado-con-huevo, burro-percheron, cabrito, puntas, arroz-negro, arroz-poblano, morisqueta, calavera, cochinito-de-piloncillo, nicuatole
+- **chinese** (6): salted-duck-egg, wandouhuang, red-bean-cake, chongyang-cake, concave-cake, ji-dan-gao
+- **indian-street** (1): tomato-omelette
+- **indian-mains** (1): chhena-matar-tarkari
+- **drinks** (2): douzhi, sekoteng
+- **world** (5): hog-maw, katiya, bagiya, pickled-pigs-feet, rewena-bread
+- **african** (9): sopa-de-cacahuete, koba, kikomando, kisra, funkaso, marghi-special, harqma, maboke, sabaayad
+
+## Batch 9: merged instead of added
+
+- stornoway black pudding → black-pudding; krofne → krapfen
+
+## Batch 9: other changes
+
+- For dishes with no dataset photo, the Wikipedia lead image was tried (licence re-checked, eyeballed). These are credited as "Wikipedia lead image".
+- Diet: lard/suet/gelatin dishes marked non-veg (marranito, inipit, Moravian spice cookies, carrot pudding, maria-mole).
+- Images folder is now about 137 MB.
 
 ## Batch 8: done (249)
 

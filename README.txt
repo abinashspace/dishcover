@@ -1,7 +1,7 @@
 Dishcover - know your food before you order.
 Open index.html in any modern browser. No install, build step or internet needed.
 
-- 1,939 dishes across 16 categories (Indian street food, South Indian, Indian mains, Indian sweets,
+- 2,077 dishes across 16 categories (Indian street food, South Indian, Indian mains, Indian sweets,
   cafe drinks, bakes & desserts, Italian, European, Japanese & Korean, Chinese & Himalayan,
   Southeast Asian, Middle Eastern, Mexican, Americas, African, around the world).
 - Files: data/index.js is a slim index, with one short row per dish holding only the card, category
