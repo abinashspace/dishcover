@@ -2,12 +2,42 @@
 
 Source list: the WorldCuisines food-kb dataset (2,414 rows). The dataset declares no licence, so only its dish names were used. Every photo was re-checked on Wikimedia Commons for its licence (CC0 / CC BY / CC BY-SA / public domain) and checked by eye to make sure it shows the dish. All text was written for this app, and every review is a labelled SAMPLE.
 
-## Status (after Batch 5, Nov 2 2026)
+## Status (after Batch 6, Nov 2 2026)
 
-- Dishes in the repo: **1,198** (112 original + 162 + 204 + 220 + 250 + 250 from Batches 1–5). The live site still has 948 (Batch 5 not deployed, by request).
-- Dataset rows covered so far, counting alternate names and merged duplicates: 1,174
-- Pending unique dataset dishes: **1,240**. The list is in `pending_queue.tsv`.
-- Estimated batches left at ~250 per batch: about 5
+- Dishes in the repo: **1,448** (112 original + 162 + 204 + 220 + 250 + 250 + 250 from Batches 1–6). The live site still has 948 (Batches 5–6 not deployed, by request).
+- Dataset rows covered so far, counting alternate names and merged duplicates: 1,424
+- Pending unique dataset dishes: **990**. The list is in `pending_queue.tsv`.
+- Estimated batches left at ~250 per batch: about 4
+
+## Batch 6: done (250)
+
+- **americas** (17): half-smoke, hangtown-fry, runza, strata, steamed-cheeseburger, bondiola-sandwich, pate-chinois, paila-marina, porotos-con-riendas, guatita, oil-down, saimin, stamp-and-go, bierock, garnacha, curtido, carimanola
+- **bakes** (77): russian-tea-cake, sugar-cream-pie, fried-pie, cuban-bread, tortita-negra, nazook, mandelbrot, finger-bun, schaumrolle, punschkrapfen, milk-cream-strudel, tufahije, pe-de-moleque, queijadinha, cajuzinho, curau, viennese-whirls, treacle-sponge-pudding, arctic-roll, empire-biscuit, saskatoon-berry-pie, pets-de-soeurs, flapper-pie, hallulla, coca, rugbrod, moorkop, pepernoot, roze-koek, zeeuwse-bolus, fat-rascal, manchester-tart, bakewell-pudding, rhubarb-pie, kifli, silvana, broas, runeberg-torte, pain-de-mie, puits-damour, spritzgeback, kalitsounia, lagana, kue-putri-salju, blaa, farl, krembo, florentine-biscuit, gizzada, figolla, qurabiya, krumkake, flatbrod, obwarzanek-krakowski, torun-gingerbread, folar, fios-de-ovos, quesito, cornulete, pastila, pryanik, borodinsky-bread, bannock, black-bun, prekmurska-gibanica, hertzoggie, miguelitos, panellets, mollete, hallongrotta, tunnbrod, bundner-nusstorte, wahe, birnbrot, acibadem-kurabiyesi, bublik, crempog
+- **world** (10): ghapama, chiko-roll, zucchini-slice, pie-floater, dovga, kupati, sha-phaley, bichak, uchpuchmak, kuurdak
+- **european** (51): tzimmes, holishkes, kasekrainer, pasulj, tavce-gravce, proja, gibanica, karadordeva-snicla, glamorgan-sausage, bedfordshire-clanger, saveloy, bob-chorba, lukanka, mish-mash, panagyurishte-style-eggs, zelnik, botifarra, escudella, zagorski-strukli, soparnik, rod-polse, hachee, pease-pudding, stargazy-pie, galette-saucisse, paupiette, barbajuan, gaisburger-marsch, fozelek, hortobagyi-palacsinta, kibinai, lutefisk, racuchy, bife-a-cavalo, cabidela, linguica, rojoes, empadao, drob, ostropel, fasole-cu-carnati, tocana, makarony-po-flotski, kurnik, gazpachuelo, hornazo, porra-antequerana, tombet, olla-podrida, kalops, riz-casimir
+- **seasia** (23): htamin-jin, kya-zan-hinga, espasol, ginataang-mais, tokneneng, nasi-bakar, nasi-kucing, kupat-tahu, konro, tahu-gejrot, soto-bandung, bubur-cha-cha, seri-muka, kue-mangkok, naem, ayam-buah-keluak, heong-peng, mee-bandung-muar, sai-krok-isan, khao-khluk-kapi, sakhu-sai-mu, banh-chuoi, banh-da-lon
+- **chinese** (9): paomo, water-chestnut-cake, tofu-skin-roll, malay-sponge-cake, lo-mai-chi, danbing, coffin-bread, suncake, taro-pastry
+- **african** (18): genfo, fit-fit, gored-gored, mrouzia, fricasse, mechouia-salad, assidat-zgougou, chakhchoukha, gazelle-ankles, asida, isi-ewu, kuli-kuli, okpa, ewa-aganyin, kilishi, tomato-bredie, umngqusho, riz-gras
+- **south-indian** (2): chatti-pathiri, unnakai
+- **indian-street** (1): dhebra
+- **indian-sweets** (1): enduri-pitha
+- **mideast** (18): nargesi-kebab, qottab, reshteh-khoshkar, baghali-ghatogh, khoresh-karafs, kolompeh, samoon, laffa, bamba, markook, meghli, sheikh-al-mahshi, maluj, boyoz, kapuska, ladys-navel, sobiyet, pacanga-boregi
+- **italian** (4): michetta, cuccidati, casoncelli, panella
+- **japan-korea** (12): butajiru, hoto, kiritanpo, nanbanzuke, tenmusu, okowa, kenchin-jiru, chinsuko, hwangnam-ppang, eo-mandu, nokdu-muk, siru-tteok
+- **mexican** (7): chongos-zamoranos, romeritos, coyotas, corunda, totopo, pollo-motuleno, caldo-de-queso
+
+## Batch 6: skipped
+
+- The 7 known skips are still left out because no clearly reusable photo was found: doodhpak, sevai, ulava charu, rolex, albaloo-polo, chamoy, beijinho.
+- 19 were dropped because the photo was wrong or unclear: goetta, divinity, kubaneh, pitha, olho-de-sogra, laobing, wotou, yusheng, otap, rusk, breakfast-roll, bulla-cake, toto, solomon-gundy, imoni, arare, bigilla, edikang-ikong, kikomando.
+- 39 had usable photos but were held back to keep the batch at 250. They are still in the pending queue.
+
+## Batch 6: other changes
+
+- Fixed ID generation (`slug.py`) so special letters turn into plain ones: ø→o, œ→oe, æ→ae, đ→d, ı→i, ß→ss, ł→l, þ→th, ð→d, plus normal accent stripping. This brought in rugbrød (`rugbrod`), rød pølse (`rod-polse`), flatbrød (`flatbrod`) and pets de sœurs (`pets-de-soeurs`).
+- The write-ups point out close relatives so they are not taken as duplicates: runza/bierock, gibanica/prekmurska gibanica, rød pølse/hot dog, laffa/pita, saimin/ramen, hallulla/marraqueta, porra/salmorejo.
+- Not deployed, not pushed, zip not rebuilt (by request).
+
 
 ## Batch 5: done (250)
 
