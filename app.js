@@ -62,15 +62,15 @@
 
   /* ---------------- Helpers ---------------- */
   const TASTES = [
-    ["sweet", "Sweet", "#F7E26B"], ["spicy", "Spicy", "#FF6B4A"], ["sour", "Sour", "#B8D94A"],
-    ["salty", "Salty", "#7EB6FF"], ["bitter", "Bitter", "#9B7A5B"], ["mild", "Mild", "#BFE3CF"]
+    ["sweet", "Sweet", "#F8AE88"], ["spicy", "Spicy", "#FF6B4A"], ["sour", "Sour", "#B8D94A"],
+    ["salty", "Salty", "#52A8FE"], ["bitter", "Bitter", "#9B7A5B"], ["mild", "Mild", "#7BD3FE"]
   ];
   const DIET = { veg: "🟢 Vegetarian", egg: "🟡 Veg, has egg", both: "🟢🔴 Veg & non-veg", eggboth: "🟡🔴 Egg & non-veg", nonveg: "🔴 Non-veg" };
   /* Quiz diet rule: strict veg -> only "veg"; eggs ok -> "veg" + "egg"; anything -> all. */
   const DIET_OK = { veg: ["veg"], egg: ["veg", "egg"], any: null };
   const topTastes = d => TASTES.filter(([k]) => d.taste[k] >= 3).sort((a, b) => d.taste[b[0]] - d.taste[a[0]]).slice(0, 2).map(t => t[1]);
   const stars = n => "★★★★★".slice(0, Math.round(n)) + "☆☆☆☆☆".slice(0, 5 - Math.round(n));
-  const heartSVG = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" stroke="#1F3D2E" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
+  const heartSVG = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" stroke="#141A33" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
   const isLiked = id => state.liked.includes(id);
   const isTried = id => state.tried.includes(id);
   function hl(text, q) {
@@ -413,7 +413,7 @@
     return DISHES.filter(o => o.id !== d.id).sort((a, b) => dist(a) - dist(b)).slice(0, 2);
   }
   function reviewHTML(r, mine, i) {
-    return `<div class="review"><span class="avatar" style="background:${mine ? "#D9F2E3" : "var(--bg)"}">${esc((r.name || "Y")[0].toUpperCase())}</span>
+    return `<div class="review"><span class="avatar" style="background:${mine ? "#E6EEFF" : "var(--bg)"}">${esc((r.name || "Y")[0].toUpperCase())}</span>
       <div style="flex:1"><div class="who">${esc(r.name || "You")} <span class="stars" style="font-size:12px">${stars(r.stars)}</span>
       <small class="${mine ? "mine" : ""}">${mine ? "Your review" : "Sample"}</small>${mine ? `<button class="del" data-del="${i}">Delete</button>` : ""}</div>
       <p>${esc(r.text)}</p></div></div>`;
@@ -603,7 +603,7 @@
   }
   function confetti() {
     const c = document.createElement("div"); c.className = "confetti";
-    const cols = ["#F7E26B", "#4CAF7A", "#7EB6FF", "#B8D94A", "#BFE3CF", "#1F3D2E"];
+    const cols = ["#0050FF", "#FF5200", "#52A8FE", "#F8AE88", "#7BD3FE", "#0B1F5C"];
     for (let i = 0; i < 40; i++) {
       const p = document.createElement("i");
       p.style.left = Math.random() * 100 + "%"; p.style.background = cols[i % cols.length];
@@ -620,8 +620,8 @@
     const C = 2 * Math.PI * 27;
     const list = (savedSeg === "liked" ? state.liked : state.tried).map(id => byId[id]).filter(Boolean);
     $("#saved").innerHTML = `
-      <div class="passport"><svg class="ring" viewBox="0 0 66 66"><circle cx="33" cy="33" r="27" stroke="#3B5E4B" stroke-width="8" fill="none"/>
-        <circle cx="33" cy="33" r="27" stroke="#F7E26B" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}" transform="rotate(-90 33 33)" id="ringArc" style="transition:stroke-dashoffset 1s cubic-bezier(.22,1,.36,1)"/>
+      <div class="passport"><svg class="ring" viewBox="0 0 66 66"><circle cx="33" cy="33" r="27" stroke="#2A3A78" stroke-width="8" fill="none"/>
+        <circle cx="33" cy="33" r="27" stroke="#FF5200" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}" transform="rotate(-90 33 33)" id="ringArc" style="transition:stroke-dashoffset 1s cubic-bezier(.22,1,.36,1)"/>
         <text x="33" y="38" text-anchor="middle" fill="#fff" font-size="15" font-weight="700" font-family="inherit">${tried}</text></svg>
         <div><h3>${tried ? `You've tried ${tried} of ${total} dishes` : "Your food adventure starts here"}</h3><p>${tried ? "Keep going — every new dish is a stamp in your passport!" : "Tap “I tried it” on a dish to collect your first stamp."}</p></div></div>
       <div class="seg" role="tablist"><button data-seg="liked" class="${savedSeg === "liked" ? "on" : ""}">♥ Saved (${state.liked.length})</button><button data-seg="tried" class="${savedSeg === "tried" ? "on" : ""}">✓ Tried (${tried})</button></div>
