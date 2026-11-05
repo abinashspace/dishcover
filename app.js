@@ -13,6 +13,7 @@
     TK.forEach((k, i) => d.taste[k] = +t[i]); if (side) d.side = true; return d;
   });
   const byId = Object.fromEntries(DISHES.map(d => [d.id, d]));
+  const popularIds = new Set(DISHES.slice(0, 274).map(d => d.id));
   /* Details (steps, sample reviews, photo credit) live in data/detail/<cat>.js — loaded on demand with a script tag (works from file://). */
   const DET = window.DishcoverDetail = window.DishcoverDetail || { q: [] };
   const loaded = {}, loading = {};
@@ -94,13 +95,25 @@
 
   function cardHTML(d, i, q) {
     const tt = topTastes(d);
+    const dietLab = ({ veg: "VEG", egg: "EGG", both: "VEG & NON-VEG", eggboth: "EGG & NON-VEG", nonveg: "NON-VEG" })[d.diet] || "";
+    const dietCls = (d.diet === "veg" || d.diet === "egg") ? "veg" : (d.diet === "nonveg" ? "hot" : "");
+    const spicy = (d.taste && (d.taste.spicy || 0) >= 3);
+    const rate = d.reviews && d.reviews.rating ? d.reviews.rating : null;
+    const rcount = d.reviews && (d.reviews.count || (d.reviews.samples && d.reviews.samples.length));
+    const foot = rate ? `<div class="card-foot"><span class="rate-pill"><span class="star">★</span> ${rate.toFixed(1)}</span>${rcount ? `<span class="rate-count">${rcount >= 1000 ? (rcount/1000).toFixed(1).replace(/\.0$/,"") + "k" : rcount}</span>` : ""}</div>` : "";
     return `<article class="card" data-id="${d.id}" tabindex="0" role="button" aria-label="Open ${esc(d.name)}" style="animation-delay:${Math.min(i, 12) * 35}ms">
       <div class="thumb ph" style="background:${d.color}">${photo(d)}</div>
       ${isTried(d.id) ? `<span class="tried-badge">✓ Tried</span>` : ""}
       <button class="heart ${isLiked(d.id) ? "on" : ""}" data-like="${d.id}" aria-pressed="${isLiked(d.id)}" aria-label="Save ${esc(d.name)}">${heartSVG}</button>
-      <h4>${hl(d.name, q)}</h4>
       <div class="cuisine">${esc(d.cuisine)}</div>
+      ${popularIds.has(d.id) && (d.diet === "veg" || d.diet === "egg") ? `<div class="badge-good">VEG PICK</div>` : popularIds.has(d.id) ? `<div class="badge-good">POPULAR</div>` : ""}
+      <h4>${hl(d.name, q)}</h4>
+      <div class="card-meta">
+        ${dietLab ? `<span class="meta-pill ${dietCls}">${dietLab}</span>` : ""}
+        ${spicy ? `<span class="meta-pill hot">SPICY</span>` : ""}
+      </div>
       <div class="mini-taste">${(tt.length ? tt : ["Mild"]).map(t => `<span class="tchip">${t}</span>`).join("")}</div>
+      ${foot}
     </article>`;
   }
 
@@ -380,7 +393,7 @@
       <div class="box"><h3>💡 Bae's tip</h3><p>${esc(d.tip)}</p></div>
 
       <div class="box" id="reviewsBox"><h3>💬 Reviews</h3>
-        <div class="rating-row"><span class="big-rate">${d.reviews.rating.toFixed(1)}</span><div><div class="stars">${stars(d.reviews.rating)}</div><div class="muted" style="font-size:12px">sample rating</div></div></div>
+        <div class="rating-row"><span class="big-rate">${d.reviews.rating.toFixed(1)}</span><div><span class="rate-pill"><span class="star">★</span> ${d.reviews.rating.toFixed(1)}</span> <span class="rate-count">${(d.reviews.samples||[]).length} samples</span><div class="muted" style="font-size:12px;margin-top:4px">sample rating</div></div></div>
         <p>${esc(d.reviews.summary)}</p>
         <div class="pc"><div><b>👍 People love</b>${d.reviews.loved.map(esc).join("<br>")}</div><div><b>⚠️ Watch out</b>${d.reviews.watch.map(esc).join("<br>")}</div></div>
         <div class="sample-flag">ℹ️ Sample reviews — written to illustrate the app, not from real customers.</div>
