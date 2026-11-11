@@ -33,9 +33,30 @@
   /* ---------------- Storage ---------------- */
   const KEY = "dishcover.v1";
   let mem = null;
+  function normalizeProfile(p) {
+    p = p || {};
+    const name = String(p.name || "").slice(0, 40);
+    const bio = String(p.bio || "").slice(0, 150);
+    const digits = String(p.age == null ? "" : p.age).replace(/\D/g, "");
+    let age = "";
+    if (digits) {
+      const n = parseInt(digits, 10);
+      if (n >= 1 && n <= 120) age = String(n);
+    }
+    return { name, age, bio };
+  }
+  function blank() { return { liked: [], tried: [], reviews: {}, profile: { name: "", age: "", bio: "" } }; }
   function load() {
-    try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) return { liked: s.liked || [], tried: s.tried || [], reviews: s.reviews || {} }; } catch (e) {}
-    return mem || { liked: [], tried: [], reviews: {} };
+    try {
+      const s = JSON.parse(localStorage.getItem(KEY));
+      if (s) return {
+        liked: Array.isArray(s.liked) ? s.liked : [],
+        tried: Array.isArray(s.tried) ? s.tried : [],
+        reviews: s.reviews && typeof s.reviews === "object" && !Array.isArray(s.reviews) ? s.reviews : {},
+        profile: normalizeProfile(s.profile)
+      };
+    } catch (e) {}
+    return mem || blank();
   }
   function save() { mem = state; try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
   let state = load();
@@ -72,6 +93,8 @@
   const topTastes = d => TASTES.filter(([k]) => d.taste[k] >= 3).sort((a, b) => d.taste[b[0]] - d.taste[a[0]]).slice(0, 2).map(t => t[1]);
   const stars = n => "★★★★★".slice(0, Math.round(n)) + "☆☆☆☆☆".slice(0, 5 - Math.round(n));
   const heartSVG = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" stroke="#141A33" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
+  const arrowSVG = (left) => `<svg class="arr${left ? " arr-l" : ""}" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg>`;
+  const checkSVG = `<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>`;
   const isLiked = id => state.liked.includes(id);
   const isTried = id => state.tried.includes(id);
   function hl(text, q) {
@@ -384,10 +407,10 @@
         <h3 style="margin-top:14px">🤌 Texture</h3><div class="tags">${d.texture.map(x => `<span class="tag2 y">${esc(x)}</span>`).join("")}</div>
       </div>
 
-      <div class="box" id="howto"><h3>👣 How to eat it <span class="muted" style="font-weight:500;font-size:12px;margin-left:auto">swipe →</span></h3>
+      <div class="box" id="howto"><h3>👣 How to eat it <span class="muted swipe-hint">swipe ${arrowSVG()}</span></h3>
         <div class="steps" id="steps">${d.steps.map((s, i) => `<div class="step ${i === 0 ? "cur" : ""}"><span class="num">STEP ${i + 1} OF ${d.steps.length}</span><span class="ico">${s.icon}</span><p>${esc(s.text)}</p></div>`).join("")}</div>
         <div class="step-nav"><div class="dots" id="dots">${d.steps.map((_, i) => `<b class="${i === 0 ? "on" : ""}"></b>`).join("")}</div>
-          <div class="nav-btns"><button class="round" id="prevStep" aria-label="Previous step" disabled>←</button><button class="round dark" id="nextStep" aria-label="Next step">→</button></div></div>
+          <div class="nav-btns"><button class="round" id="prevStep" aria-label="Previous step" disabled>${arrowSVG(true)}</button><button class="round dark" id="nextStep" aria-label="Next step">${arrowSVG()}</button></div></div>
       </div>
 
       <div class="box"><h3>💡 Bae's tip</h3><p>${esc(d.tip)}</p></div>
@@ -470,7 +493,7 @@
     $$(".step", steps).forEach((s, j) => s.classList.toggle("cur", j === stepIdx));
     $("#prevStep").disabled = stepIdx === 0;
     const nx = $("#nextStep");
-    nx.textContent = stepIdx === n - 1 ? "✓" : "→";
+    nx.innerHTML = stepIdx === n - 1 ? checkSVG : arrowSVG();
     nx.setAttribute("aria-label", stepIdx === n - 1 ? "Done" : "Next step");
   }
   function bindSheet(d) {
@@ -564,7 +587,7 @@
       <div class="muted" style="font-size:13px;font-weight:600;margin-bottom:6px">QUESTION ${qi + 1} OF ${QUESTIONS.length}</div>
       <h2 class="q-title">${Q.q}</h2>
       <div class="options">${Q.o.map(([v, e, t, s], i) => `<button class="opt ${answers[Q.k] === v ? "sel" : ""}" data-v="${v}" style="animation-delay:${i * 60}ms"><span class="e">${e}</span><span>${t}<small>${s}</small></span></button>`).join("")}</div>
-      ${qi > 0 ? `<button class="pill-btn q-back" id="qBack">← Back</button>` : ""}`;
+      ${qi > 0 ? `<button class="pill-btn q-back" id="qBack">${arrowSVG(true)} Back</button>` : ""}`;
     requestAnimationFrame(() => { const i = $(".q-progress i", el); if (i) i.style.width = ((qi + 0.5) / QUESTIONS.length) * 100 + "%"; });
     $(".options", el).onclick = e => {
       const b = e.target.closest(".opt"); if (!b) return;
@@ -605,7 +628,7 @@
         <div class="body"><span class="match">${pct}% match</span><h3>${esc(d.name)}</h3><div class="muted" style="font-size:13px">${esc(d.cuisine)} · ${esc(d.pron)}</div>
         <p style="color:var(--ink2);line-height:1.5;margin:10px 0 0">${esc(d.what)}</p>
         <ul class="why">${top.r.why.slice(0, 4).map(w => `<li>✓ ${w}</li>`).join("")}</ul>
-        <button class="cta" id="openRes" style="width:100%">See how to eat it →</button></div></div>
+        <button class="cta" id="openRes" style="width:100%">See how to eat it ${arrowSVG()}</button></div></div>
       <h2 class="section">Also worth a try</h2>
       <div class="alt">${alts.map(x => `<button data-open="${x.d.id}"><span class="mini-ph ph" style="background:${x.d.color}">${photo(x.d)}</span>${esc(x.d.name)}</button>`).join("")}</div>
       <button class="pill-btn q-back" id="retake">↺ Retake quiz</button>`;
@@ -629,18 +652,12 @@
   /* ---------------- Saved ---------------- */
   let savedSeg = "liked";
   function renderSaved() {
-    const tried = state.tried.length, total = DISHES.length, pct = tried / total;
-    const C = 2 * Math.PI * 27;
+    const tried = state.tried.length;
     const list = (savedSeg === "liked" ? state.liked : state.tried).map(id => byId[id]).filter(Boolean);
     $("#saved").innerHTML = `
-      <div class="passport"><svg class="ring" viewBox="0 0 66 66"><circle cx="33" cy="33" r="27" stroke="#2A3A78" stroke-width="8" fill="none"/>
-        <circle cx="33" cy="33" r="27" stroke="#FF5200" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}" transform="rotate(-90 33 33)" id="ringArc" style="transition:stroke-dashoffset 1s cubic-bezier(.22,1,.36,1)"/>
-        <text x="33" y="38" text-anchor="middle" fill="#fff" font-size="15" font-weight="700" font-family="inherit">${tried}</text></svg>
-        <div><h3>${tried ? `You've tried ${tried} of ${total} dishes` : "Your food adventure starts here"}</h3><p>${tried ? "Keep going — every new dish is a stamp in your passport!" : "Tap “I tried it” on a dish to collect your first stamp."}</p></div></div>
       <div class="seg" role="tablist"><button data-seg="liked" class="${savedSeg === "liked" ? "on" : ""}">♥ Saved (${state.liked.length})</button><button data-seg="tried" class="${savedSeg === "tried" ? "on" : ""}">✓ Tried (${tried})</button></div>
       <div class="grid">${list.length ? list.map((d, i) => cardHTML(d, i, "")).join("") :
-        `<div class="empty" style="grid-column:1/-1"><div class="mascot">${mascot("wink")}</div><p><b>${savedSeg === "liked" ? "No saved dishes yet." : "Nothing tried yet."}</b><br>${savedSeg === "liked" ? "Tap ♥ on any dish to save it here." : "Open a dish and tap “I tried it”."}</p><button class="pill-btn" data-tab-go="home">Explore dishes →</button></div>`}</div>`;
-    requestAnimationFrame(() => setTimeout(() => { const a = $("#ringArc"); if (a) a.style.strokeDashoffset = C * (1 - pct); }, 50));
+        `<div class="empty" style="grid-column:1/-1"><div class="mascot">${mascot("wink")}</div><p><b>${savedSeg === "liked" ? "No saved dishes yet." : "Nothing tried yet."}</b><br>${savedSeg === "liked" ? "Tap ♥ on any dish to save it here." : "Open a dish and tap “I tried it”."}</p><button class="pill-btn" data-tab-go="home">Explore dishes ${arrowSVG()}</button></div>`}</div>`;
   }
 
   /* ---------------- Tabs / global ---------------- */
@@ -649,15 +666,139 @@
     activeTab = t;
     $$(".tab").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
     $$(".screen").forEach(s => s.classList.toggle("active", s.id === "screen-" + t));
-    if (t === "quiz" && qi >= QUESTIONS.length) { /* keep result */ } else if (t === "quiz") renderQuiz();
+    if (t === "quiz") { $("#screen-quiz").scrollTop = 0; if (qi < QUESTIONS.length) renderQuiz(); }
     if (t === "saved") renderSaved();
+    if (t === "profile") renderProfile();
     if (t === "home") renderGrid();
   }
   function refreshCounts() {
     const n = state.liked.length, c = $("#savedCount");
     c.hidden = !n; c.textContent = n;
   }
-  function refreshViews() { if (activeTab === "home") renderGrid(); if (activeTab === "saved") renderSaved(); }
+  function refreshViews() {
+    if (activeTab === "home") renderGrid();
+    if (activeTab === "saved") renderSaved();
+    if (activeTab === "profile") paintProfileHead();
+  }
+
+  /* ---------------- Profile + backup ---------------- */
+  function idList(v) {
+    if (!Array.isArray(v)) return [];
+    const out = [], seen = new Set();
+    v.forEach(id => { if (typeof id === "string" && byId[id] && !seen.has(id)) { seen.add(id); out.push(id); } });
+    return out;
+  }
+  function reviewMap(v) {
+    if (!v || typeof v !== "object" || Array.isArray(v)) return {};
+    const out = {};
+    Object.keys(v).forEach(id => {
+      if (!byId[id] || !Array.isArray(v[id])) return;
+      const rows = v[id].filter(r => r && typeof r === "object" && typeof r.text === "string" && r.stars >= 1 && r.stars <= 5).slice(0, 30);
+      if (rows.length) out[id] = rows.map(r => ({
+        name: String(r.name || "You").slice(0, 40),
+        stars: Math.round(+r.stars),
+        text: String(r.text).slice(0, 500),
+        at: +r.at || Date.now()
+      }));
+    });
+    return out;
+  }
+  function paintProfileHead() {
+    const p = state.profile, name = p.name.trim();
+    const av = $("#pfAvatar");
+    if (!av) return;
+    av.textContent = (name[0] || "D").toUpperCase();
+    $("#pfDisplayName").textContent = name || "Your name";
+    $("#pfDisplayAge").textContent = p.age ? `${p.age} years` : "Age not set";
+    const bio = p.bio.trim();
+    const bioEl = $("#pfDisplayBio");
+    bioEl.textContent = bio || "Add a short bio.";
+    bioEl.classList.toggle("placeholder", !bio);
+    const count = $("#pfBioCount");
+    if (count) count.textContent = `${p.bio.length}/150`;
+    $("#pfSavedN").textContent = state.liked.length;
+    $("#pfTriedN").textContent = state.tried.length;
+  }
+  function backupPayload() {
+    return {
+      app: "dishcover",
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      profile: state.profile,
+      liked: state.liked,
+      tried: state.tried,
+      reviews: state.reviews
+    };
+  }
+  function exportData() {
+    const json = JSON.stringify(backupPayload(), null, 2);
+    if (window.DishcoverAndroid && window.DishcoverAndroid.exportBackup) {
+      window.DishcoverAndroid.exportBackup(json);
+      toast("Backup saved to Downloads", "happy");
+      return;
+    }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([json], { type: "application/json" }));
+    a.download = "dishcover-backup.json";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+    toast("Backup downloaded", "happy");
+  }
+  function applyBackup(data) {
+    if (!data || typeof data !== "object" || Array.isArray(data)) throw new Error("bad");
+    if (data.app && data.app !== "dishcover") throw new Error("bad");
+    if (!Array.isArray(data.liked) && !Array.isArray(data.tried) && !data.profile) throw new Error("bad");
+    const has = state.liked.length || state.tried.length || Object.keys(state.reviews).length || state.profile.name || state.profile.age || state.profile.bio;
+    if (has && !confirm("Replace the name, bio, saved dishes, and reviews on this phone with this backup?")) return;
+    state.liked = idList(data.liked);
+    state.tried = idList(data.tried);
+    state.reviews = reviewMap(data.reviews);
+    state.profile = normalizeProfile(data.profile);
+    save();
+    refreshCounts();
+    renderProfile();
+    toast("Backup imported", "happy");
+  }
+  function importFile(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try { applyBackup(JSON.parse(String(reader.result))); }
+      catch (e) { toast("That file isn't a Dishcover backup", "thinking"); }
+    };
+    reader.onerror = () => toast("Couldn't read that file", "thinking");
+    reader.readAsText(file);
+  }
+  function renderProfile() {
+    const p = state.profile;
+    $("#profile").innerHTML = `
+      <div class="profile-card">
+        <button class="icon-btn pf-edit" id="pfEdit" type="button" aria-label="Edit profile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#141A33" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/></svg></button>
+        <div class="profile-top">
+          <div class="avatar" id="pfAvatar" aria-hidden="true"></div>
+          <div><h2 id="pfDisplayName"></h2><p class="profile-age" id="pfDisplayAge"></p></div>
+        </div>
+        <p class="profile-bio" id="pfDisplayBio"></p>
+        <div class="profile-stats"><div><b id="pfSavedN"></b><span>Saved</span></div><div><b id="pfTriedN"></b><span>Tried</span></div></div>
+      </div>
+      <div class="box">
+        <h3>Keep a copy</h3>
+        <p class="data-note">Your name, likes, and reviews stay on this phone. There is no account. Export a file to keep a backup, then import it here or on another phone.</p>
+        <div class="data-actions"><button class="pill-btn" id="pfExport" type="button">Export</button><button class="pill-btn" id="pfImport" type="button">Import</button></div>
+        <input id="pfFile" type="file" accept="application/json,.json" hidden>
+      </div>`;
+    $("#pfName").value = p.name;
+    $("#pfAge").value = p.age;
+    $("#pfBio").value = p.bio;
+    paintProfileHead();
+    $("#pfEdit").onclick = openEdit;
+    $("#pfExport").onclick = exportData;
+    $("#pfImport").onclick = () => $("#pfFile").click();
+    $("#pfFile").onchange = () => {
+      const file = $("#pfFile").files && $("#pfFile").files[0];
+      $("#pfFile").value = "";
+      if (file) importFile(file);
+    };
+  }
 
   document.addEventListener("click", e => {
     const like = e.target.closest("[data-like]");
@@ -679,7 +820,10 @@
     const seg = e.target.closest("[data-seg]"); if (seg) { savedSeg = seg.dataset.seg; renderSaved(); }
   });
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape" && currentId) closeSheet();
+    if (e.key === "Escape") {
+      if ($("#editSheet").classList.contains("show")) closeEdit();
+      else if (currentId) closeSheet();
+    }
     if ((e.key === "Enter" || e.key === " ") && e.target.matches(".card[data-id]")) { e.preventDefault(); openDish(e.target.dataset.id); }
     if ((e.key === "Enter" || e.key === " ") && e.target.id === "homeMascot") { e.preventDefault(); nextTip(); }
     if (currentId && document.activeElement && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
@@ -687,7 +831,40 @@
       if (e.key === "ArrowLeft") goStep(stepIdx - 1);
     }
   });
-  $("#scrim").onclick = () => { if ($("#randSheet").classList.contains("show")) closeRand(); else closeSheet(); };
+  $("#scrim").onclick = () => {
+    if ($("#editSheet").classList.contains("show")) closeEdit();
+    else if ($("#randSheet").classList.contains("show")) closeRand();
+    else closeSheet();
+  };
+  function openEdit() {
+    const p = state.profile;
+    $("#pfName").value = p.name;
+    $("#pfAge").value = p.age;
+    $("#pfBio").value = p.bio;
+    paintProfileHead();
+    $("#scrim").classList.add("show");
+    $("#editSheet").classList.add("show");
+    $("#pfName").focus();
+  }
+  function closeEdit() {
+    state.profile.age = normalizeProfile({ age: $("#pfAge").value }).age;
+    $("#pfAge").value = state.profile.age;
+    save();
+    paintProfileHead();
+    $("#editSheet").classList.remove("show");
+    if (!$("#sheet").classList.contains("show") && !$("#randSheet").classList.contains("show")) $("#scrim").classList.remove("show");
+  }
+  $("#editClose").onclick = closeEdit;
+  $("#editDone").onclick = closeEdit;
+  $("#pfName").addEventListener("input", () => { state.profile.name = $("#pfName").value.slice(0, 40); save(); paintProfileHead(); });
+  $("#pfAge").addEventListener("input", () => {
+    let raw = $("#pfAge").value.replace(/\D/g, "").slice(0, 3);
+    if (raw.length === 3 && +raw > 120) raw = "120";
+    if ($("#pfAge").value !== raw) $("#pfAge").value = raw;
+    state.profile.age = normalizeProfile({ age: raw }).age;
+    save(); paintProfileHead();
+  });
+  $("#pfBio").addEventListener("input", () => { state.profile.bio = $("#pfBio").value.slice(0, 150); save(); paintProfileHead(); });
   $("#search").addEventListener("input", onSearch);
   $("#clearSearch").onclick = e => { e.preventDefault(); const s = $("#search"); s.value = ""; onSearch({ target: s }); s.focus(); };
   $("#homeMascot").onclick = nextTip;
@@ -736,7 +913,7 @@
     rand.last = d;
     $("#randResult").innerHTML = d ? `<div class="rs-card" data-rid="${d.id}">
       <div class="thumb" style="background:${d.color}">${d.emoji}<img src="${d.photo.thumb}" alt="Photo of ${esc(d.name)}" onerror="this.remove()"></div>
-      <div><span class="tag" id="randTag">🎲 ${esc(randLabel())}</span><h4>${esc(d.name)}</h4><div class="cuisine">${esc(d.cuisine)} · ${DIET[d.diet]}</div><button class="open" data-ropen="${d.id}">See how to eat it →</button></div></div>` : "";
+      <div><span class="tag" id="randTag">🎲 ${esc(randLabel())}</span><h4>${esc(d.name)}</h4><div class="cuisine">${esc(d.cuisine)} · ${DIET[d.diet]}</div><button class="open" data-ropen="${d.id}">See how to eat it ${arrowSVG()}</button></div></div>` : "";
     setMascot($("#randMascot"), d ? "wow" : "thinking", "pop");
     renderRandChips();
   }

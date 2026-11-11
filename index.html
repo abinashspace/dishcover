@@ -49,29 +49,35 @@
       <div class="chips" id="chips" role="tablist" aria-label="Categories"></div>
       <button class="banner" id="quizBanner">
         <div><h3>Can't decide? 🤔</h3><p>Answer 5 quick questions and Bae picks a dish for you.</p></div>
-        <span class="go">→</span>
+        <span class="go" aria-hidden="true"><svg class="arr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg></span>
       </button>
       <h2 class="section"><span id="listTitle">All dishes</span><small id="count"></small></h2>
       <div class="grid" id="grid"></div>
       <div class="more-wrap" id="moreWrap"></div>
     </section>
 
-    <!-- QUIZ -->
+    <!-- QUIZ (opened from the home banner, not a tab) -->
     <section class="screen" id="screen-quiz" aria-label="Help me choose quiz">
-      <div class="topbar"><div class="brand"><img class="brand-bae" src="mascot/bae-128.webp" alt="" width="30" height="30">Help me choose</div></div>
+      <div class="topbar"><button class="pill-btn" type="button" data-tab-go="home"><svg class="arr arr-l" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg> Explore</button><div class="brand">Help me choose</div></div>
       <div id="quiz"></div>
     </section>
 
     <!-- SAVED -->
     <section class="screen" id="screen-saved" aria-label="Saved and tried dishes">
-      <div class="topbar"><div class="brand"><img class="brand-bae" src="mascot/bae-128.webp" alt="" width="30" height="30">My food passport</div></div>
+      <div class="topbar"><div class="brand"><img class="brand-bae" src="mascot/bae-128.webp" alt="" width="30" height="30">Saved</div></div>
       <div id="saved"></div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="screen" id="screen-profile" aria-label="Profile">
+      <div class="topbar"><div class="brand"><img class="brand-bae" src="mascot/bae-128.webp" alt="" width="30" height="30">Profile</div></div>
+      <div id="profile"></div>
     </section>
 
     <nav class="tabbar" aria-label="Main">
       <button class="tab on" data-tab="home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span class="lbl">Explore</span></button>
-      <button class="tab" data-tab="quiz"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg><span class="lbl">Quiz</span></button>
       <button class="tab" data-tab="saved"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span class="lbl">Saved</span><span class="count" id="savedCount" hidden></span></button>
+      <button class="tab" data-tab="profile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 19.2c1.2-2.6 3.5-4 6.5-4s5.3 1.4 6.5 4"/></svg><span class="lbl">Profile</span></button>
     </nav>
 
     <div class="scrim" id="scrim"></div>
@@ -79,6 +85,14 @@
       <div class="grab" id="grab"></div>
       <div class="sheet-scroll" id="sheetScroll"></div>
       <div class="actions" id="sheetActions"></div>
+    </div>
+    <div class="rsheet" id="editSheet" role="dialog" aria-modal="true" aria-label="Edit profile">
+      <div class="grab"></div>
+      <div class="rs-head"><h3>Edit profile</h3><button class="close-x" id="editClose" type="button" aria-label="Close">✕</button></div>
+      <label class="field"><span>Name</span><input id="pfName" maxlength="40" autocomplete="name" placeholder="What should we call you?"></label>
+      <label class="field"><span>Age</span><input id="pfAge" inputmode="numeric" maxlength="3" placeholder="Optional"></label>
+      <label class="field"><span>Bio</span><textarea id="pfBio" maxlength="150" placeholder="A short line about you"></textarea><small id="pfBioCount"></small></label>
+      <div class="rs-actions"><button class="cta" id="editDone" type="button">Done</button></div>
     </div>
     <div class="rsheet" id="randSheet" role="dialog" aria-modal="true" aria-label="Random dish picker">
       <div class="grab"></div>

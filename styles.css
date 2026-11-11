@@ -98,7 +98,13 @@ h2.section small{font-size:13px;color:var(--muted);font-weight:500;letter-spacin
 .banner:active{transform:scale(.97)}
 .banner h3{margin:0 0 4px;font-size:18px;letter-spacing:-.3px}
 .banner p{margin:0;font-size:13px;color:var(--forest)}
-.banner .go{margin-left:auto;flex:none;width:42px;height:42px;border-radius:50%;background:var(--accent-btn);color:#fff;display:grid;place-items:center;font-size:18px}
+.banner .go{margin-left:auto;flex:none;width:42px;height:42px;border-radius:50%;background:var(--accent-btn);color:#fff;display:grid;place-items:center}
+.arr{display:inline-block;vertical-align:-3px;flex:none}
+.arr-l{transform:rotate(180deg)}
+.swipe-hint{font-weight:500;font-size:12px;margin-left:auto;display:inline-flex;align-items:center;gap:3px}
+.swipe-hint .arr{width:14px;height:14px;vertical-align:0}
+.go .arr,.round .arr{vertical-align:0}
+.go .arr{transform:translateX(1px)}
 .banner::after{content:"";position:absolute;right:-30px;top:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.25)}
 
 /* ---------- Dish cards ---------- */
@@ -322,6 +328,27 @@ a{color:var(--accent-d)}
 .toast{background:var(--forest)}
 .passport{background:var(--forest)}
 .banner{background:linear-gradient(135deg,#FAD2BB,#FFE9DC)}
+
+/* ---------- Profile ---------- */
+.profile-card{position:relative;background:var(--surface);border:var(--card-border);border-radius:var(--radius-lg);padding:18px;box-shadow:var(--shadow)}
+.pf-edit{position:absolute;top:14px;right:14px}
+.profile-top{display:flex;align-items:center;gap:16px;padding-right:42px}
+.avatar{width:76px;height:76px;border-radius:50%;background:var(--section);color:var(--accent);display:grid;place-items:center;font-family:var(--round);font-size:30px;font-weight:700;flex:none}
+.profile-top h2{margin:0;font-size:22px;letter-spacing:-.4px;line-height:1.15}
+.profile-age{margin:3px 0 0;color:var(--muted);font-size:14px;font-weight:600}
+.profile-bio{margin:14px 0 0;font-size:15px;line-height:1.45;color:var(--ink);white-space:pre-wrap}
+.profile-bio.placeholder{color:var(--muted)}
+.profile-stats{display:flex;gap:22px;margin-top:16px}
+.profile-stats b{display:block;font-size:18px;letter-spacing:-.3px}
+.profile-stats span{font-size:12px;color:var(--muted);font-weight:600}
+.field{display:block;margin-top:14px}
+.field span{display:block;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input,.field textarea{width:100%;border:1px solid var(--line);background:var(--cream);border-radius:16px;padding:12px 14px;font-size:16px}
+.field textarea{min-height:88px;resize:vertical}
+.field small{display:block;text-align:right;color:var(--muted);font-size:12px;margin-top:4px}
+.data-note{color:var(--ink2);font-size:14px;line-height:1.45;margin:0 0 14px}
+.data-actions{display:flex;gap:8px}
+.data-actions .pill-btn{flex:1;justify-content:center;height:46px}
 
 /* ---------- Instamart-like type hierarchy extras ---------- */
 .card-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 2px 6px}

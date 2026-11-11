@@ -1,0 +1,123 @@
+package app.dishcover;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Toast;
+
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+
+public class MainActivity extends Activity {
+    private static final int FILE_CHOOSER = 1001;
+    private WebView web;
+    private ValueCallback<Uri[]> fileCallback;
+
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        web = new WebView(this);
+        web.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        WebSettings settings = web.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setAllowFileAccess(true);
+        settings.setAllowContentAccess(true);
+        web.addJavascriptInterface(new BackupBridge(), "DishcoverAndroid");
+        web.setWebViewClient(new WebViewClient());
+        web.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback, FileChooserParams params) {
+                if (fileCallback != null) fileCallback.onReceiveValue(null);
+                fileCallback = callback;
+                try {
+                    startActivityForResult(params.createIntent(), FILE_CHOOSER);
+                } catch (Exception e) {
+                    fileCallback = null;
+                    callback.onReceiveValue(null);
+                    return false;
+                }
+                return true;
+            }
+        });
+        setContentView(web);
+        web.loadUrl("file:///android_asset/index.html");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FILE_CHOOSER) {
+            if (fileCallback != null) {
+                Uri[] result = resultCode == RESULT_OK
+                        ? WebChromeClient.FileChooserParams.parseResult(resultCode, data)
+                        : null;
+                fileCallback.onReceiveValue(result);
+                fileCallback = null;
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    @Deprecated
+    public void onBackPressed() {
+        if (web != null && web.canGoBack()) web.goBack();
+        else super.onBackPressed();
+    }
+
+    private class BackupBridge {
+        @JavascriptInterface
+        public void exportBackup(String json) {
+            runOnUiThread(() -> saveBackup(json));
+        }
+    }
+
+    private void saveBackup(String json) {
+        try {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, "dishcover-backup.json");
+            values.put(MediaStore.MediaColumns.MIME_TYPE, "application/json");
+            Uri collection;
+            if (Build.VERSION.SDK_INT >= 29) {
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+                values.put(MediaStore.MediaColumns.IS_PENDING, 1);
+                collection = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
+            } else {
+                collection = MediaStore.Files.getContentUri("external");
+            }
+            Uri uri = getContentResolver().insert(collection, values);
+            if (uri == null) throw new IllegalStateException("insert");
+            try (OutputStream out = getContentResolver().openOutputStream(uri)) {
+                if (out == null) throw new IllegalStateException("stream");
+                out.write(json.getBytes(StandardCharsets.UTF_8));
+            }
+            if (Build.VERSION.SDK_INT >= 29) {
+                values.clear();
+                values.put(MediaStore.MediaColumns.IS_PENDING, 0);
+                getContentResolver().update(uri, values, null, null);
+            }
+            Intent send = new Intent(Intent.ACTION_SEND);
+            send.setType("application/json");
+            send.putExtra(Intent.EXTRA_STREAM, uri);
+            send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(send, "Export Dishcover backup"));
+        } catch (Exception e) {
+            Toast.makeText(this, "Couldn't save the backup", Toast.LENGTH_SHORT).show();
+        }
+    }
+}

@@ -1,0 +1,60 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "app.dishcover"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "app.dishcover"
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    androidResources {
+        noCompress "jpg", "jpeg", "webp", "png", "woff2"
+    }
+
+    sourceSets {
+        main {
+            assets.srcDirs = ["$buildDir/webassets"]
+        }
+    }
+}
+
+def webRoot = rootProject.file("../")
+
+tasks.register("syncWebAssets", Copy) {
+    from(webRoot) {
+        include "index.html"
+        include "app.js"
+        include "styles.css"
+        include "data/**"
+        include "fonts/**"
+        include "images/**"
+        include "mascot/**"
+        exclude "android/**"
+    }
+    into layout.buildDirectory.dir("webassets")
+}
+
+tasks.named("preBuild").configure { dependsOn("syncWebAssets") }
+gradle.projectsEvaluated {
+    tasks.matching { it.name.toLowerCase().contains("merge") && it.name.toLowerCase().contains("assets") }.configureEach {
+        dependsOn("syncWebAssets")
+    }
+}
