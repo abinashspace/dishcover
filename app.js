@@ -73,6 +73,68 @@
     if (anim) { el.classList.remove(anim); void el.offsetWidth; el.classList.add(anim); setTimeout(() => el.classList.remove(anim), 1900); }
   }
 
+  /* ---------------- Click sounds ----------------
+     Three short tones, made with Web Audio. No audio files.
+     A tap for main buttons, a pop for save / tried, a chime when the quiz lands. */
+  const SOUND_KEY = "dishcover.sound";
+  let soundOn = true;
+  try { soundOn = localStorage.getItem(SOUND_KEY) !== "0"; } catch (e) {}
+  let audioCtx = null;
+  function audio() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    if (!audioCtx) audioCtx = new AC();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    return audioCtx;
+  }
+  function blip(ctx, freq, when, dur, peak) {
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sine";
+    o.frequency.setValueAtTime(freq, when);
+    g.gain.setValueAtTime(0.0001, when);
+    g.gain.exponentialRampToValueAtTime(peak, when + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(when); o.stop(when + dur + 0.02);
+  }
+  let lastSound = 0;
+  function playClick(kind) {
+    if (!soundOn) return;
+    const ctx = audio();
+    if (!ctx) return;
+    const now = performance.now();
+    if (now - lastSound < 45) return;
+    lastSound = now;
+    const run = () => {
+      const t = ctx.currentTime;
+      if (kind === "pop") { blip(ctx, 494, t, 0.07, 0.05); blip(ctx, 740, t + 0.045, 0.09, 0.035); }
+      else if (kind === "chime") { blip(ctx, 523, t, 0.12, 0.045); blip(ctx, 784, t + 0.09, 0.16, 0.035); }
+      else blip(ctx, 880, t, 0.045, 0.04);
+    };
+    if (ctx.state === "running") run();
+    else ctx.resume().then(run).catch(() => {});
+  }
+  function soundFor(target) {
+    const btn = target.closest("button, .card[data-id]");
+    if (!btn || btn.disabled) return null;
+    if (btn.matches("[data-like], #sheetLike, #triedBtn")) return "pop";
+    if (btn.matches([
+      ".tab", "[data-cat]", "[data-veg]", "#moreBtn", ".card[data-id]",
+      "#quizBanner", "#surpriseBtn", ".opt", "[data-seg]", "[data-tab-go]",
+      "#openRes", "[data-open]", "[data-ropen]", "#randGo",
+      "[data-rtype]", "[data-rdiet]", "[data-rcui]",
+      "#prevStep", "#nextStep", "#qBack", "#retake", "#writeRev", "[data-star]",
+      "#pfEdit", "#pfExport", "#pfImport", "#pfSound", "#editDone"
+    ].join(","))) return "tap";
+    return null;
+  }
+  document.addEventListener("pointerdown", () => { if (soundOn) audio(); }, { passive: true });
+  document.addEventListener("click", e => {
+    const kind = soundFor(e.target);
+    if (kind) playClick(kind);
+  }, true);
+
   /* ---------------- Toast ---------------- */
   let toastT;
   function toast(text, expr = "happy") {
@@ -633,6 +695,7 @@
       <div class="alt">${alts.map(x => `<button data-open="${x.d.id}"><span class="mini-ph ph" style="background:${x.d.color}">${photo(x.d)}</span>${esc(x.d.name)}</button>`).join("")}</div>
       <button class="pill-btn q-back" id="retake">↺ Retake quiz</button>`;
     $("#openRes").onclick = () => openDish(d.id);
+    playClick("chime");
     $(".alt", $("#quiz")).onclick = e => { const b = e.target.closest("[data-open]"); if (b) openDish(b.dataset.open); };
     $("#retake").onclick = () => { qi = 0; answers = {}; renderQuiz(); };
     confetti();
@@ -780,6 +843,13 @@
         <p class="profile-bio" id="pfDisplayBio"></p>
         <div class="profile-stats"><div><b id="pfSavedN"></b><span>Saved</span></div><div><b id="pfTriedN"></b><span>Tried</span></div></div>
       </div>
+      <div class="box sound-row">
+        <div>
+          <h3>Button sounds</h3>
+          <p class="data-note">Quiet taps on tabs, dishes, and a few main buttons.</p>
+        </div>
+        <button class="switch${soundOn ? " on" : ""}" id="pfSound" type="button" role="switch" aria-checked="${soundOn}" aria-label="Button sounds"></button>
+      </div>
       <div class="box">
         <h3>Keep a copy</h3>
         <p class="data-note">Your name, likes, and reviews stay on this phone. There is no account. Export a file to keep a backup, then import it here or on another phone.</p>
@@ -791,6 +861,14 @@
     $("#pfBio").value = p.bio;
     paintProfileHead();
     $("#pfEdit").onclick = openEdit;
+    $("#pfSound").onclick = () => {
+      soundOn = !soundOn;
+      try { localStorage.setItem(SOUND_KEY, soundOn ? "1" : "0"); } catch (e) {}
+      const b = $("#pfSound");
+      b.classList.toggle("on", soundOn);
+      b.setAttribute("aria-checked", String(soundOn));
+      if (soundOn) playClick("tap");
+    };
     $("#pfExport").onclick = exportData;
     $("#pfImport").onclick = () => $("#pfFile").click();
     $("#pfFile").onchange = () => {
@@ -824,7 +902,7 @@
       if ($("#editSheet").classList.contains("show")) closeEdit();
       else if (currentId) closeSheet();
     }
-    if ((e.key === "Enter" || e.key === " ") && e.target.matches(".card[data-id]")) { e.preventDefault(); openDish(e.target.dataset.id); }
+    if ((e.key === "Enter" || e.key === " ") && e.target.matches(".card[data-id]")) { e.preventDefault(); playClick("tap"); openDish(e.target.dataset.id); }
     if ((e.key === "Enter" || e.key === " ") && e.target.id === "homeMascot") { e.preventDefault(); nextTip(); }
     if (currentId && document.activeElement && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
       if (e.key === "ArrowRight") goStep(stepIdx + 1);

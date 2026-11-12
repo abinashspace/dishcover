@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.WindowInsets;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -20,11 +21,13 @@ import android.widget.Toast;
 
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 public class MainActivity extends Activity {
     private static final int FILE_CHOOSER = 1001;
     private WebView web;
     private ValueCallback<Uri[]> fileCallback;
+    private int barTop, barBottom, barLeft, barRight;
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -38,7 +41,12 @@ public class MainActivity extends Activity {
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
         web.addJavascriptInterface(new BackupBridge(), "DishcoverAndroid");
-        web.setWebViewClient(new WebViewClient());
+        web.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                pushSafeArea();
+            }
+        });
         web.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback, FileChooserParams params) {
@@ -55,7 +63,32 @@ public class MainActivity extends Activity {
             }
         });
         setContentView(web);
+        if (Build.VERSION.SDK_INT >= 30) {
+            web.setOnApplyWindowInsetsListener((v, insets) -> {
+                android.graphics.Insets bars = insets.getInsets(WindowInsets.Type.systemBars());
+                barLeft = bars.left;
+                barTop = bars.top;
+                barRight = bars.right;
+                barBottom = bars.bottom;
+                pushSafeArea();
+                return insets;
+            });
+            web.requestApplyInsets();
+        }
         web.loadUrl("file:///android_asset/index.html");
+    }
+
+    private void pushSafeArea() {
+        if (web == null) return;
+        float density = getResources().getDisplayMetrics().density;
+        if (density <= 0f) density = 1f;
+        String js = String.format(Locale.US,
+                "document.documentElement.style.setProperty('--sat','%.1fpx');" +
+                "document.documentElement.style.setProperty('--sab','%.1fpx');" +
+                "document.documentElement.style.setProperty('--sal','%.1fpx');" +
+                "document.documentElement.style.setProperty('--sar','%.1fpx');",
+                barTop / density, barBottom / density, barLeft / density, barRight / density);
+        web.evaluateJavascript(js, null);
     }
 
     @Override
