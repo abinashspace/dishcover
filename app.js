@@ -125,7 +125,7 @@
       "#openRes", "[data-open]", "[data-ropen]", "#randGo",
       "[data-rtype]", "[data-rdiet]", "[data-rcui]",
       "#prevStep", "#nextStep", "#qBack", "#retake", "#writeRev", "[data-star]",
-      "#pfEdit", "#pfExport", "#pfImport", "#pfSound", "#editDone"
+      "#pfEdit", "#pfExport", "#pfImport", "#pfSound", "#editDone", "#shareCard"
     ].join(","))) return "tap";
     return null;
   }
@@ -438,6 +438,263 @@
   /* ---------------- Detail sheet ---------------- */
   let currentId = null, stepIdx = 0, reviewStars = 0;
   let openReq = 0;
+  /* Shareable food ID card. Drawn on a canvas so we don't ship an image per dish. */
+  const DIET_TAG = { veg: "Veg", egg: "Egg", both: "Veg & non-veg", eggboth: "Egg & non-veg", nonveg: "Non-veg" };
+  const TYPE_TAG = { snack: "Snack", sweet: "Sweet", drink: "Drink" };
+  function loadImg(src) {
+    return new Promise((res, rej) => {
+      const t = setTimeout(() => rej(new Error("img")), 4000);
+      const show = (url, revoke) => {
+        const img = new Image();
+        img.onload = () => { clearTimeout(t); if (revoke) URL.revokeObjectURL(url); res(img); };
+        img.onerror = () => { clearTimeout(t); if (revoke) URL.revokeObjectURL(url); rej(new Error("img")); };
+        img.src = url;
+      };
+      /* Read the file as a blob so the card canvas can be exported. A direct file image is blocked. */
+      try {
+        const x = new XMLHttpRequest();
+        x.open("GET", src);
+        x.responseType = "blob";
+        x.onload = () => x.response ? show(URL.createObjectURL(x.response), true) : show(src, false);
+        x.onerror = () => show(src, false);
+        x.send();
+      } catch (e) {
+        show(src, false);
+      }
+    });
+  }
+  function roundRect(ctx, x, y, w, h, r) {
+    const rr = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + rr, y);
+    ctx.arcTo(x + w, y, x + w, y + h, rr);
+    ctx.arcTo(x + w, y + h, x, y + h, rr);
+    ctx.arcTo(x, y + h, x, y, rr);
+    ctx.arcTo(x, y, x + w, y, rr);
+    ctx.closePath();
+  }
+  function wrapLines(ctx, text, maxW) {
+    const words = String(text || "").trim().split(/\s+/).filter(Boolean);
+    const lines = [];
+    let cur = "";
+    words.forEach(w => {
+      const next = cur ? cur + " " + w : w;
+      if (ctx.measureText(next).width <= maxW) cur = next;
+      else {
+        if (cur) lines.push(cur);
+        cur = w;
+      }
+    });
+    if (cur) lines.push(cur);
+    return lines.length ? lines : [""];
+  }
+  function fitLines(ctx, text, maxW, maxLines, start, min, weight, family) {
+    let size = start;
+    let lines = [text];
+    while (size >= min) {
+      ctx.font = `${weight} ${size}px ${family}`;
+      lines = wrapLines(ctx, text, maxW);
+      if (lines.length <= maxLines && lines.every(l => ctx.measureText(l).width <= maxW + 1)) return { size, lines };
+      size -= 2;
+    }
+    ctx.font = `${weight} ${min}px ${family}`;
+    lines = wrapLines(ctx, text, maxW).slice(0, maxLines);
+    const last = lines[lines.length - 1] || "";
+    let cut = last;
+    while (cut.length > 1 && ctx.measureText(cut + "…").width > maxW) cut = cut.slice(0, -1);
+    lines[lines.length - 1] = cut.replace(/\s+$/, "") + "…";
+    return { size: min, lines };
+  }
+  function drawCover(ctx, img, x, y, w, h) {
+    const ir = img.width / img.height, box = w / h;
+    let sx = 0, sy = 0, sw = img.width, sh = img.height;
+    if (ir > box) { sw = img.height * box; sx = (img.width - sw) / 2; }
+    else { sh = img.width / box; sy = (img.height - sh) / 2; }
+    ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+  }
+  async function renderIdCard(d) {
+    const W = 1200, H = 720;
+    const c = document.createElement("canvas");
+    c.width = W; c.height = H;
+    const ctx = c.getContext("2d");
+    ctx.fillStyle = "#EAF1FF";
+    ctx.fillRect(0, 0, W, H);
+    ctx.save();
+    ctx.shadowColor = "rgba(16,24,64,.16)";
+    ctx.shadowBlur = 28;
+    ctx.shadowOffsetY = 12;
+    roundRect(ctx, 36, 32, 1128, 656, 40);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fill();
+    ctx.restore();
+
+    const photoX = 68, photoY = 64, photoW = 470, photoH = 592;
+    ctx.save();
+    roundRect(ctx, photoX, photoY, photoW, photoH, 28);
+    ctx.clip();
+    ctx.fillStyle = d.color || "#EAF1FF";
+    ctx.fillRect(photoX, photoY, photoW, photoH);
+    let pic = null;
+    if (d.photo && d.photo.src) pic = await loadImg(d.photo.src).catch(() => null);
+    if (pic) drawCover(ctx, pic, photoX, photoY, photoW, photoH);
+    else {
+      ctx.font = "180px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(d.emoji || "🍽️", photoX + photoW / 2, photoY + photoH / 2 + 8);
+    }
+    ctx.restore();
+    ctx.save();
+    roundRect(ctx, photoX, photoY, photoW, photoH, 28);
+    ctx.strokeStyle = "#ECEEF3";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+
+    const right = 1110;
+    const textX = photoX + photoW + 40;
+    const textW = right - textX;
+    let logo = null;
+    try { logo = await loadImg("mascot/bae-128.png"); } catch (e) { logo = await loadImg("mascot/icon-192.png").catch(() => null); }
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#141A33";
+    ctx.font = '700 32px Comfortaa, sans-serif';
+    const brand = "Dishcover";
+    const brandW = ctx.measureText(brand).width;
+    const logoS = 64;
+    const brandX = right - brandW;
+    if (logo) {
+      const lx = brandX - 14 - logoS;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(lx + logoS / 2, 108, logoS / 2, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.drawImage(logo, lx, 108 - logoS / 2, logoS, logoS);
+      ctx.restore();
+    }
+    ctx.textAlign = "left";
+    ctx.fillText(brand, brandX, 110);
+
+    const nameFit = fitLines(ctx, d.name, textW, 3, 64, 34, 700, '"Plus Jakarta Sans", sans-serif');
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillStyle = "#141A33";
+    ctx.font = `700 ${nameFit.size}px "Plus Jakarta Sans", sans-serif`;
+    let y = 188;
+    nameFit.lines.forEach(line => {
+      ctx.fillText(line, textX, y);
+      y += nameFit.size + 8;
+    });
+    y += 18;
+    const tags = [];
+    if (d.cuisine) tags.push(d.cuisine);
+    if (DIET_TAG[d.diet]) tags.push(DIET_TAG[d.diet]);
+    if (TYPE_TAG[d.type]) tags.push(TYPE_TAG[d.type]);
+    topTastes(d).forEach(t => { if (tags.indexOf(t) < 0) tags.push(t); });
+    ctx.font = '700 22px "Plus Jakarta Sans", sans-serif';
+    const gap = 10, padX = 16, pillH = 44;
+    let cx = textX;
+    tags.forEach(tag => {
+      let label = tag;
+      while (label.length > 1 && ctx.measureText(label).width + padX * 2 > textW) label = label.slice(0, -1);
+      if (label !== tag) label = label.replace(/\s+$/, "") + "…";
+      const pillW = Math.min(textW, ctx.measureText(label).width + padX * 2);
+      if (cx > textX && cx + pillW > textX + textW) { cx = textX; y += pillH + gap; }
+      roundRect(ctx, cx, y, pillW, pillH, 22);
+      ctx.fillStyle = "#EAF1FF";
+      ctx.fill();
+      ctx.fillStyle = "#141A33";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+      ctx.fillText(label, cx + padX, y + pillH / 2 + 1);
+      cx += pillW + gap;
+    });
+    if (tags.length) y += pillH;
+    let sticker = null;
+    try { sticker = await loadImg("mascot/buy-me-food.png"); } catch (e) { sticker = null; }
+    if (sticker) {
+      const top = y + 12;
+      const bottom = 656;
+      const availH = bottom - top;
+      const availW = textW;
+      if (availH >= 110 && availW >= 110) {
+        const aspect = sticker.width / sticker.height;
+        let sw = Math.min(availW, 380);
+        let sh = sw / aspect;
+        if (sh > availH) { sh = availH; sw = sh * aspect; }
+        ctx.drawImage(sticker, right - sw, bottom - sh, sw, sh);
+      }
+    }
+    if (y < 590) {
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = "#5F6478";
+      ctx.font = '700 16px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText("Food ID card", textX, 630);
+    }
+    return await new Promise(res => c.toBlob(res, "image/png"));
+  }
+  function blobToDataUrl(blob) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result);
+      r.onerror = () => rej(r.error);
+      r.readAsDataURL(blob);
+    });
+  }
+  function cardFileName(d) {
+    const slug = String(d.id || "dish").replace(/[^a-z0-9-]+/gi, "").slice(0, 48) || "dish";
+    return "food-id-card-" + slug + ".png";
+  }
+  let sharingCard = false;
+  async function shareDishCard(d) {
+    if (sharingCard) return;
+    sharingCard = true;
+    try {
+      if (document.fonts && document.fonts.load) {
+        await Promise.race([
+          Promise.all([
+            document.fonts.load('700 64px "Plus Jakarta Sans"'),
+            document.fonts.load('600 28px "Plus Jakarta Sans"'),
+            document.fonts.load('700 32px Comfortaa')
+          ]),
+          new Promise(res => setTimeout(res, 250))
+        ]);
+      }
+      const blob = await renderIdCard(d);
+      if (!blob) throw new Error("png");
+      const name = cardFileName(d);
+      const title = "Food ID card";
+      if (window.DishcoverAndroid && window.DishcoverAndroid.shareCardBegin) {
+        const dataUrl = await blobToDataUrl(blob);
+        const bridge = window.DishcoverAndroid;
+        bridge.shareCardBegin();
+        for (let i = 0; i < dataUrl.length; i += 180000) bridge.shareCardChunk(dataUrl.slice(i, i + 180000));
+        bridge.shareCardFinish(name, title, d.name);
+        return;
+      }
+      const file = new File([blob], name, { type: "image/png" });
+      if (navigator.share) {
+        try {
+          await navigator.share({ files: [file], title, text: d.name + " · " + title });
+          return;
+        } catch (e) {
+          if (e && e.name === "AbortError") return;
+        }
+      }
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      toast("Food ID card saved", "happy");
+    } catch (e) {
+      toast("Couldn't make that card", "thinking");
+    } finally {
+      sharingCard = false;
+    }
+  }
+
   function openDish(id) {
     const d = byId[id]; if (!d) return Promise.resolve();
     if (!d.steps) {
@@ -459,6 +716,7 @@
       ${credit(d)}
       <h2 class="d-name">${esc(d.name)}</h2>
       <button class="pron" id="say" aria-label="Hear pronunciation">🔊 Say it: <b>${esc(d.pron)}</b></button>
+      <button class="share-card" id="shareCard" type="button">Food ID card</button>
 
       <div class="box"><h3>🍽️ What is it?</h3><p>${esc(d.what)}</p></div>
 
@@ -561,6 +819,7 @@
   function bindSheet(d) {
     $("#closeSheet").onclick = closeSheet;
     $("#sheetLike").onclick = e => toggleLike(d.id, e.currentTarget);
+    $("#shareCard").onclick = () => shareDishCard(d);
     $("#say").onclick = () => {
       try {
         const u = new SpeechSynthesisUtterance(d.name.replace(/\(.*\)/, ""));

@@ -174,6 +174,9 @@ mark{background:var(--yellow2);border-radius:4px;padding:0 2px}
 .d-hero .diet{left:auto;right:14px}
 .d-name{font-size:30px;letter-spacing:-1px;margin:16px 0 2px}
 .pron{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink2);background:var(--surface);border-radius:999px;padding:5px 10px;box-shadow:var(--shadow)}
+.share-card{display:flex;align-items:center;justify-content:center;width:100%;height:48px;margin:14px 0 2px;border-radius:999px;background:var(--section);color:var(--accent-d);font-weight:700;font-size:15px}
+.share-card:active{transform:scale(.98)}
+.share-card:disabled{opacity:.55}
 .box{background:var(--surface);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-top:12px}
 .box h3{margin:0 0 10px;font-size:15px;display:flex;align-items:center;gap:8px}
 .box p{margin:0;line-height:1.55;color:var(--ink2);font-size:15px}
