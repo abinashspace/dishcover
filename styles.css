@@ -49,7 +49,7 @@ input,textarea{font:inherit;color:inherit}
 /* ---------- Screens ---------- */
 .screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;
   padding-top:var(--sat);
-  padding-bottom:calc(118px + var(--sab));
+  padding-bottom:calc(66px + max(18px, calc(var(--sab) + 10px)) + 48px);
   padding-left:max(20px,var(--sal));
   padding-right:max(20px,var(--sar));
   opacity:0;transform:translateX(16px);pointer-events:none;transition:opacity .35s var(--ease),transform .45s var(--ease)}
@@ -86,7 +86,8 @@ h2.section small{font-size:13px;color:var(--muted);font-weight:500;letter-spacin
 .bubble::before{content:"";position:absolute;left:-7px;bottom:10px;border:8px solid transparent;border-right-color:var(--surface);border-left:0}
 
 /* ---------- Search ---------- */
-.search{position:sticky;top:var(--sat);z-index:5;padding:10px 0 8px;background:linear-gradient(var(--bg2) 75%,transparent)}
+.search{position:sticky;top:var(--sat);z-index:5;padding:10px max(20px,var(--sar)) 12px max(20px,var(--sal));margin:0 calc(-1 * max(20px,var(--sar))) 0 calc(-1 * max(20px,var(--sal)));background:var(--bg2)}
+.search::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:var(--sat);background:var(--bg2);pointer-events:none}
 .search-box{position:relative;display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:999px;padding:0 16px 0 18px;height:52px;box-shadow:var(--shadow);border:2px solid transparent;transition:border-color .25s,box-shadow .3s,transform .3s var(--spring)}
 .search-box:focus-within{border-color:var(--accent);box-shadow:0 10px 30px rgba(16,24,64,.12);transform:translateY(-1px)}
 .search-box svg{flex:none;transition:transform .4s var(--spring)}
@@ -122,26 +123,31 @@ h2.section small{font-size:13px;color:var(--muted);font-weight:500;letter-spacin
 .banner::after{content:"";position:absolute;right:-30px;top:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.25)}
 
 /* ---------- Dish cards ---------- */
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card{position:relative;background:var(--surface);border-radius:var(--radius);padding:10px 10px 12px;text-align:left;box-shadow:var(--shadow);border:var(--card-border);display:flex;flex-direction:column;
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch}
+@media (min-width:600px) and (max-width:899px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+.card{position:relative;background:var(--surface);border-radius:var(--radius);padding:10px;text-align:left;box-shadow:var(--shadow);border:var(--card-border);
+  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto auto auto auto auto;align-content:start;align-items:start;height:100%;min-width:0;
   animation:rise .5s var(--ease) both;transition:transform .25s var(--spring),box-shadow .25s}
 .card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(16,24,64,.1)}
 .card:active{transform:scale(.97)}
 @keyframes rise{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
 .thumb{height:116px;border-radius:16px;display:grid;place-items:center;font-size:54px;position:relative;overflow:hidden}
+.card>.thumb{grid-column:1/-1;aspect-ratio:4/3;width:100%;height:auto;min-height:0;border-radius:16px}
 .thumb .emoji-fb{transition:transform .6s var(--ease)}
 .card:hover .thumb .emoji-fb{transform:scale(1.05)}
-.card h4{margin:8px 2px 4px;font-size:14px;letter-spacing:-.15px;font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.5em}
-.card .cuisine{display:inline-flex;align-items:center;margin:0 2px 6px;padding:2px 8px;font-size:11px;font-weight:600;line-height:1.3;color:var(--accent);background:#EEF3FF;border:1px solid #B8C9FF;border-radius:6px;width:max-content;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mini-taste{display:flex;gap:4px;flex-wrap:wrap;margin:auto 2px 0}
-.tchip{font-size:10px;font-weight:700;padding:3px 7px;border-radius:6px;background:#EEF3FF;color:var(--accent-d);border:1px solid #C5D4FF;letter-spacing:.02em}
-.heart{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;transition:transform .3s var(--spring);z-index:2}
+.card h4{grid-column:1/-1;margin:6px 2px 4px;font-size:14px;letter-spacing:-.15px;font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;height:2.5em;min-height:2.5em}
+.card .cuisine{grid-column:1;align-self:center;display:inline-flex;align-items:center;margin:8px 2px 2px;padding:2px 8px;font-size:11px;font-weight:600;line-height:1.3;color:var(--accent);background:#EEF3FF;border:1px solid #B8C9FF;border-radius:6px;width:max-content;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-taste{grid-column:1/-1;display:flex;gap:4px;flex-wrap:nowrap;align-items:center;margin:0 2px;min-height:22px;overflow:hidden}
+.tchip{flex:none;font-size:10px;font-weight:700;padding:3px 7px;border-radius:6px;background:#EEF3FF;color:var(--accent-d);border:1px solid #C5D4FF;letter-spacing:.02em}
+.heart{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;transition:transform .3s var(--spring);z-index:2}
+.card>.heart{grid-column:1/-1;grid-row:1}
 .heart:active{transform:scale(.8)}
 .heart svg{width:18px;height:18px}
 .heart.on svg path{fill:var(--pink);stroke:var(--pink)}
 .heart.burst{animation:burst .5s var(--spring)}
 @keyframes burst{0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}}
-.tried-badge{position:absolute;top:16px;left:16px;font-size:10px;font-weight:700;background:var(--ink);color:#fff;border-radius:999px;padding:4px 8px;letter-spacing:.04em;text-transform:uppercase}
+.tried-badge{position:absolute;top:8px;left:8px;font-size:10px;font-weight:700;background:var(--ink);color:#fff;border-radius:999px;padding:4px 8px;letter-spacing:.04em;text-transform:uppercase;z-index:2}
+.card>.tried-badge{grid-column:1/-1;grid-row:1}
 mark{background:var(--yellow2);border-radius:4px;padding:0 2px}
 .empty{text-align:center;padding:24px 10px;color:var(--ink2)}
 .empty .mascot{margin:0 auto;width:110px;height:110px}
@@ -301,7 +307,7 @@ mark{background:var(--yellow2);border-radius:4px;padding:0 2px}
 
 /* ---------- Photos ---------- */
 .ph{position:relative;overflow:hidden;display:grid;place-items:center}
-.ph .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;opacity:0;transition:opacity .7s ease,transform .8s var(--ease)}
+.ph .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:inherit;opacity:0;transition:opacity .7s ease,transform .8s var(--ease)}
 .ph .photo.loaded{opacity:1}
 .ph .emoji-fb{opacity:0;transition:opacity .3s}
 .ph.noimg .emoji-fb{opacity:1}
@@ -314,7 +320,7 @@ mark{background:var(--yellow2);border-radius:4px;padding:0 2px}
 .grid.quiet .card{animation:none}
 .d-hero .tag{max-width:calc(50% - 18px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.more-wrap{display:flex;justify-content:center;padding:18px 0 6px}
+.more-wrap{display:flex;justify-content:center;padding:18px 0 12px}
 .more-wrap:empty{display:none}
 .more-btn{font-size:14px;padding:11px 20px}
 .more-btn .muted{font-weight:500}
@@ -386,16 +392,16 @@ a{color:var(--accent-d)}
 .switch.on::after{transform:translateX(18px)}
 
 /* ---------- Instamart-like type hierarchy extras ---------- */
-.card-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 2px 6px}
-.meta-pill{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.card-meta{grid-column:1/-1;display:flex;align-items:center;gap:6px;flex-wrap:nowrap;margin:0 2px 6px;min-height:16px;overflow:hidden}
+.meta-pill{flex:none;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .meta-pill.veg{color:var(--green)}
 .meta-pill.hot{color:var(--orange-text)}
-.badge-good{font-size:11px;font-weight:700;color:var(--green);letter-spacing:.02em}
+.badge-good{grid-column:2;align-self:center;margin:8px 2px 2px 6px;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.02em;white-space:nowrap}
 .rate-pill{display:inline-flex;align-items:center;gap:3px;background:#E8F7EC;color:#1B7A3A;border-radius:6px;padding:2px 6px;font-size:11px;font-weight:700;line-height:1.2}
 .rate-pill .star{color:#1B7A3A;font-size:10px}
 .rate-count{font-size:11px;color:var(--muted);font-weight:500}
 .mins{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
-.card .card-foot{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:auto 2px 0;padding-top:4px}
+.card .card-foot{grid-column:1/-1;display:flex;align-items:center;gap:6px;flex-wrap:nowrap;margin:4px 2px 0;padding-top:0;min-height:20px;overflow:hidden}
 .tag2.y,.tag2.outline{background:#EEF3FF;color:var(--accent-d);border:1px solid #B8C9FF;font-weight:600;font-size:12px}
 .d-hero .tag{font-weight:700;letter-spacing:.02em}
 .rating-row .rate-pill{font-size:13px;padding:4px 8px}
