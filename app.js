@@ -79,6 +79,7 @@
   const SOUND_KEY = "dishcover.sound";
   let soundOn = true;
   try { soundOn = localStorage.getItem(SOUND_KEY) !== "0"; } catch (e) {}
+  const SFX_VOL = 6; // sound-effect loudness boost
   let audioCtx = null;
   function audio() {
     const AC = window.AudioContext || window.webkitAudioContext;
@@ -93,7 +94,7 @@
     o.type = "sine";
     o.frequency.setValueAtTime(freq, when);
     g.gain.setValueAtTime(0.0001, when);
-    g.gain.exponentialRampToValueAtTime(peak, when + 0.008);
+    g.gain.exponentialRampToValueAtTime(Math.min(peak * SFX_VOL, 0.4), when + 0.008);
     g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
     o.connect(g); g.connect(ctx.destination);
     o.start(when); o.stop(when + dur + 0.02);
