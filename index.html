@@ -106,6 +106,31 @@
     <div class="toast" id="toast" role="status"><span class="mini" id="toastMascot"></span><span id="toastText"></span></div>
   </main>
 </div>
+<div id="offline" class="offline" role="alertdialog" aria-modal="true" aria-labelledby="offTitle" hidden>
+  <div class="off-card">
+    <img src="mascot/bae-256.webp" alt="Bae" width="150" height="150">
+    <h2 id="offTitle">Oops! No internet</h2>
+    <p>Bae needs the internet to fetch your dishes. Please turn on your mobile data or Wi-Fi.</p>
+    <button id="offRetry" class="off-btn">Try again</button>
+  </div>
+</div>
+<script>
+(function(){
+  var el=document.getElementById('offline');
+  function show(){el.hidden=false;document.documentElement.classList.add('is-offline');}
+  function hide(){el.hidden=true;document.documentElement.classList.remove('is-offline');}
+  function check(){
+    if(!navigator.onLine){show();return;}
+    fetch('https://www.gstatic.com/generate_204',{mode:'no-cors',cache:'no-store'}).then(hide,show);
+  }
+  window.addEventListener('offline',show);
+  window.addEventListener('online',check);
+  document.getElementById('offRetry').onclick=function(){
+    var b=this;b.textContent='Checking...';setTimeout(function(){b.textContent='Try again';},1200);check();
+  };
+  check();
+})();
+</script>
 <script src="data/index.js"></script>
 <script src="app.js"></script>
 </body>
