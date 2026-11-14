@@ -187,7 +187,7 @@ public class MainActivity extends Activity {
     private void saveBackup(String json) {
         try {
             ContentValues values = new ContentValues();
-            values.put(MediaStore.MediaColumns.DISPLAY_NAME, "dishcover-backup.json");
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, "dishcover-backup-" + new java.text.SimpleDateFormat("yyyy-MM-dd-HHmm", java.util.Locale.US).format(new java.util.Date()) + ".json");
             values.put(MediaStore.MediaColumns.MIME_TYPE, "application/json");
             Uri collection;
             if (Build.VERSION.SDK_INT >= 29) {
@@ -208,11 +208,7 @@ public class MainActivity extends Activity {
                 values.put(MediaStore.MediaColumns.IS_PENDING, 0);
                 getContentResolver().update(uri, values, null, null);
             }
-            Intent send = new Intent(Intent.ACTION_SEND);
-            send.setType("application/json");
-            send.putExtra(Intent.EXTRA_STREAM, uri);
-            send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(send, "Export Dishcover backup"));
+            Toast.makeText(this, "Backup saved to Downloads", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this, "Couldn't save the backup", Toast.LENGTH_SHORT).show();
         }

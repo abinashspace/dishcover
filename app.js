@@ -1021,15 +1021,14 @@
     const json = JSON.stringify(backupPayload(), null, 2);
     if (window.DishcoverAndroid && window.DishcoverAndroid.exportBackup) {
       window.DishcoverAndroid.exportBackup(json);
-      toast("Backup saved to Downloads", "happy");
       return;
     }
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([json], { type: "application/json" }));
-    a.download = "dishcover-backup.json";
+    a.download = "dishcover-backup-" + new Date().toISOString().slice(0, 10) + ".json";
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1500);
-    toast("Backup downloaded", "happy");
+    toast("Backup saved to Downloads", "happy");
   }
   function applyBackup(data) {
     if (!data || typeof data !== "object" || Array.isArray(data)) throw new Error("bad");
