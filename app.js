@@ -736,21 +736,9 @@
       <div class="box"><h3>💡 Bae's tip</h3><p>${esc(d.tip)}</p></div>
 
       <div class="box" id="reviewsBox"><h3>💬 Reviews</h3>
-        <div class="rating-row"><span class="big-rate">${d.reviews.rating.toFixed(1)}</span><div><span class="rate-pill"><span class="star">★</span> ${d.reviews.rating.toFixed(1)}</span> <span class="rate-count">${(d.reviews.samples||[]).length} samples</span><div class="muted" style="font-size:12px;margin-top:4px">sample rating</div></div></div>
+        <div class="rating-row"><span class="big-rate">${d.reviews.rating.toFixed(1)}</span><div><span class="rate-pill"><span class="star">★</span> ${d.reviews.rating.toFixed(1)}</span></div></div>
         <p>${esc(d.reviews.summary)}</p>
         <div class="pc"><div><b>👍 People love</b>${d.reviews.loved.map(esc).join("<br>")}</div><div><b>⚠️ Watch out</b>${d.reviews.watch.map(esc).join("<br>")}</div></div>
-        <div class="sample-flag">ℹ️ Sample reviews — written to illustrate the app, not from real customers.</div>
-        <div id="myReviews">${mine.map((r, i) => reviewHTML(r, true, i)).join("")}</div>
-        ${d.reviews.samples.map(r => reviewHTML(r, false)).join("")}
-        <div class="collapse" id="formWrap"><div>
-          <div class="form" style="padding-top:12px;border-top:1px solid var(--line);margin-top:6px">
-            <h3>✍️ Your review</h3>
-            <div class="star-pick" id="starPick">${[1, 2, 3, 4, 5].map(n => `<button data-star="${n}" aria-label="${n} star${n > 1 ? "s" : ""}">★</button>`).join("")}</div>
-            <input type="text" id="revName" placeholder="Your name (optional)" maxlength="30">
-            <textarea id="revText" rows="3" placeholder="How was it? Any tip for first-timers?" maxlength="300" style="margin-top:8px"></textarea>
-            <div class="row"><button class="cta ghost" id="cancelRev">Cancel</button><button class="cta" id="submitRev">Post review</button></div>
-            <p class="muted" style="font-size:12px;margin-top:8px">Saved only on this device.</p>
-          </div></div></div>
       </div>
 
       <div class="box"><h3>🎯 Good for people who like</h3><div class="tags">${d.goodFor.map(x => `<span class="tag2 y">${esc(x)}</span>`).join("")}</div></div>
@@ -776,9 +764,7 @@
   }
   function renderActions() {
     const tried = isTried(currentId);
-    $("#sheetActions").innerHTML = `<button class="cta ghost" id="writeRev">✍️ Review</button>
-      <button class="cta ${tried ? "done" : ""}" id="triedBtn" aria-pressed="${tried}">${tried ? "✓ I tried it!" : "😋 I tried it"}</button>`;
-    $("#writeRev").onclick = () => openForm(true);
+    $("#sheetActions").innerHTML = `<button class="cta ${tried ? "done" : ""}" id="triedBtn" aria-pressed="${tried}">${tried ? "✓ I tried it!" : "😋 I tried it"}</button>`;
     $("#triedBtn").onclick = toggleTried;
   }
   function toggleTried() {
@@ -787,7 +773,6 @@
     else {
       state.tried.push(id);
       toast(`Yay! ${state.tried.length}/${DISHES.length} dishes tried 🎉`, "wow");
-      setTimeout(() => { if (!(state.reviews[id] || []).length) openForm(true); }, 500);
     }
     save(); renderActions(); refreshCounts();
   }
@@ -836,26 +821,6 @@
     $("#nextStep").onclick = () => {
       if (stepIdx >= d.steps.length - 1) { toast("You're ready to eat like a pro! 🙌", "wink"); goStep(0); }
       else goStep(stepIdx + 1);
-    };
-    $("#starPick").onclick = e => { const b = e.target.closest("[data-star]"); if (b) setStars(+b.dataset.star); };
-    $("#cancelRev").onclick = () => openForm(false);
-    $("#submitRev").onclick = () => {
-      const text = $("#revText").value.trim();
-      if (!reviewStars) { toast("Tap the stars to rate first ⭐", "thinking"); return; }
-      if (text.length < 3) { toast("Write a few words, please ✍️", "thinking"); $("#revText").focus(); return; }
-      const r = { name: $("#revName").value.trim() || "You", stars: reviewStars, text, at: Date.now() };
-      (state.reviews[d.id] = state.reviews[d.id] || []).unshift(r);
-      if (!isTried(d.id)) state.tried.push(d.id);
-      save(); refreshCounts(); renderActions();
-      $("#myReviews").innerHTML = state.reviews[d.id].map((x, i) => reviewHTML(x, true, i)).join("");
-      $("#revText").value = ""; $("#revName").value = ""; setStars(0); openForm(false);
-      toast("Thanks! Your review is saved 💛", "love");
-    };
-    $("#myReviews").onclick = e => {
-      const b = e.target.closest("[data-del]"); if (!b) return;
-      state.reviews[d.id].splice(+b.dataset.del, 1); save();
-      $("#myReviews").innerHTML = state.reviews[d.id].map((x, i) => reviewHTML(x, true, i)).join("");
-      toast("Review deleted", "thinking");
     };
     $("#similar").onclick = e => { const b = e.target.closest("[data-open]"); if (b) openDish(b.dataset.open); };
   }
