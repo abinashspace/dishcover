@@ -286,9 +286,10 @@ mark{background:var(--yellow2);border-radius:4px;padding:0 2px}
 .seg button.on{background:var(--accent-btn);color:#fff}
 
 /* ---------- Toast ---------- */
-.toast{position:absolute;left:50%;bottom:calc(98px + var(--sab));z-index:60;transform:translate(-50%,30px);opacity:0;background:var(--ink);color:#fff;border-radius:999px;padding:6px 16px 6px 6px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;white-space:nowrap;max-width:calc(100% - 32px)}
+.toast{position:absolute;left:50%;bottom:calc(98px + var(--sab));z-index:60;transform:translate(-50%,30px);opacity:0;background:var(--ink);color:#fff;border-radius:999px;padding:6px 16px 6px 6px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;white-space:nowrap;max-width:calc(100% - 32px);
   transition:opacity .3s,transform .45s var(--spring);pointer-events:none;box-shadow:0 10px 30px rgba(16,24,64,.25)}
-.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast{visibility:hidden}
+.toast.show{opacity:1;transform:translate(-50%,0);visibility:visible}
 .toast .mini{width:38px;height:38px;border-radius:50%;background:#fff;display:grid;place-items:center}
 .toast .mini{position:relative}.toast .mini img.bae{width:34px;height:34px;object-fit:contain}.toast .mini .bae-fx{font-size:13px;top:-6px;right:-6px}
 .sheet-open .toast{bottom:92px}

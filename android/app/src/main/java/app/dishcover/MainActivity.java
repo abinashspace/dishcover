@@ -47,14 +47,35 @@ public class MainActivity extends Activity {
         settings.setAllowFileAccess(true);
         settings.setAllowFileAccessFromFileURLs(true);
         settings.setAllowContentAccess(true);
+        settings.setSupportMultipleWindows(true);
+        settings.setMediaPlaybackRequiresUserGesture(false);
         web.addJavascriptInterface(new BackupBridge(), "DishcoverAndroid");
         web.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, android.webkit.WebResourceRequest req) {
+                return openOutside(req.getUrl());
+            }
+
+            @Override
+            @Deprecated
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return openOutside(Uri.parse(url));
+            }
+
             @Override
             public void onPageFinished(WebView view, String url) {
                 pushSafeArea();
             }
         });
         web.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onCreateWindow(WebView view, boolean dialog, boolean userGesture, android.os.Message msg) {
+                WebView.HitTestResult hit = view.getHitTestResult();
+                String url = hit == null ? null : hit.getExtra();
+                if (url != null) openOutside(Uri.parse(url));
+                return false;
+            }
+
             @Override
             public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback, FileChooserParams params) {
                 if (fileCallback != null) fileCallback.onReceiveValue(null);
@@ -83,6 +104,13 @@ public class MainActivity extends Activity {
             web.requestApplyInsets();
         }
         web.loadUrl("file:///android_asset/index.html");
+    }
+
+    private boolean openOutside(Uri uri) {
+        String s = uri == null ? null : uri.getScheme();
+        if (s == null || s.equals("file")) return false;
+        try { startActivity(new Intent(Intent.ACTION_VIEW, uri)); } catch (Exception ignored) {}
+        return true;
     }
 
     private void pushSafeArea() {
@@ -116,8 +144,12 @@ public class MainActivity extends Activity {
     @Override
     @Deprecated
     public void onBackPressed() {
-        if (web != null && web.canGoBack()) web.goBack();
-        else super.onBackPressed();
+        if (web == null) { super.onBackPressed(); return; }
+        web.evaluateJavascript("(window.dishcoverBack&&window.dishcoverBack())?'1':'0'", r -> {
+            if (r != null && r.contains("1")) return;
+            if (web.canGoBack()) web.goBack();
+            else finish();
+        });
     }
 
     private class BackupBridge {
@@ -184,10 +216,40 @@ public class MainActivity extends Activity {
         }
     }
 
+    private String pendingBackup;
+
+    @Override
+    public void onRequestPermissionsResult(int code, String[] perms, int[] res) {
+        if (code == 1002) {
+            String j = pendingBackup; pendingBackup = null;
+            if (res.length > 0 && res[0] == PackageManager.PERMISSION_GRANTED && j != null) saveBackup(j);
+            else Toast.makeText(this, "Allow storage to save the backup", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void saveBackup(String json) {
+        String name = "dishcover-backup-" + new java.text.SimpleDateFormat("yyyy-MM-dd-HHmm", java.util.Locale.US).format(new java.util.Date()) + ".json";
+        if (Build.VERSION.SDK_INT < 29) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                pendingBackup = json;
+                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1002);
+                return;
+            }
+            try {
+                File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                if (!dir.isDirectory()) dir.mkdirs();
+                File f = new File(dir, name);
+                try (FileOutputStream out = new FileOutputStream(f)) { out.write(json.getBytes(StandardCharsets.UTF_8)); }
+                android.media.MediaScannerConnection.scanFile(this, new String[]{f.getAbsolutePath()}, new String[]{"application/json"}, null);
+                Toast.makeText(this, "Backup saved to Downloads", Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(this, "Couldn't save the backup", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
         try {
             ContentValues values = new ContentValues();
-            values.put(MediaStore.MediaColumns.DISPLAY_NAME, "dishcover-backup-" + new java.text.SimpleDateFormat("yyyy-MM-dd-HHmm", java.util.Locale.US).format(new java.util.Date()) + ".json");
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
             values.put(MediaStore.MediaColumns.MIME_TYPE, "application/json");
             Uri collection;
             if (Build.VERSION.SDK_INT >= 29) {

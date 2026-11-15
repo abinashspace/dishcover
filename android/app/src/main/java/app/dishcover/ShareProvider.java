@@ -34,7 +34,18 @@ public class ShareProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+        String name = uri.getLastPathSegment();
+        if (name == null || !name.matches("[A-Za-z0-9._-]+")) return null;
+        File file = new File(new File(getContext().getCacheDir(), "share"), name);
+        String[] cols = projection != null ? projection : new String[]{android.provider.OpenableColumns.DISPLAY_NAME, android.provider.OpenableColumns.SIZE};
+        android.database.MatrixCursor c = new android.database.MatrixCursor(cols);
+        Object[] row = new Object[cols.length];
+        for (int i = 0; i < cols.length; i++) {
+            if (android.provider.OpenableColumns.DISPLAY_NAME.equals(cols[i])) row[i] = name;
+            else if (android.provider.OpenableColumns.SIZE.equals(cols[i])) row[i] = file.length();
+        }
+        c.addRow(row);
+        return c;
     }
 
     @Override

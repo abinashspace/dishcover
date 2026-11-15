@@ -1078,7 +1078,7 @@
         <h3>Keep a copy</h3>
         <p class="data-note">Your name, likes, and reviews stay on this phone. There is no account. Export a file to keep a backup, then import it here or on another phone.</p>
         <div class="data-actions"><button class="pill-btn" id="pfExport" type="button">Export</button><button class="pill-btn" id="pfImport" type="button">Import</button></div>
-        <input id="pfFile" type="file" accept="application/json,.json" hidden>
+        <input id="pfFile" type="file" accept="application/json,.json,text/plain,application/octet-stream" hidden>
       </div>`;
     $("#pfName").value = p.name;
     $("#pfAge").value = p.age;
@@ -1121,6 +1121,12 @@
     const go = e.target.closest("[data-tab-go]"); if (go) { showTab(go.dataset.tabGo); return; }
     const seg = e.target.closest("[data-seg]"); if (seg) { savedSeg = seg.dataset.seg; renderSaved(); }
   });
+  window.dishcoverBack = function () {
+    if ($("#editSheet").classList.contains("show")) { closeEdit(); return true; }
+    if ($("#randSheet") && $("#randSheet").classList.contains("show")) { closeRand(); return true; }
+    if (currentId) { closeSheet(); return true; }
+    return false;
+  };
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") {
       if ($("#editSheet").classList.contains("show")) closeEdit();
