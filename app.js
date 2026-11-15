@@ -716,7 +716,6 @@
         <div class="tag">${esc(d.cuisine)}</div><div class="tag diet">${DIET[d.diet]}</div></div>
       ${credit(d)}
       <h2 class="d-name">${esc(d.name)}</h2>
-      <button class="pron" id="say" aria-label="Hear pronunciation">🔊 Say it: <b>${esc(d.pron)}</b></button>
       <button class="share-card" id="shareCard" type="button">Food ID card</button>
 
       <div class="box"><h3>🍽️ What is it?</h3><p>${esc(d.what)}</p></div>
@@ -806,13 +805,6 @@
     $("#closeSheet").onclick = closeSheet;
     $("#sheetLike").onclick = e => toggleLike(d.id, e.currentTarget);
     $("#shareCard").onclick = () => shareDishCard(d);
-    $("#say").onclick = () => {
-      try {
-        const u = new SpeechSynthesisUtterance(d.name.replace(/\(.*\)/, ""));
-        u.rate = 0.8; speechSynthesis.cancel(); speechSynthesis.speak(u);
-      } catch (e) {}
-      toast(`Say: “${d.pron.split("(")[0].trim()}”`, "wink");
-    };
     const steps = $("#steps"); let st;
     steps.addEventListener("scroll", () => {
       clearTimeout(st);
