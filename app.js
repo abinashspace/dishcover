@@ -117,11 +117,11 @@
     else ctx.resume().then(run).catch(() => {});
   }
   function soundFor(target) {
-    const btn = target.closest("button, .card[data-id]");
+    const btn = target.closest("button, .card[data-id], .dotd[data-id]");
     if (!btn || btn.disabled) return null;
     if (btn.matches("[data-like], #sheetLike, #triedBtn")) return "pop";
     if (btn.matches([
-      ".tab", "[data-cat]", "[data-veg]", "#moreBtn", ".card[data-id]",
+      ".tab", "[data-cat]", "[data-veg]", "#moreBtn", ".card[data-id]", ".dotd[data-id]",
       "#quizBanner", "#surpriseBtn", ".opt", "[data-seg]", "[data-tab-go]",
       "#openRes", "[data-open]", "[data-ropen]", "#randGo",
       "[data-rtype]", "[data-rdiet]", "[data-rcui]",
@@ -407,6 +407,43 @@
     while (i < pop.length || j < rest.length) { if (i < pop.length) out.push(pop[i++]); if (j < rest.length) out.push(rest[j++]); }
     return out;
   }
+  /* Dish of the Day: one dish per local day from the same day seed; never the grid's first card. Fact comes from the dish's own detail text. */
+  let dotdId = null;
+  function dotdPick(avoid) {
+    const rnd = seeded(dayKey() * 31 + 7);
+    const pool = DISHES.filter(d => !d.side && d.photo);
+    const order = shuffled(pool.length ? pool : DISHES, rnd);
+    return order.find(d => d.id !== avoid) || order[0];
+  }
+  function dotdFact(d) {
+    const sents = String(d.what || "").split(/(?<=[.!?])\s+(?=[A-Z"“'(])/).map(x => x.trim()).filter(Boolean);
+    const extra = sents.slice(1).join(" ");
+    if (extra.length >= 40 && extra.length <= 220) return ["Fun fact", extra];
+    if (d.tip) return ["Bae's tip", d.tip];
+    if (sents[0]) return ["Did you know?", sents[0]];
+    return null;
+  }
+  function dotdFill(d) {
+    const b = $("#dotdFact"); if (!b || dotdId !== d.id) return;
+    const f = dotdFact(d);
+    b.innerHTML = f ? `<b>${f[0]}:</b> ${esc(f[1])}` : `Tap to see what's in it and how to eat it! 🍽️`;
+  }
+  function renderDotd(hide, avoid) {
+    const w = $("#dotd"); if (!w) return;
+    if (hide) { w.hidden = true; return; }
+    w.hidden = false;
+    const d = dotdPick(avoid);
+    if (dotdId === d.id && w.firstChild) return;
+    dotdId = d.id;
+    w.innerHTML = `<article class="dotd" data-id="${d.id}" tabindex="0" role="button" aria-label="Dish of the day: ${esc(d.name)}. Open it">
+      <div class="dotd-photo ph" style="background:${d.color}">${photo(d, true, true)}</div>
+      <div class="dotd-head"><span class="dotd-tag">⭐ Dish of the Day</span><h3>${esc(d.name)}</h3><span class="cuisine">${esc(d.cuisine)}</span></div>
+      <span class="dotd-go" aria-hidden="true">→</span>
+      <div class="dotd-bae"><div class="mascot mini">${mascot("wow")}</div><p class="dotd-bubble" id="dotdFact">Bae is looking it up… 🔍</p></div>
+    </article>`;
+    if (d.what || d.tip) dotdFill(d);
+    else loadDetail(d.cat).then(() => dotdFill(d)).catch(() => dotdFill(d));
+  }
   const PAGE = 40; let shown = PAGE, lastList = [], lastQ = "";
   function renderGrid(quiet, more) {
     if (more) {
@@ -419,6 +456,7 @@
     const pool = DISHES.filter(d => (cat === "all" || d.cat === cat) && (!vegOnly || ["veg", "egg", "both"].includes(d.diet)));
     const res = q ? search(q, pool) : { list: dailyMix(pool), terms: [], fixed: [] };
     const list = res.list;
+    renderDotd(!!q, list[0] && list[0].id);
     const c = CATS.find(x => x.id === cat);
     const lab = q && resultLabel(list.length, res.terms);
     $("#listTitle").textContent = q ? (lab || `Results for “${q}”`) : (cat === "all" ? "All dishes" : c.label);
@@ -1110,6 +1148,8 @@
     if (like) { e.stopPropagation(); toggleLike(like.dataset.like, like); return; }
     const card = e.target.closest(".card[data-id]");
     if (card) { openDish(card.dataset.id); return; }
+    const dd = e.target.closest(".dotd[data-id]");
+    if (dd) { openDish(dd.dataset.id); return; }
     const chip = e.target.closest("[data-cat]");
     if (chip) {
       cat = chip.dataset.cat; renderChips(); renderGrid();
@@ -1135,7 +1175,7 @@
       if ($("#editSheet").classList.contains("show")) closeEdit();
       else if (currentId) closeSheet();
     }
-    if ((e.key === "Enter" || e.key === " ") && e.target.matches(".card[data-id]")) { e.preventDefault(); playClick("tap"); openDish(e.target.dataset.id); }
+    if ((e.key === "Enter" || e.key === " ") && e.target.matches(".card[data-id], .dotd[data-id]")) { e.preventDefault(); playClick("tap"); openDish(e.target.dataset.id); }
     if ((e.key === "Enter" || e.key === " ") && e.target.id === "homeMascot") { e.preventDefault(); nextTip(); }
     if (currentId && document.activeElement && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
       if (e.key === "ArrowRight") goStep(stepIdx + 1);
