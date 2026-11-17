@@ -45,7 +45,24 @@
     }
     return { name, age, bio };
   }
-  function blank() { return { liked: [], tried: [], reviews: {}, profile: { name: "", age: "", bio: "" } }; }
+  function blank() { return { liked: [], tried: [], reviews: {}, profile: { name: "", age: "", bio: "" }, collections: [] }; }
+  /* Collections: [{ id, name, ids: [dishId…] }]. Old saves and backups have none. */
+  function normalizeCollections(v) {
+    if (!Array.isArray(v)) return [];
+    const out = [], names = new Set(), cids = new Set();
+    v.forEach(c => {
+      if (!c || typeof c !== "object") return;
+      const name = String(c.name || "").trim().slice(0, 30);
+      if (!name || names.has(name.toLowerCase())) return;
+      let id = typeof c.id === "string" && c.id ? c.id.slice(0, 40) : "c" + Math.random().toString(36).slice(2, 10);
+      while (cids.has(id)) id = "c" + Math.random().toString(36).slice(2, 10);
+      const ids = [], seen = new Set();
+      (Array.isArray(c.ids) ? c.ids : []).forEach(x => { if (typeof x === "string" && !seen.has(x)) { seen.add(x); ids.push(x); } });
+      names.add(name.toLowerCase()); cids.add(id);
+      out.push({ id, name, ids });
+    });
+    return out;
+  }
   function load() {
     try {
       const s = JSON.parse(localStorage.getItem(KEY));
@@ -53,7 +70,8 @@
         liked: Array.isArray(s.liked) ? s.liked : [],
         tried: Array.isArray(s.tried) ? s.tried : [],
         reviews: s.reviews && typeof s.reviews === "object" && !Array.isArray(s.reviews) ? s.reviews : {},
-        profile: normalizeProfile(s.profile)
+        profile: normalizeProfile(s.profile),
+        collections: normalizeCollections(s.collections)
       };
     } catch (e) {}
     return mem || blank();
@@ -126,7 +144,8 @@
       "#openRes", "[data-open]", "[data-ropen]", "#randGo",
       "[data-rtype]", "[data-rdiet]", "[data-rcui]",
       "#prevStep", "#nextStep", "#qBack", "#retake", "#writeRev", "[data-star]",
-      "#pfEdit", "#pfExport", "#pfImport", "#pfSound", "#editDone", "#shareCard"
+      "#pfEdit", "#pfExport", "#pfImport", "#pfSound", "#editDone", "#shareCard",
+      "[data-col]", "[data-colnew]", "[data-colpick]", "[data-colrm]", "[data-coltoggle]", "#colBack", "#colRename", "#colDelete", "#colSave", "#colClose", "#addToCol"
     ].join(","))) return "tap";
     return null;
   }
@@ -179,7 +198,7 @@
     return `<p class="credit">Photo: <a href="${esc(p.source)}" target="_blank" rel="noopener">${esc(p.author)}</a> / ${lic} · Wikimedia Commons</p>`;
   }
 
-  function cardHTML(d, i, q) {
+  function cardHTML(d, i, q, extra) {
     const tt = topTastes(d);
     const dietLab = ({ veg: "VEG", egg: "EGG", both: "VEG & NON-VEG", eggboth: "EGG & NON-VEG", nonveg: "NON-VEG" })[d.diet] || "";
     const dietCls = (d.diet === "veg" || d.diet === "egg") ? "veg" : (d.diet === "nonveg" ? "hot" : "");
@@ -199,7 +218,7 @@
         ${spicy ? `<span class="meta-pill hot">SPICY</span>` : ""}
       </div>
       <div class="mini-taste">${(tt.length ? tt : ["Mild"]).map(t => `<span class="tchip">${t}</span>`).join("")}</div>
-      ${foot}
+      ${foot}${extra || ""}
     </article>`;
   }
 
@@ -766,6 +785,7 @@
       ${credit(d)}
       <h2 class="d-name">${esc(d.name)}</h2>
       <button class="share-card" id="shareCard" type="button">Food ID card</button>
+      <button class="share-card col-add" id="addToCol" type="button">${colsWith(id).length ? "📁 In " + colsWith(id).length + (colsWith(id).length === 1 ? " collection" : " collections") : "📁 Add to collection"}</button>
 
       <div class="box"><h3>🍽️ What is it?</h3><p>${esc(d.what)}</p></div>
 
@@ -854,6 +874,7 @@
     $("#closeSheet").onclick = closeSheet;
     $("#sheetLike").onclick = e => toggleLike(d.id, e.currentTarget);
     $("#shareCard").onclick = () => shareDishCard(d);
+    $("#addToCol").onclick = () => openColPicker(d.id);
     const steps = $("#steps"); let st;
     steps.addEventListener("scroll", () => {
       clearTimeout(st);
@@ -886,7 +907,13 @@
   const loveLines = ["Ooh, good pick! Saved 💛", "Added to your list! 😋", "Yum! I saved it for you", "Great taste! ♥ Saved"];
   function toggleLike(id, btn) {
     const d = byId[id];
-    if (isLiked(id)) { state.liked = state.liked.filter(x => x !== id); toast(`Removed ${d.name}`, "thinking"); }
+    if (isLiked(id)) {
+      const inCols = colsWith(id).length;
+      state.liked = state.liked.filter(x => x !== id);
+      state.collections.forEach(c => { c.ids = c.ids.filter(x => x !== id); });
+      toast(inCols ? `Removed ${d.name} from saved & collections` : `Removed ${d.name}`, "thinking");
+      paintColBtn();
+    }
     else { state.liked.push(id); toast(loveLines[Math.floor(Math.random() * loveLines.length)], "love"); setMascot($("#homeMascot"), "love", "pop"); }
     save();
     const on = isLiked(id);
@@ -978,16 +1005,194 @@
     $("#phone").appendChild(c); setTimeout(() => c.remove(), 2800);
   }
 
-  /* ---------------- Saved ---------------- */
+  /* ---------------- Saved + collections ---------------- */
   let savedSeg = "liked";
+  let openCol = null;          // id of the collection being viewed on the Saved tab
+  let colPickFor = null;       // dish id the picker is for
+  let colMode = null;          // "pick" | "new" | "rename"
+  const colById = id => state.collections.find(c => c.id === id);
+  const colsWith = id => state.collections.filter(c => c.ids.includes(id));
+  function colCover(ids) {
+    const ds = ids.map(id => byId[id]).filter(Boolean).slice(0, 4);
+    if (!ds.length) return `<div class="col-cover empty-cover"><span>📁</span></div>`;
+    const cells = [0, 1, 2, 3].map(i => {
+      const d = ds[i];
+      if (!d) return `<i class="cc"></i>`;
+      return `<i class="cc ph" style="background:${d.color}">${d.photo ? `<img src="${d.photo.thumb || d.photo.src}" alt="" loading="lazy" decoding="async" onerror="this.remove()">` : `<b>${d.emoji}</b>`}</i>`;
+    }).join("");
+    return `<div class="col-cover">${cells}</div>`;
+  }
+  function colTiles() {
+    const all = state.liked.filter(id => byId[id]);
+    return `<div class="col-row" id="colRow">
+      <button class="col-tile ${!openCol ? "on" : ""}" data-col="">${colCover(all)}<b>All saved</b><span>${all.length} ${all.length === 1 ? "dish" : "dishes"}</span></button>
+      ${state.collections.map(c => { const n = c.ids.filter(id => byId[id]).length; return `<button class="col-tile ${openCol === c.id ? "on" : ""}" data-col="${esc(c.id)}">${colCover(c.ids)}<b>${esc(c.name)}</b><span>${n} ${n === 1 ? "dish" : "dishes"}</span></button>`; }).join("")}
+      <button class="col-tile new" data-colnew="1"><div class="col-cover empty-cover plus"><span>＋</span></div><b>New collection</b><span>&nbsp;</span></button>
+    </div>`;
+  }
+  const dotsBtn = id => `<button class="card-more" data-colpick="${id}" aria-label="Add to collection">⋯</button>`;
+  const rmBtn = id => `<button class="card-rm" data-colrm="${id}" aria-label="Remove from this collection">✕</button>`;
   function renderSaved() {
     const tried = state.tried.length;
-    const list = (savedSeg === "liked" ? state.liked : state.tried).map(id => byId[id]).filter(Boolean);
-    $("#saved").innerHTML = `
-      <div class="seg" role="tablist"><button data-seg="liked" class="${savedSeg === "liked" ? "on" : ""}">♥ Saved (${state.liked.length})</button><button data-seg="tried" class="${savedSeg === "tried" ? "on" : ""}">✓ Tried (${tried})</button></div>
-      <div class="grid">${list.length ? list.map((d, i) => cardHTML(d, i, "")).join("") :
-        `<div class="empty" style="grid-column:1/-1"><div class="mascot">${mascot("wink")}</div><p><b>${savedSeg === "liked" ? "No saved dishes yet." : "Nothing tried yet."}</b><br>${savedSeg === "liked" ? "Tap ♥ on any dish to save it here." : "Open a dish and tap “I tried it”."}</p><button class="pill-btn" data-tab-go="home">Explore dishes ${arrowSVG()}</button></div>`}</div>`;
+    if (openCol && !colById(openCol)) openCol = null;
+    const seg = `<div class="seg" role="tablist"><button data-seg="liked" class="${savedSeg === "liked" ? "on" : ""}">♥ Saved (${state.liked.length})</button><button data-seg="tried" class="${savedSeg === "tried" ? "on" : ""}">✓ Tried (${tried})</button></div>`;
+    const emptyHTML = (title, sub, btn) => `<div class="empty" style="grid-column:1/-1"><div class="mascot">${mascot("wink")}</div><p><b>${title}</b><br>${sub}</p>${btn || ""}</div>`;
+    const explore = `<button class="pill-btn" data-tab-go="home">Explore dishes ${arrowSVG()}</button>`;
+    if (savedSeg === "tried") {
+      const list = state.tried.map(id => byId[id]).filter(Boolean);
+      $("#saved").innerHTML = seg + `<div class="grid">${list.length ? list.map((d, i) => cardHTML(d, i, "")).join("") : emptyHTML("Nothing tried yet.", "Open a dish and tap “I tried it”.", explore)}</div>`;
+      return;
+    }
+    const scrollX = $("#colRow") ? $("#colRow").scrollLeft : 0;
+    let body;
+    if (openCol) {
+      const c = colById(openCol);
+      const list = c.ids.map(id => byId[id]).filter(Boolean);
+      body = `<div class="col-head"><button class="icon-btn" id="colBack" aria-label="Back to all saved">${arrowSVG(true)}</button>
+          <div class="col-title"><h3>${esc(c.name)}</h3><span>${list.length} ${list.length === 1 ? "dish" : "dishes"}</span></div>
+          <button class="pill-btn" id="colRename" type="button">Rename</button><button class="pill-btn danger" id="colDelete" type="button">Delete</button></div>
+        <div class="grid">${list.length ? list.map((d, i) => cardHTML(d, i, "", rmBtn(d.id))).join("") :
+          emptyHTML("This collection is empty.", "Open any saved dish and tap “Add to collection”, or use ⋯ on a saved dish.")}</div>`;
+    } else {
+      const list = state.liked.map(id => byId[id]).filter(Boolean);
+      body = `<div class="grid">${list.length ? list.map((d, i) => cardHTML(d, i, "", dotsBtn(d.id))).join("") : emptyHTML("No saved dishes yet.", "Tap ♥ on any dish to save it here.", explore)}</div>`;
+    }
+    $("#saved").innerHTML = seg + `<div class="col-label">Collections</div>` + colTiles() + body;
+    if ($("#colRow")) $("#colRow").scrollLeft = scrollX;
   }
+  function showCol(id) {
+    openCol = id || null;
+    renderSaved();
+    $("#screen-saved").scrollTop = 0;
+  }
+  function closeCol() { openCol = null; renderSaved(); }
+  function colSheetOpen() { return $("#colSheet").classList.contains("show"); }
+  function newColId() { let id; do { id = "c" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); } while (colById(id)); return id; }
+  function paintColBtn() {
+    const b = $("#addToCol"); if (!b || !currentId) return;
+    const n = colsWith(currentId).length;
+    b.textContent = n ? `📁 In ${n} ${n === 1 ? "collection" : "collections"}` : "📁 Add to collection";
+  }
+  function renderColSheet() {
+    const el = $("#colSheet");
+    if (colMode === "pick") {
+      const d = byId[colPickFor];
+      el.innerHTML = `<div class="grab"></div>
+        <div class="rs-head"><div class="mascot mini">${mascot("love")}</div><div><h3>Add to collection</h3><p class="muted">${esc(d ? d.name : "")}</p></div><button class="close-x" id="colClose" type="button" aria-label="Close">✕</button></div>
+        <div class="col-list">
+          ${state.collections.length ? state.collections.map(c => { const on = c.ids.includes(colPickFor); return `<button class="col-item ${on ? "on" : ""}" data-coltoggle="${esc(c.id)}" aria-pressed="${on}">${colCover(c.ids)}<span class="ci-name"><b>${esc(c.name)}</b><small>${c.ids.length} ${c.ids.length === 1 ? "dish" : "dishes"}</small></span><span class="ci-check">${on ? "✓" : ""}</span></button>`; }).join("") :
+            `<p class="rs-empty">No collections yet. Make your first one!</p>`}
+          <button class="col-item new" data-colnew="1"><div class="col-cover empty-cover plus"><span>＋</span></div><span class="ci-name"><b>New collection</b></span></button>
+        </div>
+        <div class="rs-actions"><button class="cta" id="colDone" type="button">Done</button></div>`;
+    } else {
+      const c = colMode === "rename" ? colById(openCol) : null;
+      el.innerHTML = `<div class="grab"></div>
+        <div class="rs-head"><div class="mascot mini">${mascot("wink")}</div><div><h3>${c ? "Rename collection" : "New collection"}</h3><p class="muted">Give it a fun name, like “Weekend treats”.</p></div><button class="close-x" id="colClose" type="button" aria-label="Close">✕</button></div>
+        <label class="field"><span>Name</span><input id="colName" maxlength="30" autocomplete="off" placeholder="Collection name" value="${c ? esc(c.name) : ""}"></label>
+        <small class="col-count" id="colCount">${c ? c.name.length : 0}/30</small>
+        <div class="rs-actions"><button class="cta" id="colSave" type="button">${c ? "Save" : "Create"}</button></div>`;
+      const inp = $("#colName");
+      inp.addEventListener("input", () => { $("#colCount").textContent = `${inp.value.length}/30`; });
+      inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); saveColName(); } });
+      setTimeout(() => { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }, 60);
+    }
+  }
+  function openColSheet(mode) {
+    colMode = mode; renderColSheet();
+    $("#scrim").classList.add("show"); $("#colSheet").classList.add("show");
+  }
+  function openColPicker(id) { colPickFor = id; openColSheet("pick"); }
+  function closeColSheet() {
+    $("#colSheet").classList.remove("show");
+    if (document.activeElement && document.activeElement.id === "colName") document.activeElement.blur();
+    if (!$("#sheet").classList.contains("show")) $("#scrim").classList.remove("show");
+    colMode = null; colPickFor = null;
+  }
+  function saveColName() {
+    const inp = $("#colName"); if (!inp) return;
+    const name = inp.value.trim().replace(/\s+/g, " ").slice(0, 30);
+    if (!name) { toast("Give your collection a name", "thinking"); return; }
+    const editing = colMode === "rename" ? colById(openCol) : null;
+    if (state.collections.some(c => c !== editing && c.name.toLowerCase() === name.toLowerCase())) { toast("You already have a collection with that name", "thinking"); return; }
+    if (editing) {
+      editing.name = name; save(); closeColSheet(); renderSaved(); toast("Collection renamed", "happy");
+      return;
+    }
+    const c = { id: newColId(), name, ids: [] };
+    state.collections.push(c);
+    if (colPickFor) {
+      addToCol(c, colPickFor);
+      save(); toast(`Saved to ${name} 📁`, "love");
+      colMode = "pick"; renderColSheet(); paintColBtn();
+    } else {
+      save(); closeColSheet(); toast(`Made “${name}” 🎉`, "wow");
+      if (activeTab === "saved") showCol(c.id);
+    }
+    if (activeTab === "saved" && colPickFor) renderSaved();
+  }
+  function addToCol(c, id) {
+    if (!c.ids.includes(id)) c.ids.unshift(id);
+    if (!isLiked(id)) {
+      state.liked.push(id);
+      $$(`[data-like="${id}"]`).forEach(b => { b.classList.add("on"); b.setAttribute("aria-pressed", true); });
+      const sl = $("#sheetLike"); if (sl && currentId === id) { sl.classList.add("on"); sl.setAttribute("aria-pressed", true); }
+      refreshCounts();
+    }
+  }
+  function toggleInCol(cid) {
+    const c = colById(cid), id = colPickFor; if (!c || !id) return;
+    if (c.ids.includes(id)) { c.ids = c.ids.filter(x => x !== id); toast(`Removed from ${c.name}`, "thinking"); }
+    else { addToCol(c, id); toast(`Saved to ${c.name} 📁`, "love"); }
+    save(); renderColSheet(); paintColBtn();
+    if (activeTab === "saved") renderSaved();
+  }
+  function deleteCol() {
+    const c = colById(openCol); if (!c) return;
+    if (!confirm(`Delete “${c.name}”? The dishes stay in All saved.`)) return;
+    state.collections = state.collections.filter(x => x !== c);
+    save(); openCol = null; renderSaved(); toast("Collection deleted", "thinking");
+  }
+  function removeFromOpenCol(id) {
+    const c = colById(openCol); if (!c) return;
+    c.ids = c.ids.filter(x => x !== id);
+    save(); renderSaved(); toast(`Removed from ${c.name}`, "thinking");
+  }
+  $("#colSheet").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.id === "colClose" || b.id === "colDone") return closeColSheet();
+    if (b.id === "colSave") return saveColName();
+    if (b.dataset.coltoggle) return toggleInCol(b.dataset.coltoggle);
+    if (b.dataset.colnew) { colMode = "new"; renderColSheet(); }
+  });
+  $("#saved").addEventListener("click", e => {
+    const t = e.target;
+    const rm = t.closest("[data-colrm]"); if (rm) { e.stopPropagation(); removeFromOpenCol(rm.dataset.colrm); return; }
+    const pk = t.closest("[data-colpick]"); if (pk) { e.stopPropagation(); openColPicker(pk.dataset.colpick); return; }
+    const tile = t.closest("[data-col]"); if (tile) { showCol(tile.dataset.col); return; }
+    if (t.closest("[data-colnew]")) { colPickFor = null; openColSheet("new"); return; }
+    if (t.closest("#colBack")) { closeCol(); return; }
+    if (t.closest("#colRename")) { openColSheet("rename"); return; }
+    if (t.closest("#colDelete")) { deleteCol(); return; }
+  });
+  /* Long-press a saved card to add it to a collection */
+  (function () {
+    let lpT = null, lpFired = 0, x0 = 0, y0 = 0;
+    const box = $("#saved");
+    box.addEventListener("pointerdown", e => {
+      lpFired = false;
+      const card = e.target.closest(".card[data-id]");
+      if (!card || savedSeg !== "liked" || e.target.closest("button")) return;
+      x0 = e.clientX; y0 = e.clientY;
+      clearTimeout(lpT);
+      lpT = setTimeout(() => { lpFired = Date.now(); playClick("pop"); if (navigator.vibrate) try { navigator.vibrate(15); } catch (er) {} openColPicker(card.dataset.id); }, 550);
+    });
+    const cancel = () => clearTimeout(lpT);
+    box.addEventListener("pointerup", cancel); box.addEventListener("pointercancel", cancel); box.addEventListener("pointerleave", cancel);
+    box.addEventListener("pointermove", e => { if (Math.abs(e.clientX - x0) > 8 || Math.abs(e.clientY - y0) > 8) cancel(); });
+    box.addEventListener("contextmenu", e => { if (e.target.closest(".card[data-id]") && savedSeg === "liked") e.preventDefault(); });
+    box.addEventListener("click", e => { if (lpFired && Date.now() - lpFired < 1500) { e.stopPropagation(); e.preventDefault(); } lpFired = false; }, true);
+  })();
 
   /* ---------------- Tabs / global ---------------- */
   let activeTab = "home";
@@ -1056,7 +1261,8 @@
       profile: state.profile,
       liked: state.liked,
       tried: state.tried,
-      reviews: state.reviews
+      reviews: state.reviews,
+      collections: state.collections
     };
   }
   function exportData() {
@@ -1076,12 +1282,15 @@
     if (!data || typeof data !== "object" || Array.isArray(data)) throw new Error("bad");
     if (data.app && data.app !== "dishcover") throw new Error("bad");
     if (!Array.isArray(data.liked) && !Array.isArray(data.tried) && !data.profile) throw new Error("bad");
-    const has = state.liked.length || state.tried.length || Object.keys(state.reviews).length || state.profile.name || state.profile.age || state.profile.bio;
+    const has = state.liked.length || state.tried.length || Object.keys(state.reviews).length || state.collections.length || state.profile.name || state.profile.age || state.profile.bio;
     if (has && !confirm("Replace the name, bio, saved dishes, and reviews on this phone with this backup?")) return;
     state.liked = idList(data.liked);
     state.tried = idList(data.tried);
     state.reviews = reviewMap(data.reviews);
     state.profile = normalizeProfile(data.profile);
+    state.collections = normalizeCollections(data.collections);
+    state.collections.forEach(c => { c.ids = c.ids.filter(id => state.liked.includes(id)); });
+    openCol = null;
     save();
     refreshCounts();
     renderProfile();
@@ -1167,13 +1376,17 @@
   window.dishcoverBack = function () {
     if ($("#editSheet").classList.contains("show")) { closeEdit(); return true; }
     if ($("#randSheet") && $("#randSheet").classList.contains("show")) { closeRand(); return true; }
+    if (colSheetOpen()) { closeColSheet(); return true; }
     if (currentId) { closeSheet(); return true; }
+    if (activeTab === "saved" && openCol) { closeCol(); return true; }
     return false;
   };
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") {
       if ($("#editSheet").classList.contains("show")) closeEdit();
+      else if (colSheetOpen()) closeColSheet();
       else if (currentId) closeSheet();
+      else if (activeTab === "saved" && openCol) closeCol();
     }
     if ((e.key === "Enter" || e.key === " ") && e.target.matches(".card[data-id], .dotd[data-id]")) { e.preventDefault(); playClick("tap"); openDish(e.target.dataset.id); }
     if ((e.key === "Enter" || e.key === " ") && e.target.id === "homeMascot") { e.preventDefault(); nextTip(); }
@@ -1185,6 +1398,7 @@
   $("#scrim").onclick = () => {
     if ($("#editSheet").classList.contains("show")) closeEdit();
     else if ($("#randSheet").classList.contains("show")) closeRand();
+    else if (colSheetOpen()) closeColSheet();
     else closeSheet();
   };
   function openEdit() {
