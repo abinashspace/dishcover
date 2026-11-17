@@ -396,6 +396,17 @@
     s.onerror = () => { searchReq = false; s.remove(); };
     document.head.appendChild(s);
   }
+  /* Fresh order every day: same mix all day, new mix tomorrow. Well-known dishes stay frequent near the top. */
+  function dayKey() { const t = new Date(); return t.getFullYear() * 10000 + (t.getMonth() + 1) * 100 + t.getDate(); }
+  function seeded(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function shuffled(arr, rnd) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function dailyMix(pool) {
+    const rnd = seeded(dayKey());
+    const pop = shuffled(pool.filter(d => idx[d.id] < POPULAR), rnd), rest = shuffled(pool.filter(d => idx[d.id] >= POPULAR), rnd);
+    const out = []; let i = 0, j = 0;
+    while (i < pop.length || j < rest.length) { if (i < pop.length) out.push(pop[i++]); if (j < rest.length) out.push(rest[j++]); }
+    return out;
+  }
   const PAGE = 40; let shown = PAGE, lastList = [], lastQ = "";
   function renderGrid(quiet, more) {
     if (more) {
@@ -406,7 +417,7 @@
     shown = PAGE;
     const q = query.trim();
     const pool = DISHES.filter(d => (cat === "all" || d.cat === cat) && (!vegOnly || ["veg", "egg", "both"].includes(d.diet)));
-    const res = q ? search(q, pool) : { list: pool, terms: [], fixed: [] };
+    const res = q ? search(q, pool) : { list: dailyMix(pool), terms: [], fixed: [] };
     const list = res.list;
     const c = CATS.find(x => x.id === cat);
     const lab = q && resultLabel(list.length, res.terms);
