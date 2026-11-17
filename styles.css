@@ -434,7 +434,7 @@ body{letter-spacing:-.01em}
 @media (prefers-reduced-motion:reduce){.off-card img{animation:none}}
 
 /* ---------- Dish of the Day ---------- */
-.dotd-wrap{margin-top:10px}
+.dotd-wrap{margin:8px 0 14px}
 .dotd-wrap[hidden]{display:none}
 .dotd{position:relative;display:grid;grid-template-columns:104px 1fr auto;grid-template-areas:"pic head go" "bae bae bae";column-gap:12px;row-gap:10px;align-items:center;background:var(--surface);border:1.5px solid #B8C9FF;border-radius:var(--radius-lg);padding:10px 12px 12px 10px;box-shadow:0 1px 2px rgba(0,80,255,.06),0 8px 22px rgba(0,80,255,.10);cursor:pointer;text-align:left;transition:transform .3s var(--spring),box-shadow .3s var(--ease);animation:rise .45s var(--ease) both}
 .dotd:active{transform:scale(.98)}
